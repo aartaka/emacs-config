@@ -42,7 +42,9 @@
                       autopair
                       company
                       company-quickhelp
-                      auto-complete)
+                      auto-complete
+                      golden-ratio
+                      better-defaults)
 
 (autopair-global-mode t)
 (add-hook 'after-init-hook (lambda ()
@@ -74,8 +76,11 @@
   (menu-bar-mode -1)                    ;disable menubar
   (scroll-bar-mode -1))  			    ;disable scrollbar
 
+;; https://www.emacswiki.org/emacs/download/column-marker.el
+(require 'column-marker)
 (column-number-mode 1)
 (line-number-mode 1)
+
 ;; Increase DocView mode's docs readability
 (add-hook 'doc-view-mode (lambda ()
                            (interactive)
@@ -101,6 +106,10 @@
 (require 'em-term)
 (global-set-key (kbd "<f12>") 'eshell)
 
+;; EasyPG basic config
+(require 'epa-file)
+(epa-file-enable)
+
 ;; Browser
 (setq browse-url-browser-function 'eww-browse-url)
 
@@ -121,31 +130,29 @@
 (require 'clean-aindent-mode)
 ;; Change the Return key to indent in addition to newlining
 (global-set-key (kbd "RET") 'newline-and-indent)
-(set 'clean-aindent-is-simple-indent t)
+(setf clean-aindent-is-simple-indent t)
 ;===============================================================================
 ; LISP CUSTOMIZATIONS, WEEEEEEE!
 ;===============================================================================
 
-(require-install-many sly sly-quicklisp sly-asdf
-                      paredit
-                      racket-mode)
-(add-to-list 'sly-contribs 'sly-scratch 'slynk-indentation)
-(eval-after-load 'sly
-  `(define-key sly-prefix-map (kbd "M-h") 'sly-documentation-lookup))
+(require-install-many slime paredit racket-mode helm-slime slime-company)
+(slime-setup '(slime-fancy slime-quicklisp slime-asdf helm-slime))
 (setq inferior-lisp-program "sbcl")
 
 (require 'clhs)
 (clhs-setup)
 
-(global-set-key (kbd "C-h -") 'hyperspec-lookup)
-(global-set-key (kbd "C-h ~") 'hyperspec-lookup-format)
-(global-set-key (kbd "C-h #") 'hyperspec-lookup-reader-macro)
+(global-set-key (kbd "C-h -") 'slime-documentation-lookup)
+(global-set-key (kbd "C-h #") 'common-lisp-hyperspec-lookup-reader-macro)
+(global-set-key (kbd "C-h ~") 'common-lisp-hyperspec-format)
 
-(add-hook 'sly-mode-hook
+(column-marker-create column-marker-code column-marker-code)
+(add-hook 'slime-mode-hook
           (lambda ()
             (interactive)
-            (column-marker-1 100)
-            (company-mode +1)
+            (column-marker-3 100)
+            (company-mode 1)
+            (golden-ratio-mode 1)
             (set (make-local-variable lisp-indent-function)
                  'common-lisp-indent-function)))
 
@@ -299,9 +306,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(lisp-mode-hook (quote (enable-paredit-mode slime-lisp-mode-hook)))
  '(package-selected-packages
    (quote
-    (nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme sly-quicklisp sly-asdf autopair))))
+    (nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair)))
+ '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
