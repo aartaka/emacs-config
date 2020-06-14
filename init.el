@@ -266,34 +266,33 @@
   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
   (add-hook 'elpy-mode-hook 'flycheck-mode))
 
-(add-hook 'elpy-mode-hook (lambda ()
-			    (py-autopep8-enable-on-save)
-			    (company-mode -1)
-			    (auto-complete-mode +1)
-			    (interactive)
-			    (column-marker-1 80)
-			    (blacken-mode)))
+(add-hook 'elpy-mode-hook
+          (lambda ()
+            (interactive)
+            (py-autopep8-enable-on-save)
+            (company-mode -1)
+            (auto-complete-mode +1)
+            (column-marker-1 80)
+            (blacken-mode)))
 
-(add-hook 'ein:notebook-mode
-	  (lambda ()
-	    (py-autopep8-enable-on-save)
-	    (company-mode -1)
-	    (auto-complete-mode)
-	    (interactive)
-	    (column-marker-1 80)
-	    (flycheck-mode)
-	    (blacken-mode)))
+(add-hook 'ein:notebook-python-mode-hook
+          (lambda ()
+            (interactive)
+            (py-autopep8-enable-on-save)
+            (company-mode -1)
+            (auto-complete-mode)
+            (column-marker-1 80)
+            (flycheck-mode)
+            (blacken-mode)))
 
 ;;==============================================================================
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
 
-;; https://www.emacswiki.org/emacs/download/column-marker.el
-(require 'column-marker)
 (set-face-attribute 'default nil :font "Hack-18")
 (add-hook 'before-make-frame-hook #'(lambda ()
                                       (interactive)
-                                      (set-face-attribute 'default nil :font "Hack-18")
+                                      (set-face-attribute 'default nil :font "Hack-17")
                                       (tool-bar-mode -1)
                                       (menu-bar-mode -1)
                                       (scroll-bar-mode -1)))
