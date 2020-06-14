@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir ./lisp
+mkdir lisp
 ln -sf . ~/.emacs.d
 curl https://raw.githubusercontent.com/tuhdo/emacs-c-ide-demo/master/custom/setup-helm.el > emacs/lisp/setup-helm.el
 curl https://raw.githubusercontent.com/arclanguage/anarki/master/extras/inferior-arc.el > emacs/lisp/inferior-arc.el
