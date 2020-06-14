@@ -92,9 +92,29 @@
 (require-install 'nov)
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
-;; Org-Mode customizations. 
+;; Org-Mode customizations.
 (add-hook 'org-mode-hook
-          #'(lambda () (local-set-key (kbd "M-q") 'org-fill-paragraph)))
+          #'(lambda ()
+              (local-set-key (kbd "M-q") 'org-fill-paragraph)))
+(setf org-agenda-files `(,(concat org-directory "/schedule.org")
+                         ,(concat org-directory "/tasks.org")
+                         ,(concat org-directory "/notes.org"))
+      org-default-notes-file (concat org-directory "/notes.org")
+      org-agenda-start-on-weekday nil
+      org-hide-leading-stars t
+      org-capture-templates
+      `(("t" "Todo" entry
+         (file+headline ,(concat org-directory "/tasks.org") "Todos")
+         "** TODO %?\n  %i\n  %a")
+        ("d" "Deadline" entry
+         (file+headline ,(concat org-directory "/tasks.org") "Tasks")
+         "** TODO %?\n   DEADLINE %^{Task deadline}T\n   %U")
+        ("c" "Chaotic schedules" entry
+         (file+headline ,(concat org-directory "/tasks.org") "Chaotic")
+         "** TODO %?\n  SCHEDULE %^{Date and Time}T\n")))
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
 
 ;; Magit starting setup
 (require-install 'magit)
