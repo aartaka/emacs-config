@@ -155,19 +155,19 @@
 ; LISP CUSTOMIZATIONS, WEEEEEEE!
 ;===============================================================================
 
-(require-install-many slime paredit racket-mode helm-slime slime-company)
-(slime-setup '(slime-fancy slime-quicklisp slime-asdf helm-slime))
+(require-install-many sly sly-asdf sly-quicklisp paredit racket-mode helm-sly)
 (setq inferior-lisp-program "sbcl")
+(add-hook 'lisp-mode-hook (lambda () (interactive) (sly-editing-mode 1)))
 
 (require 'clhs)
 (clhs-setup)
 
-(global-set-key (kbd "C-h -") 'slime-documentation-lookup)
-(global-set-key (kbd "C-h #") 'common-lisp-hyperspec-lookup-reader-macro)
-(global-set-key (kbd "C-h ~") 'common-lisp-hyperspec-format)
+(global-set-key (kbd "C-h -") 'sly-hyperspec-lookup)
+(global-set-key (kbd "C-h #") 'hyperspec-lookup-reader-macro)
+(global-set-key (kbd "C-h ~") 'hyperspec-format)
 
 (column-marker-create column-marker-code column-marker-code)
-(add-hook 'slime-mode-hook
+(add-hook 'sly-mode-hook
           (lambda ()
             (interactive)
             (column-marker-3 100)
@@ -325,10 +325,21 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(lisp-mode-hook (quote (enable-paredit-mode slime-lisp-mode-hook)))
+ '(emacs-lisp-mode-hook (quote (enable-paredit-mode)))
+ '(helm-lisp-fuzzy-completion t)
+ '(inferior-lisp-program "sbcl")
+ '(lisp-mode-hook
+   (quote
+    ((lambda nil
+       (interactive)
+       (sly-editing-mode 1))
+     #[nil "\300\301\302\303\211$\207"
+           [add-hook font-lock-extend-region-functions sly-extend-region-for-font-lock t]
+           5]
+     enable-paredit-mode)))
  '(package-selected-packages
    (quote
-    (nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair)))
+    (sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair)))
  '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
