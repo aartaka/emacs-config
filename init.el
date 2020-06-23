@@ -8,7 +8,6 @@
              (cons "melpa" "https://melpa.org/packages/") t)
 (package-initialize)
 
-(when (zerop (random 10)) (package-refresh-contents))
 ;;===============================================================================
 ;; OTHER ESSENTIAL CONFIGURATIONS AND HELPERS
 ;;===============================================================================
