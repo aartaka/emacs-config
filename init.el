@@ -100,6 +100,7 @@
                          ,(concat org-directory "/notes.org"))
       org-default-notes-file (concat org-directory "/notes.org")
       org-agenda-start-on-weekday nil
+      org-log-done 'note
       org-hide-leading-stars t
       org-capture-templates
       `(("t" "Todo" entry
@@ -335,3 +336,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'narrow-to-region 'disabled nil)
