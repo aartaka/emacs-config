@@ -43,13 +43,23 @@
                       company-quickhelp
                       auto-complete
                       golden-ratio
-                      better-defaults)
+                      better-defaults
+                      all-the-icons
+                      keyfreq
+                      yasnippet-snippets
+                      yasnippet-classic-snippets)
+;; YASnippet
+(push #'yas/helm-prompt yas-prompt-functions)
+(yas-global-mode)
 
 (autopair-global-mode t)
 (add-hook 'after-init-hook (lambda ()
-			     (show-paren-mode 1)
+			     (show-paren-mode)
 			     (global-company-mode)
-			     (company-quickhelp-mode)))
+			     (company-quickhelp-mode)
+                 (keyfreq-mode)
+                 (keyfreq-autosave-mode)
+                 (auto-save-visited-mode)))
 
 (require-install 'helm)
 (require 'helm-config)
@@ -67,7 +77,11 @@
       split-height-threshold 0          ;split windows over horisontal line
       split-width-threshold nil         ;and not opposite
       inhibit-startup-screen t          ;no splash screen
-      initial-buffer-choice #'eshell)   ;startup on eshell
+      initial-buffer-choice #'eshell    ;startup on eshell
+      x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)
+      prefer-coding-system 'utf-8       ;prefer UTF-8
+      flyspell-issue-message-flag nil   ;don't print per-word messages
+      normal-erase-is-backspace t)      ;fix weird backspace
 (global-font-lock-mode t)               ;colorize all buffers
 
 (when window-system
@@ -101,6 +115,7 @@
       org-default-notes-file (concat org-directory "/notes.org")
       org-agenda-start-on-weekday nil
       org-log-done 'note
+      org-log-redeadline 'note
       org-hide-leading-stars t
       org-capture-templates
       `(("t" "Todo" entry
@@ -135,6 +150,8 @@
 
 ;; Because list-directory makes me mad
 (global-set-key (kbd "C-x C-d") 'dired)
+;; Because suspend-emacs makes me mad in X
+(unbind-key "C-z")
 
 ;; Highligh whitespaces
 (global-set-key (kbd "C-c w") 'whitespace-mode)
@@ -348,3 +365,5 @@
  ;; If there is more than one, they won't work right.
  )
 (put 'narrow-to-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
