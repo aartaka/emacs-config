@@ -359,7 +359,7 @@
      enable-paredit-mode)))
  '(package-selected-packages
    (quote
-    (sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair)))
+    (web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair)))
  '(send-mail-function (quote smtpmail-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
