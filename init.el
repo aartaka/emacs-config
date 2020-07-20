@@ -173,15 +173,17 @@
 ;===============================================================================
 
 (require-install-many sly sly-asdf sly-quicklisp paredit racket-mode helm-sly)
-(setq inferior-lisp-program "sbcl")
+(setf inferior-lisp-program "sbcl"
+      sly-lisp-implementations '((sbcl ("sbcl"))
+                                 (ccl ("ccl"))))
 (add-hook 'lisp-mode-hook (lambda () (interactive) (sly-editing-mode 1)))
 
 (require 'clhs)
 (clhs-setup)
 
-(global-set-key (kbd "C-h -") 'sly-hyperspec-lookup)
-(global-set-key (kbd "C-h #") 'hyperspec-lookup-reader-macro)
-(global-set-key (kbd "C-h ~") 'hyperspec-format)
+(global-set-key (kbd "C-h -") 'my-hyperspec-lookup)
+(global-set-key (kbd "C-h #") 'my-hyperspec-lookup-reader-macro)
+(global-set-key (kbd "C-h %") 'my-hyperspec-lookup-format)
 
 (column-marker-create column-marker-code column-marker-code)
 (add-hook 'sly-mode-hook
@@ -191,7 +193,8 @@
             (company-mode 1)
             (golden-ratio-mode 1)
             (set (make-local-variable lisp-indent-function)
-                 'common-lisp-indent-function)))
+                 'common-lisp-indent-function)
+            (flyspell-prog-mode)))
 
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
