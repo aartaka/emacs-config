@@ -329,7 +329,7 @@
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
 
-(set-face-attribute 'default nil :font "Hack-18")
+(set-face-attribute 'default nil :font "Hack-17")
 (add-hook 'before-make-frame-hook #'(lambda ()
                                       (interactive)
                                       (set-face-attribute 'default nil :font "Hack-17")
