@@ -307,6 +307,24 @@
             (flycheck-mode)
             (blacken-mode)))
 
+
+;;=============================================================================
+;; WEB-DEVELOPMENT CUSTOMIZATIONS
+;;=============================================================================
+(require-install-many rainbow-mode
+                      js2-mode
+                      skewer-less
+                      web-mode)
+
+(add-hook 'html-mode-hook (lambda ()
+                            (interactive)
+                            (rainbow-mode)
+                            (skewer-html-mode)
+                            (httpd-start)))
+
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'css-mode-hook 'skewer-css-mode)
+
 ;;==============================================================================
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
