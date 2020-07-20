@@ -12,25 +12,7 @@
 ;; OTHER ESSENTIAL CONFIGURATIONS AND HELPERS
 ;;===============================================================================
 
-(defmacro require-install (package)
-  "This macro installs the package if it's not installed already."
-    `(if (package-installed-p ,package)
-	 (require ,package)
-       (progn
-	 (package-install ,package)
-	 (require ,package))))
-
-(defmacro require-install-many (&rest pkg-list)
-  `(progn
-     ,@(dolist (pkg pkg-list)
-         (require-install pkg))))
-
-;; There is a weird Emacs behavior: it counts ".emacs.d/init.el" file for ".emacs" file.
-;; This behavior has reasons behind it, both historical and technical,
-;; so I just need to deal with it.
-(defun subdir-here (subdir-string)
-  "Adds the given dirname to the current directory, place-independently."
-  (concat (expand-file-name ".") "/.emacs.d/" subdir-string))
+(load "~/.emacs.d/utils.el")
 
 ;; Configure contribs and non-MELPA packages path
 (add-to-list 'load-path (subdir-here "lisp/"))
@@ -146,7 +128,7 @@
 (epa-file-enable)
 
 ;; Browser
-(setq browse-url-browser-function 'eww-browse-url)
+(setq browse-url-browser-function 'browse-url-icecat)
 
 ;; Because list-directory makes me mad
 (global-set-key (kbd "C-x C-d") 'dired)
