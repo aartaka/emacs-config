@@ -73,11 +73,9 @@ instead of `browse-url-new-window-flag'."
     (error "File does not exist: ‘%s’" file))
   (unless (process-status "httpd")
     (httpd-start))
-  (let ((old-httpd-root httpd-root))
-    (setf httpd-root (file-name-directory file))
-    (browse-url (format "http://127.0.0.1:%s/%s" httpd-port
-                        (file-name-nondirectory file)))
-    (setq httpd-root old-httpd-root)))
+  (setf httpd-root (file-name-directory file))
+  (browse-url (format "http://127.0.0.1:%s/%s" httpd-port
+                      (file-name-nondirectory file))))
 
 (defun yas/helm-prompt (prompt choices &optional display-fn)
   "Use helm to select a snippet. Put this into `yas-prompt-functions.'"
