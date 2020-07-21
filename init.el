@@ -83,6 +83,10 @@
 (setf doc-view-resolution 400
       doc-view-continuous t)
 
+;; Unicode support
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+
 ;; Nov-mode for EPUB files
 (require-install 'nov)
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
