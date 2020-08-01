@@ -48,7 +48,8 @@
 			     (company-quickhelp-mode)
                  (keyfreq-mode)
                  (keyfreq-autosave-mode)
-                 (auto-save-visited-mode)))
+                 (auto-save-visited-mode)
+                 (global-pretty-sha-path-mode)))
 
 (require-install 'helm)
 (require 'helm-config)
