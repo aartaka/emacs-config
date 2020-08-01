@@ -29,7 +29,14 @@
                       all-the-icons
                       keyfreq
                       yasnippet-snippets
-                      yasnippet-classic-snippets)
+                      yasnippet-classic-snippets
+                      miniedit
+                      bbdb
+                      pretty-sha-path)
+
+(bbdb-initialize 'gnus 'message)
+(bbdb-mua-auto-update-init 'gnus 'message)
+
 ;; YASnippet
 (push #'yas/helm-prompt yas-prompt-functions)
 (yas-global-mode)
@@ -363,8 +370,7 @@
      enable-paredit-mode)))
  '(package-selected-packages
    (quote
-    (web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair)))
- '(send-mail-function (quote smtpmail-send-it)))
+    (bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
