@@ -91,6 +91,9 @@
 (setf doc-view-resolution 400
       doc-view-continuous t)
 
+;; Install the PDF-tools that mostly supercedes DocView for PDFs
+(pdf-tools-install)
+
 ;; Unicode support
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
