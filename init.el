@@ -104,6 +104,13 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
+;; Use local Unicode data (possibly newer than upstream)
+(when (file-exists-p "~/.emacs.d/UnicodeData.txt")
+  (setq describe-char-unicodedata-file "~/.emacs.d/UnicodeData.txt"))
+
+(set-fontset-font t '(#x1f300 . #x1fad0)
+                  (when (member "Noto Emoji" (font-family-list)) "Noto Emoji"))
+
 ;; Nov-mode for EPUB files
 (require-install 'nov)
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
