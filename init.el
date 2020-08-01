@@ -91,6 +91,12 @@
 (setf doc-view-resolution 400
       doc-view-continuous t)
 
+;; Spell-checking hooks
+(add-hook 'markdown-mode-hook 'flyspell-mode)
+(add-hook 'text-mode-hook 'turn-on-flyspell)
+(ad-hook 'prog-mode-hook 'flyspell-prog-mode)
+(setq ispell-list-command "--list")
+
 ;; Install the PDF-tools that mostly supercedes DocView for PDFs
 (pdf-tools-install)
 
@@ -190,8 +196,7 @@
             (company-mode 1)
             (golden-ratio-mode 1)
             (set (make-local-variable lisp-indent-function)
-                 'common-lisp-indent-function)
-            (flyspell-prog-mode)))
+                 'common-lisp-indent-function)))
 
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
