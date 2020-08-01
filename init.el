@@ -356,10 +356,13 @@
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
 
-(set-face-attribute 'default nil :font "Hack-17")
+(when (member "Hack" (font-family-list))
+  (set-frame-font "Hack-17" t t))
+
 (add-hook 'before-make-frame-hook #'(lambda ()
                                       (interactive)
-                                      (set-face-attribute 'default nil :font "Hack-17")
+                                      (when (member "Hack" (font-family-list))
+                                        (set-frame-font "Hack-17" t t))
                                       (tool-bar-mode -1)
                                       (menu-bar-mode -1)
                                       (scroll-bar-mode -1)))
