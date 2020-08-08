@@ -116,7 +116,7 @@
 ;; Spell-checking hooks
 (add-hook 'markdown-mode-hook 'flyspell-mode)
 (add-hook 'text-mode-hook 'turn-on-flyspell)
-(ad-hook 'prog-mode-hook 'flyspell-prog-mode)
+(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (setq ispell-list-command "--list")
 
 ;; Install the PDF-tools that mostly supercedes DocView for PDFs
