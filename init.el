@@ -32,7 +32,10 @@
                       yasnippet-classic-snippets
                       miniedit
                       bbdb
-                      pretty-sha-path)
+                      pretty-sha-path
+                      wgrep-helm)
+
+(setq wgrep-auto-save-buffer t)
 
 ;; BBDB Settings
 (bbdb-initialize 'gnus 'message)
