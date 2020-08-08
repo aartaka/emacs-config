@@ -327,10 +327,11 @@
 ;;===============================================================================
 
 (require-install-many elpy flycheck py-autopep8 blacken ein)
+;; (require 'ein-notebook)
+;; (require 'ein-subpackages)
 (elpy-enable)
 
-(setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt"
+(setq python-shell-interpreter "ipython"
       python-shell-prompt-detect-failure-warning nil)
 (add-to-list 'python-shell-completion-native-disabled-interpreters
              "jupyter")
