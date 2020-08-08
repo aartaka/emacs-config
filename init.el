@@ -141,7 +141,9 @@
 (add-hook 'org-mode-hook
           #'(lambda ()
               (local-set-key (kbd "M-q") 'org-fill-paragraph)))
-(setf org-agenda-files `(,(concat org-directory "/schedule.org")
+(setf org-startup-with-inline-images t  ;; Inline images
+      org-startup-with-latex-preview t  ;; Inline LaTeX preview
+      org-agenda-files `(,(concat org-directory "/schedule.org")
                          ,(concat org-directory "/tasks.org")
                          ,(concat org-directory "/notes.org"))
       org-default-notes-file (concat org-directory "/notes.org")
