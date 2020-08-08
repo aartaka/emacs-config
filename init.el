@@ -34,8 +34,27 @@
                       bbdb
                       pretty-sha-path)
 
+;; BBDB Settings
 (bbdb-initialize 'gnus 'message)
 (bbdb-mua-auto-update-init 'gnus 'message)
+(setf bbdb-mua-auto-update-p t
+      bbdb-mua-pop-up nil
+      bbdb-ignore-message-alist
+      '(("From" . "donotreply")
+        ("Mail-Followup-to" . "donotreply")
+        ("Reply-to" . "donotreply")
+        ("From" . "noreply")
+        ("Mail-Followup-to" . "noreply")
+        ("Reply-to" . "noreply")
+        ("From" . "no-reply")
+        ("Mail-Followup-to" . "no-reply")
+        ("Reply-to" . "no-reply")
+        ("From" . "no_reply")
+        ("Mail-Followup-to" . "no_reply")
+        ("Reply-to" . "no_reply")
+        ("From" . "comments-noreply")
+        ("Mail-Followup-to". "comments-noreply")
+        ("Reply-to" . "comments-noreply")))
 
 ;; YASnippet
 (push #'yas/helm-prompt yas-prompt-functions)
