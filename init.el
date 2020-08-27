@@ -4,45 +4,55 @@
 
 (require 'package)
 
-(add-to-list 'package-archives
-             (cons "melpa" "https://melpa.org/packages/") t)
+(add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
 (package-initialize)
 
 ;;===============================================================================
 ;; OTHER ESSENTIAL CONFIGURATIONS AND HELPERS
 ;;===============================================================================
 
-(load "~/.emacs.d/utils.el")
+(eval-when-compile
+  (require 'use-package)
+  (require 'use-package-ensure)
+  (setf use-package-always-ensure t
+        use-package-compute-statistics t))
+(require 'diminish)
+(require 'bind-key)
 
-;; Configure contribs and non-MELPA packages path
-(add-to-list 'load-path (subdir-here "lisp/"))
-(let ((default-directory (subdir-here "lisp/")))
-  (normal-top-level-add-subdirs-to-load-path))
+(use-package auto-package-update
+  :config (auto-package-update-maybe)
+  :custom
+  (auto-package-update-delete-old-versions t)
+  (auto-package-update-hide-results t))
 
-(require-install-many use-package
-                      autopair
-                      company
-                      company-quickhelp
-                      auto-complete
-                      golden-ratio
-                      better-defaults
-                      all-the-icons
-                      keyfreq
-                      yasnippet-snippets
-                      yasnippet-classic-snippets
-                      miniedit
-                      bbdb
-                      pretty-sha-path
-                      wgrep-helm)
+(use-package autopair
+  :config (autopair-global-mode t))
 
-(setq wgrep-auto-save-buffer t)
+(use-package golden-ratio)
+(use-package all-the-icons)
+(use-package better-defaults)
+(use-package miniedit)
 
-;; BBDB Settings
-(bbdb-initialize 'gnus 'message)
-(bbdb-mua-auto-update-init 'gnus 'message)
-(setf bbdb-mua-auto-update-p t
-      bbdb-mua-pop-up nil
-      bbdb-ignore-message-alist
+(use-package company :hook (after-init . global-company-mode))
+(use-package company-quickhelp :hook (after-init . company-quickhelp-mode))
+(use-package auto-complete)
+
+(use-package keyfreq
+  :hook ((after-init . keyfreq-mode)
+         (after-init . keyfreq-autosave-mode)))
+
+(use-package pretty-sha-path
+  :hook (after-init . global-pretty-sha-path-mode))
+
+(use-package bbdb
+  :config
+  (progn
+    (bbdb-initialize 'gnus 'message)
+    (bbdb-mua-auto-update-init 'gnus 'message))
+  :custom
+  (bbdb-mua-auto-update-p t)
+  (bbdb-mua-pop-up nil "I don't want BBDB to pop up anytime I read emails.")
+  (bbdb-ignore-message-alist
       '(("From" . "donotreply")
         ("Mail-Followup-to" . "donotreply")
         ("Reply-to" . "donotreply")
@@ -57,364 +67,504 @@
         ("Reply-to" . "no_reply")
         ("From" . "comments-noreply")
         ("Mail-Followup-to". "comments-noreply")
-        ("Reply-to" . "comments-noreply")))
+        ("Reply-to" . "comments-noreply"))
+      "Found somewhere on the Internet and altered to work with Google Docs."))
 
-;; YASnippet
-(push #'yas/helm-prompt yas-prompt-functions)
-(yas-global-mode)
+(use-package projectile
+  :requires helm
+  :config (projectile-global-mode))
 
-(autopair-global-mode t)
-(add-hook 'after-init-hook (lambda ()
-			     (show-paren-mode)
-			     (global-company-mode)
-			     (company-quickhelp-mode)
-                 (keyfreq-mode)
-                 (keyfreq-autosave-mode)
-                 (auto-save-visited-mode)
-                 (global-pretty-sha-path-mode)))
+(use-package helm
+  :init
+  (progn
+    (require 'helm-config)
+    (require 'helm-grep)
+    (if (version< "26.0.50" emacs-version)
+        (eval-when-compile (require 'helm-lib)))
 
-(require-install 'helm)
-(require 'helm-config)
-;; https://raw.githubusercontent.com/tuhdo/emacs-c-ide-demo/master/custom/setup-helm.el
-(require 'setup-helm)
+    (defun ar/helm-hide-minibuffer-maybe ()
+      (when (with-helm-buffer helm-echo-input-in-header-line)
+        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+          (overlay-put ov 'window (selected-window))
+          (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                  `(:background ,bg-color :foreground ,bg-color)))
+          (setq-local cursor-type nil))))
+    (defun ar/helm-eshell-enable-history ()
+      (define-key eshell-mode-map (kbd "M-l")
+        'helm-eshell-history))
 
-;; Misc customizations
-(fset 'yes-or-no-p 'y-or-n-p)           ;replace y-e-s by y
-(setq-default indent-tabs-mode nil      ;use space to indent by default
-              tab-width 4)              ;set appearance of a tab that is represented by 4 spaces
-(defconst query-replace-highlight t)    ;highlight during query
-(defconst search-highlight t)           ;highlight incremental search
-(setq ls-lisp-dirs-first t              ;display dirs first in dired
-      ecb-tip-of-the-day nil            ;turn off ECB tips
-      split-height-threshold 0          ;split windows over horisontal line
-      split-width-threshold nil         ;and not opposite
-      inhibit-startup-screen t          ;no splash screen
-      initial-buffer-choice #'eshell    ;startup on eshell
-      x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)
-      prefer-coding-system 'utf-8       ;prefer UTF-8
-      flyspell-issue-message-flag nil   ;don't print per-word messages
-      normal-erase-is-backspace t)      ;fix weird backspace
-(global-font-lock-mode t)               ;colorize all buffers
+    (when (executable-find "curl")
+      (setq helm-google-suggest-use-curl-p t))
 
-(when window-system
-  (tool-bar-mode -1)                    ;disable toolbar
-  (menu-bar-mode -1)                    ;disable menubar
-  (scroll-bar-mode -1))  			    ;disable scrollbar
+    (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages))
+  :config (helm-mode 1)
+  :custom
+  (helm-lisp-fuzzy-completion t)
+  (helm-scroll-amount 4)
+  (helm-ff-search-library-in-sexp t)
+  (helm-split-window-in-side-p t)
+  (helm-echo-input-in-header-line t)
+  (helm-ff-file-name-history-use-recentf t)
+  (helm-move-to-line-cycle-in-source t)
+  (helm-buffer-skip-remote-checking t)
+  (helm-mode-fuzzy-match t)
+  (helm-buffers-fuzzy-matching t)
+  (helm-org-headings-fontify t)
+  (helm-M-x-fuzzy-match t)
+  (helm-imenu-fuzzy-match t)
+  (helm-lisp-fuzzy-completion t)
+  (helm-buffer-skip-remote-checking t)
+  (helm-locate-fuzzy-match t)
+  (helm-display-header-line nil)
+  :hook ((helm-minibuffer-set-up . ar/helm-hide-minibuffer-maybe)
+         (helm-goto-line-before . helm-save-current-pos-to-mark-ring)
+         (eshell-mode . ar/helm-eshell-enable-history))
+  :bind (("C-x c" . nil)
+         ("C-c h" . helm-command-prefix)
+         ("M-x" . helm-M-x)
+         ("M-y" . helm-show-kill-ring)
+         ("C-x b" . helm-buffers-list)
+         ("C-x C-f" . helm-find-files)
+         ("C-x C-d" . helm-browse-project)
+         ("C-c r" . helm-recentf)
+         ("C-h SPC" . helm-all-mark-rings)
+         ("C-c h o" . helm-occur)
+         ("C-c h o" . helm-occur)
+         ("C-c h w" . helm-wikipedia-suggest)
+         ("C-c h g" . helm-google-suggest)
+         ("C-c h x" . helm-register)
+         ([remap list-buffers] . helm-buffers-list)
+         ([remap find-tag] . helm-etags-select)
+         :map minibuffer-local-map
+         ("M-n" . helm-minibuffer-history)
+         ("M-p" . helm-minibuffer-history)
+         :map helm-map
+         ("<tab>" . helm-execute-persistent-action) ; rebind tab to do persistent action
+         ("C-i" . helm-execute-persistent-action)   ; make TAB works in terminal
+         ("C-z" . helm-select-action)))             ; list actions using C-z
 
-;; https://www.emacswiki.org/emacs/download/column-marker.el
-(require 'column-marker)
-(column-number-mode 1)
-(line-number-mode 1)
+(use-package helm-projectile
+  :requires (helm projectile)
+  :config (helm-projectile-on)
+  :custom
+  (projectile-completion-system 'helm)
+  (projectile-indexing-method 'alien))
 
-;; Increase DocView mode's docs readability
-(add-hook 'doc-view-mode (lambda ()
-                           (interactive)
-                           (doc-view-fit-page-to-window)))
-(setf doc-view-resolution 400
-      doc-view-continuous t)
+(use-package helm-swoop
+  :requires helm
+  :bind (("C-c h o" . helm-swoop)
+         ("C-c s" . helm-multi-swoop-all)
+         :map isearch-mode-map
+         ("M-i" . helm-swoop-from-isearch) ; When doing isearch, hand the word over to helm-swoop
+         :map helm-swoop-map
+         ("M-i" . helm-multi-swoop-all-from-helm-swoop)) ; From helm-swoop to helm-multi-swoop-all
+  :custom
+  (helm-multi-swoop-edit-save t) ; Save buffer when helm-multi-swoop-edit complete
+  (helm-swoop-split-with-multiple-windows t) ; If this value is t, split window inside the current window
+  (helm-swoop-split-direction 'split-window-vertically) ; Split direcion. 'split-window-vertically or 'split-window-horizontally
+  (helm-swoop-speed-or-color t)) ; If nil, you can slightly boost invoke speed in exchange for text color(use-package helm-swoop
 
-;; Spell-checking hooks
-(add-hook 'markdown-mode-hook 'flyspell-mode)
-(add-hook 'text-mode-hook 'turn-on-flyspell)
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-(setq ispell-list-command "--list")
+(use-package yasnippet
+  :config (yas-global-mode))
+(use-package yasnippet-snippets :requires yasnippet)
+(use-package yasnippet-classic-snippets :requires yasnippet)
+(use-package helm-c-yasnippet
+  :requires (yasnippet helm)
+  :custom (helm-yas-space-match-any-greedy t)
+  :bind ("C-c y" . helm-yas-complete))
 
-;; Install the PDF-tools that mostly supercedes DocView for PDFs
-(pdf-tools-install)
+(use-package emacs
+  :init (progn
+          (defun ar/show-trailing-whitespace ()
+            (interactive)
+            ;; Show unncessary whitespace that can mess up your diff
+            (setf show-trailing-whitespace 1))
+          (defun ar/set-frame-setting ()
+            (interactive)
+            (when (member "Hack" (font-family-list))
+              (set-frame-font "Hack-17" t t))
+            (tool-bar-mode -1)
+            (menu-bar-mode -1)
+            (scroll-bar-mode -1))
+          (defun ar/browse-url-icecat (url &optional new-window)
+            "See `browse-url-firefox' for reference"
+            (interactive (browse-url-interactive-arg "URL: "))
+            (setq url (browse-url-encode-url url))
+            (let* ((process-environment (browse-url-process-environment)))
+              (apply 'start-process
+                     (concat "icecat " url) nil
+                     browse-url-firefox-program
+                     (append
+                      browse-url-firefox-arguments
+                      (if (browse-url-maybe-new-window new-window)
+                          (if browse-url-firefox-new-window-is-tab
+                              '("-new-tab")
+                            '("-new-window")))
+                      (list url)))))
+          ;; There is a weird Emacs behavior: it counts ".emacs.d/init.el" file for ".emacs" file.
+          ;; This behavior has reasons behind it, both historical and technical,
+          ;; so I just need to deal with it.
+          (defun ar/subdir-here (subdir-string)
+            "Adds the given dirname to the current directory, place-independently."
+            (concat (expand-file-name ".") "/.emacs.d/" subdir-string))
+          (require 'em-term)
+          (require 'epa-file)
+          (require 'dired))
+  :config
+  (progn
+    ;; Configure contribs and non-MELPA packages path
+    (add-to-list 'load-path (ar/subdir-here "lisp/"))
+    (let ((default-directory (ar/subdir-here "lisp/")))
+      (normal-top-level-add-subdirs-to-load-path))
+    ;; Misc customizationsn
+    (fset 'yes-or-no-p 'y-or-n-p)        ;replace y-e-s by y
+    (defconst query-replace-highlight t) ;highlight during query
+    (defconst search-highlight t)        ;highlight incremental search
 
-;; Unicode support
-(set-language-environment "UTF-8")
-(set-default-coding-systems 'utf-8)
+    (when window-system
+      (tool-bar-mode -1)                 ;disable toolbar
+      (menu-bar-mode -1)                 ;disable menubar
+      (scroll-bar-mode -1))  			 ;disable scrollbar
 
-;; Use local Unicode data (possibly newer than upstream)
-(when (file-exists-p "~/.emacs.d/UnicodeData.txt")
-  (setq describe-char-unicodedata-file "~/.emacs.d/UnicodeData.txt"))
+    ;; Unicode support
+    (set-language-environment "UTF-8")
+    (set-default-coding-systems 'utf-8)
 
-(set-fontset-font t '(#x1f300 . #x1fad0)
-                  (when (member "Noto Emoji" (font-family-list)) "Noto Emoji"))
+    ;; Use local Unicode data (possibly newer than upstream)
+    (when (file-exists-p "~/.emacs.d/UnicodeData.txt")
+      (setq describe-char-unicodedata-file "~/.emacs.d/UnicodeData.txt"))
 
-;; Nov-mode for EPUB files
-(require-install 'nov)
-(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+    (set-fontset-font t '(#x1f300 . #x1fad0)
+                      (when (member "Noto Emoji" (font-family-list))
+                        "Noto Emoji"))
+    (when (member "Hack" (font-family-list))
+              (set-frame-font "Hack-17" t t)))
+  :custom
+  (ls-lisp-dirs-first t)              ;display dirs first in dired
+  (ecb-tip-of-the-day nil)            ;turn off ECB tips
+  (split-height-threshold 0)          ;split windows over horisontal line
+  (split-width-threshold nil)         ;and not opposite
+  (inhibit-startup-screen t)          ;no splash screen
+  (initial-buffer-choice #'eshell)    ;startup on eshell
+  (x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+  (prefer-coding-system 'utf-8)       ;prefer UTF-8
+  (flyspell-issue-message-flag nil)   ;don't print per-word messages
+  (normal-erase-is-backspace t)       ;fix weird backspace
+  (browse-url-browser-function #'ar/browse-url-icecat)
+  (indent-tabs-mode nil)              ;use space to indent by default
+  (tab-width 4)                       ;set appearance of a tab that is represented by 4 spaces
+  :bind (("C-x C-d" . dired)
+         ("<f12>" . eshell)
+         ("C-z" . nil) ; Because suspend-emacs makes me mad in X
+         ("C-c w" . whitespace-mode) ; Highligh whitespaces
+         ("C-c ;" . comment-or-uncomment-region)) ; Set the commenting and uncommenting to the convenient keys
+  :hook ((after-init . show-paren-mode)
+         (after-init . auto-save-visited-mode)
+         (after-init . global-font-lock-mode)
+         (after-init . line-number-mode)
+         (after-init . epa-file-enable)
+         (after-init . helm-mode)
+         (prog-mode . ar/show-trailing-whitespace)
+         (before-make-frame-hook . ar/set-frame-setting)))
 
-;; Org-Mode customizations.
-(add-hook 'org-mode-hook
-          #'(lambda ()
-              (local-set-key (kbd "M-q") 'org-fill-paragraph)))
-(setf org-startup-with-inline-images t  ;; Inline images
-      org-startup-with-latex-preview t  ;; Inline LaTeX preview
-      org-agenda-files `(,(concat org-directory "/schedule.org")
-                         ,(concat org-directory "/tasks.org")
-                         ,(concat org-directory "/notes.org"))
-      org-default-notes-file (concat org-directory "/notes.org")
-      org-agenda-start-on-weekday nil
-      org-log-done 'note
-      org-log-redeadline 'note
-      org-hide-leading-stars t
-      org-capture-templates
-      `(("t" "Todo" entry
-         (file+headline ,(concat org-directory "/tasks.org") "Todos")
-         "** TODO %?\n  %i\n  %a")
-        ("d" "Deadline" entry
-         (file+headline ,(concat org-directory "/tasks.org") "Tasks")
-         "** TODO %?\n   DEADLINE %^{Task deadline}T\n   %U")
-        ("c" "Chaotic schedules" entry
-         (file+headline ,(concat org-directory "/tasks.org") "Chaotic")
-         "** TODO %?\n  SCHEDULE %^{Date and Time}T\n")))
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
+(use-package column-enforce-mode
+  :config (global-column-enforce-mode))
 
-;; Magit starting setup
-(require-install 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x M-g") 'magit-dispatch)
-(setf vc-handled-backends nil)
+(use-package flyspell
+  :hook ((markdown-mode . flyspell-mode)
+         (text-mode . turn-on-flyspell)
+         (prog-mode . flyspell-prog-mode))
+  :custom (ispell-list-command "--list" "EmacsWiki said it helps."))
 
-;; EShell
-(require 'em-term)
-(global-set-key (kbd "<f12>") 'eshell)
+(use-package pdf-tools
+  :config (pdf-tools-install))
 
-;; EasyPG basic config
-(require 'epa-file)
-(epa-file-enable)
+(use-package nov
+  :mode ("\\.epub\\'" . nov-mode))
 
-;; Browser
-(setq browse-url-browser-function 'browse-url-icecat)
+(use-package ox-gfm :requires org)
+(use-package ox-html5slide :requires org)
+(use-package ox-tiddly :requires org)
 
-;; Because list-directory makes me mad
-(global-set-key (kbd "C-x C-d") 'dired)
-;; Because suspend-emacs makes me mad in X
-(unbind-key "C-z")
+(defvar org-directory "~/org")
+(use-package org
+  :bind (("C-c l" . org-store-link)
+         ("C-c a" . org-agenda)
+         ("C-c c" . org-capture)
+         :map org-mode-map
+         ("M-q" . org-fill-paragraph))
+  :custom
+  (org-startup-with-inline-images t "Inline images in Org files!")
+  (org-startup-with-latex-preview t "Inline LaTeX formulas!")
+  (org-agenda-files `(,(concat org-directory "/schedule.org")
+                      ,(concat org-directory "/tasks.org")
+                      ,(concat org-directory "/notes.org")))
+  (org-default-notes-file (concat org-directory "/notes.org") "I actually don't know why I need it.")
+  (org-agenda-start-on-weekday nil "No thinking about the past.")
+  (org-log-done 'note "Ask for closing note.")
+  (org-log-redeadline 'note "Ask for rescheduling reason.")
+  (org-hide-leading-stars t "I need only one star to know that it's heading.")
+  (org-capture-templates
+   `(("t" "Todo" entry
+      (file+headline ,(concat org-directory "/tasks.org") "Todos")
+      "** TODO %?\n  %i\n  %a")
+     ("d" "Deadline" entry
+      (file+headline ,(concat org-directory "/tasks.org") "Tasks")
+      "** TODO %?\n   DEADLINE %^{Task deadline}T\n   %U")
+     ("c" "Chaotic schedules" entry
+      (file+headline ,(concat org-directory "/tasks.org") "Chaotic")
+      "** TODO %?\n  SCHEDULE %^{Date and Time}T\n"))))
 
-;; Highligh whitespaces
-(global-set-key (kbd "C-c w") 'whitespace-mode)
+(use-package magit
+  :requires helm
+  :bind (("C-x g" . magit-status)
+         ("C-x M-g" . magit-dispatch))
+  :config (setf vc-handled-backends nil))
 
-;; Show unncessary whitespace that can mess up your diff
-(add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
+(use-package clean-aindent-mode
+  :bind ("RET" . newline-and-indent)
+  :custom (clean-aindent-is-simple-indent t))
 
-;; Set the commenting and uncommenting to the convenient keys
-(global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
-
-;; The mode to cope with indentations issues
-;; https://raw.githubusercontent.com/pmarinov/clean-aindent-mode/master/clean-aindent-mode.el
-(require 'clean-aindent-mode)
-;; Change the Return key to indent in addition to newlining
-(global-set-key (kbd "RET") 'newline-and-indent)
-(setf clean-aindent-is-simple-indent t)
 ;===============================================================================
 ; LISP CUSTOMIZATIONS, WEEEEEEE!
 ;===============================================================================
 
-(require-install-many sly sly-asdf sly-quicklisp paredit racket-mode helm-sly)
-(setf inferior-lisp-program "sbcl"
-      sly-lisp-implementations '((sbcl ("sbcl"))
-                                 (ccl ("ccl"))))
-(add-hook 'lisp-mode-hook (lambda () (interactive) (sly-editing-mode 1)))
-
 (require 'clhs)
-(clhs-setup)
+(use-package sly-asdf :requires sly)
+(use-package sly-quicklisp :requires sly)
+(use-package helm-sly :requires (sly helm))
+(use-package sly
+  :requires (company clhs)
+  :init
+  (progn
+    (defun ar/hyperspec-lookup (symbol)
+      (interactive (list (common-lisp-hyperspec-read-symbol-name)))
+      (let ((browse-url-browser-function 'eww-browse-url))
+        (hyperspec-lookup symbol)))
 
-(global-set-key (kbd "C-h -") 'my-hyperspec-lookup)
-(global-set-key (kbd "C-h #") 'my-hyperspec-lookup-reader-macro)
-(global-set-key (kbd "C-h %") 'my-hyperspec-lookup-format)
+    (defun ar/hyperspec-lookup-reader-macro (macro)
+      (interactive
+       (list
+        (let ((completion-ignore-case t))
+          (completing-read "Look up reader-macro: "
+                           common-lisp-hyperspnec--reader-macros nil t
+                           (common-lisp-hyperspec-reader-macro-at-point)))))
+      (let ((browse-url-browser-function 'eww-browse-url))
+        (hyperspec-lookup-reader-macro macro)))
 
-(column-marker-create column-marker-code column-marker-code)
-(add-hook 'sly-mode-hook
-          (lambda ()
-            (interactive)
-            (column-marker-3 100)
-            (company-mode 1)
-            (golden-ratio-mode 1)
-            (set (make-local-variable lisp-indent-function)
-                 'common-lisp-indent-function)))
+    (defun ar/hyperspec-lookup-format (character)
+      (interactive (list (common-lisp-hyperspec--read-format-character)))
+      (let ((browse-url-browser-function 'eww-browse-url))
+        (hyperspec-lookup-format character)))
 
-(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-(add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+    (defun ar/set-lisp-indent-and-columns ()
+      (interactive)
+      (set-variable column-enforce-column 100 t)
+      (set (make-local-variable lisp-indent-function)
+           'common-lisp-indent-function)))
+  :config (setf inferior-lisp-program "sbcl"
+                sly-lisp-implementations '((sbcl ("sbcl"))
+                                           (ccl ("ccl"))))
+  :bind (("C-h -" . ar/hyperspec-lookup)
+         ("C-h #" . ar/hyperspec-lookup-reader-macro)
+         ("C-h %" . ar/hyperspec-lookup-format)) ;; Tilde is somewhat hard to reach
+  :hook ((lisp-mode . sly-editing-mode)
+         (lisp-mode . ar/set-lisp-indent-and-columns)
+         (sly-mode . company-mode)
+         (sly-editing . company-mode)
+         (sly-mode . golden-ratio-mode)
+         (sly-mode . ar/set-lisp-indent-and-columns)))
 
-;; Small Paredit fix to not place space in between ,@ and the expression it acts on
-(defun no-space-between-@-open-paren (endp delimiter)
-  (not (and (eql ?\( delimiter)
-            (eql ?\@ (char-before (point))))))
-
-(setq paredit-space-for-delimiter-predicates
-      '(no-space-between-@-open-paren))
-
-;; Arc customizations
 ;; https://raw.githubusercontent.com/arclanguage/anarki/master/extras/inferior-arc.el
 (require 'inferior-arc)
 ;; https://raw.githubusercontent.com/arclanguage/anarki/master/extras/arc.el
 (require 'arc)
 (add-to-list 'auto-mode-alist '("\\.arc\\'" . arc-mode))
+(use-package racket-mode)
+(use-package geiser)
 
-;;===============================================================================
-;; C/C++ CUSTOMISATIONS
-;;==============================================================================
+(use-package paredit
+  :config
+  (defun no-space-between-@-open-paren (endp delimiter)
+    (not (and (eql ?\( delimiter)
+              (eql ?\@ (char-before (point))))))
+  :custom (paredit-space-for-delimiter-predicates
+           '(no-space-between-@-open-paren))
+  :hook ((sly-mode . paredit-mode)
+         (sly-editing . paredit-mode)
+         (emacs-lisp-mode . paredit-mode)
+         (eval-expression-minibuffer-setup . paredit-mode)
+         (lisp-mode . paredit-mode)
+         (lisp-interaction-mode . paredit-mode)
+         (arc-mode . paredit-mode)))
 
-(require-install-many projectile helm-projectile helm-gtags
-                      company-c-headers)
-(projectile-global-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
+(use-package paredit-everywhere
+  :hook (prog-mode . paredit-everywhere-mode))
 
-;; Compilation
-(global-set-key (kbd "<f5>") (lambda ()
-                               (interactive)
-                               (setq-local compilation-read-command nil)
-                               (call-interactively 'compile)))
-
-(add-to-list 'company-backends 'company-c-headers)
-
-;; hs-minor-mode for folding source code
-(add-hook 'c-mode-common-hook (lambda ()
-                                (interactive)
-                                (hs-minor-mode 1)
-                                (column-marker-1 79)))
-
-(setq c-default-style "linux")
-
-(ggtags-mode 1)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+(use-package cc-mode
+  :init (progn
+          (defun ar/compile ()
+            (interactive)
+            (setq-local compilation-read-command nil)
+            (call-interactively 'compile))
+          (defun ar/enable-gtags ()
+            (interactive)
+            (when (derived-mode-p 'c-mode 'c++-mode
+                                  'java-mode 'asm-mode)
               (helm-gtags-mode 1))))
+  :requires helm-gtags
+  :custom
+  (c-default-style "linux" "Because they reason well about it.")
+  ;; use gdb-many-windows by default
+  (gdb-many-windows t)
+  ;; Non-nil means display source file containing the main routine at startup
+  (gdb-show-main t)
+  :bind (("<f5>" . ar/compile)
+         :map c-mode-map
+         ("<tab>" . company-complete)
+         :map c++-mode-map
+         ("<tab>" . company-complete))
+  :hook ((c-mode-common . hs-minor-mode)
+         (c-mode-common . ar/enable-gtags)))
+
+(use-package ggtags
+  :config (ggtags-mode)
+  :bind (:map ggtags-mode-map
+         ("C-c g s" . ggtags-find-other-symbol)
+         ("C-c g h" . ggtags-view-tag-history)
+         ("C-c g r" . ggtags-find-reference)
+         ("C-c g f" . ggtags-find-file)
+         ("C-c g c" . ggtags-create-tags)
+         ("C-c g u" . ggtags-update-tags)
+         ("C-c g a" . helm-gtags-tags-in-this-function)
+         ("M-." . ggtags-find-tag-dwim)
+         ("M-," . pop-tag-mark)
+         ("C-c <" . ggtags-prev-mark)
+         ("C-c >" . ggtags-next-mark)
+         :map dired-mode-map
+         ("C-c g s" . ggtags-find-other-symbol)
+         ("C-c g h" . ggtags-view-tag-history)
+         ("C-c g r" . ggtags-find-reference)
+         ("C-c g f" . ggtags-find-file)
+         ("C-c g c" . ggtags-create-tags)
+         ("C-c g u" . ggtags-update-tags)
+         ("C-c g a" . helm-gtags-tags-in-this-function)
+         ("M-." . ggtags-find-tag-dwim)
+         ("M-," . pop-tag-mark)
+         ("C-c <" . ggtags-prev-mark)
+         ("C-c >" . ggtags-next-mark)))
 
 (use-package helm-gtags
-  :init
-  (progn
-    (setq helm-gtags-ignore-case t
-          helm-gtags-auto-update t
-          helm-gtags-use-input-at-cursor t
-          helm-gtags-pulse-at-cursor t
-          helm-gtags-prefix-key "\C-cg"
-          helm-gtags-suggested-key-mapping t)
-
-    ;; Enable helm-gtags-mode in Dired so you can jump to any tag
-    ;; when navigate project tree with Dired
-    (add-hook 'dired-mode-hook 'helm-gtags-mode)
-
-    ;; Enable helm-gtags-mode in Eshell for the same reason as above
-    (add-hook 'eshell-mode-hook 'helm-gtags-mode)
-
-    ;; Enable helm-gtags-mode in languages that GNU Global supports
-    (add-hook 'c-mode-hook 'helm-gtags-mode)
-    (add-hook 'c++-mode-hook 'helm-gtags-mode)
-    (add-hook 'java-mode-hook 'helm-gtags-mode)
-    (add-hook 'asm-mode-hook 'helm-gtags-mode)
-
-    ;; key bindings
-    (with-eval-after-load 'helm-gtags
-      (define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
-      (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
-      (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
-      (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
-      (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
-      (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))))
-
-(setq
- ;; use gdb-many-windows by default
- gdb-many-windows t
- ;; Non-nil means display source file containing the main routine at startup
- gdb-show-main t)
+  :requires (helm ggtags)
+  :custom
+  (helm-gtags-ignore-case t)
+  (helm-gtags-auto-update t)
+  (helm-gtags-use-input-at-cursor t)
+  (helm-gtags-pulse-at-cursor t)
+  (helm-gtags-prefix-key "\C-cg")
+  (helm-gtags-suggested-key-mapping t)
+  :bind
+  (:map helm-gtags-mode-map
+        ("C-c g a" . helm-gtags-tags-in-this-function)
+        ("C-j" . helm-gtags-select)
+        ("M-." . helm-gtags-dwim)
+        ("M-," . helm-gtags-pop-stack)
+        ("C-c <" . helm-gtags-previous-history)
+        ("C-c >" . helm-gtags-next-history))
+  :hook (;; Enable helm-gtags-mode in Dired so you can jump to any tag
+         ;; when navigate project tree with Dired
+         (dired-mode . helm-gtags-mode)
+         ;; Enable helm-gtags-mode in Eshell for the same reason as above
+         (eshell-mode . helm-gtags-mode)
+         ;; Enable helm-gtags-mode in languages that GNU Global supports
+         (c-mode . helm-gtags-mode)
+         (c++-mode . helm-gtags-mode)
+         (java-mode . helm-gtags-mode)
+         (asm-mode . helm-gtags-mode)))
 
 ;;===============================================================================
 ;; PYTHON CUSTOMIZATIONS
 ;;===============================================================================
 
-(require-install-many elpy flycheck py-autopep8 blacken ein)
-;; (require 'ein-notebook)
-;; (require 'ein-subpackages)
-(elpy-enable)
+(use-package elpy
+  :init (defun ar/switch-company-to-ac ()
+          (interactive)
+          ;; Elpy/EIN is not in good rels with Company somewhy
+          (company-mode -1)
+          (auto-complete-mode +1))
+  :custom
+  (python-shell-interpreter "ipython")
+  (python-shell-prompt-detect-failure-warning nil)
+  :config
+  (progn (elpy-enable)
+         (add-to-list 'python-shell-completion-native-disabled-interpreters
+                      "jupyter"))
+  :hook (elpy-mode . ar/switch-company-to-ac))
 
-(setq python-shell-interpreter "ipython"
-      python-shell-prompt-detect-failure-warning nil)
-(add-to-list 'python-shell-completion-native-disabled-interpreters
-             "jupyter")
+(use-package ein
+  :config (progn
+            (require 'ein-notebook)
+            (require 'ein-subpackages))
+  :hook (ein:notebook-python-mode . ar/switch-company-to-ac))
 
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+(use-package flycheck
+  :requires (elpy ein)
+  :custom (elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  :hook ((ein:notebook-python-mode . flycheck-mode)
+         (elpy-mode . flycheck-mode)))
 
-(add-hook 'elpy-mode-hook
-          (lambda ()
-            (interactive)
-            (py-autopep8-enable-on-save)
-            (company-mode -1)
-            (auto-complete-mode +1)
-            (column-marker-1 80)
-            (blacken-mode)))
+(use-package py-autopep8
+  :requires (elpy ein)
+  :hook ((elpy-mode . py-autopep8-enable-on-save)
+         (ein:notebook-python-mode . py-autopep8-enable-on-save)))
 
-(add-hook 'ein:notebook-python-mode-hook
-          (lambda ()
-            (interactive)
-            (py-autopep8-enable-on-save)
-            (company-mode -1)
-            (auto-complete-mode)
-            (column-marker-1 80)
-            (flycheck-mode)
-            (blacken-mode)))
-
+(use-package blacken
+    :requires (elpy ein)
+    :hook ((elpy-mode . blacken-mode)
+           (ein:notebook-python-mode . blacken-mode)))
 
 ;;=============================================================================
 ;; WEB-DEVELOPMENT CUSTOMIZATIONS
 ;;=============================================================================
-(require-install-many rainbow-mode
-                      js2-mode
-                      skewer-less
-                      web-mode)
 
-(add-hook 'html-mode-hook (lambda ()
-                            (interactive)
-                            (rainbow-mode)
-                            (skewer-html-mode)
-                            (httpd-start)))
+(use-package web-mode)
+(use-package js2-mode)
+(use-package skewer-less
+  :init (defun ar/browse-this-file (file)
+          (interactive (list (buffer-file-name)))
+          (unless (and file (file-exists-p file))
+            (error "File does not exist: ‘%s’" file))
+          (unless (process-status "httpd")
+            (httpd-start))
+          (setf httpd-root (file-name-directory file))
+          (browse-url (format "http://127.0.0.1:%s/%s" httpd-port
+                              (file-name-nondirectory file))))
+  :requires js2-mode
+  :hook ((html-mode . skewer-html-mode)
+         (js2-mode . skewer-mode)
+         (css-mode . skewer-css-mode)
+         (html-mode . httpd-start)))
 
-(add-hook 'js2-mode-hook 'skewer-mode)
-(add-hook 'css-mode-hook 'skewer-css-mode)
+(use-package rainbow-mode
+  :hook (html-mode . rainbow-mode))
 
 ;;==============================================================================
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
 
-(when (member "Hack" (font-family-list))
-  (set-frame-font "Hack-17" t t))
+(use-package base16-theme
+  :custom (base16-theme-256-color-source 'colors)
+  :config (load-theme 'base16-tomorrow-night t))
 
-(add-hook 'before-make-frame-hook #'(lambda ()
-                                      (interactive)
-                                      (when (member "Hack" (font-family-list))
-                                        (set-frame-font "Hack-17" t t))
-                                      (tool-bar-mode -1)
-                                      (menu-bar-mode -1)
-                                      (scroll-bar-mode -1)))
-(require-install-many base16-theme firecode-theme)
-(setq base16-theme-256-color-source 'colors)
-(load-theme 'firecode t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(emacs-lisp-mode-hook (quote (enable-paredit-mode)))
- '(helm-lisp-fuzzy-completion t)
- '(inferior-lisp-program "sbcl")
- '(lisp-mode-hook
-   (quote
-    ((lambda nil
-       (interactive)
-       (sly-editing-mode 1))
-     #[nil "\300\301\302\303\211$\207"
-           [add-hook font-lock-extend-region-functions sly-extend-region-for-font-lock t]
-           5]
-     enable-paredit-mode)))
  '(package-selected-packages
    (quote
-    (firecode-theme wgrep-helm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair))))
+    (ox-gfm wgrep-helm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
