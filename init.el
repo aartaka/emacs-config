@@ -276,8 +276,8 @@
          (prog-mode . flyspell-prog-mode))
   :custom (ispell-list-command "--list" "EmacsWiki said it helps."))
 
-(use-package pdf-tools
-  :config (pdf-tools-install))
+;; Need to install pdf-tools for this to work
+(pdf-loader-install)
 
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
