@@ -53,25 +53,24 @@
   (bbdb-mua-auto-update-p t)
   (bbdb-mua-pop-up nil "I don't want BBDB to pop up anytime I read emails.")
   (bbdb-ignore-message-alist
-      '(("From" . "donotreply")
-        ("Mail-Followup-to" . "donotreply")
-        ("Reply-to" . "donotreply")
-        ("From" . "noreply")
-        ("Mail-Followup-to" . "noreply")
-        ("Reply-to" . "noreply")
-        ("From" . "no-reply")
-        ("Mail-Followup-to" . "no-reply")
-        ("Reply-to" . "no-reply")
-        ("From" . "no_reply")
-        ("Mail-Followup-to" . "no_reply")
-        ("Reply-to" . "no_reply")
-        ("From" . "comments-noreply")
-        ("Mail-Followup-to". "comments-noreply")
-        ("Reply-to" . "comments-noreply"))
-      "Found somewhere on the Internet and altered to work with Google Docs."))
+   '(("From" . "donotreply")
+     ("Mail-Followup-to" . "donotreply")
+     ("Reply-to" . "donotreply")
+     ("From" . "noreply")
+     ("Mail-Followup-to" . "noreply")
+     ("Reply-to" . "noreply")
+     ("From" . "no-reply")
+     ("Mail-Followup-to" . "no-reply")
+     ("Reply-to" . "no-reply")
+     ("From" . "no_reply")
+     ("Mail-Followup-to" . "no_reply")
+     ("Reply-to" . "no_reply")
+     ("From" . "comments-noreply")
+     ("Mail-Followup-to". "comments-noreply")
+     ("Reply-to" . "comments-noreply"))
+   "Found somewhere on the Internet and altered to work with Google Docs."))
 
 (use-package projectile
-  :requires helm
   :config (projectile-global-mode))
 
 (use-package helm
@@ -238,7 +237,7 @@
                       (when (member "Noto Emoji" (font-family-list))
                         "Noto Emoji"))
     (when (member "Hack" (font-family-list))
-              (set-frame-font "Hack-17" t t)))
+      (set-frame-font "Hack-17" t t)))
   :custom
   (ls-lisp-dirs-first t)              ;display dirs first in dired
   (ecb-tip-of-the-day nil)            ;turn off ECB tips
@@ -325,9 +324,9 @@
   :bind ("RET" . newline-and-indent)
   :custom (clean-aindent-is-simple-indent t))
 
-;===============================================================================
-; LISP CUSTOMIZATIONS, WEEEEEEE!
-;===============================================================================
+;;===============================================================================
+;; LISP CUSTOMIZATIONS, WEEEEEEE!
+;;===============================================================================
 
 (require 'clhs)
 (use-package sly-asdf :requires sly)
@@ -401,6 +400,10 @@
 (use-package paredit-everywhere
   :hook (prog-mode . paredit-everywhere-mode))
 
+;;===============================================================================
+;; C/C++ CUSTOMISATIONS
+;;==============================================================================
+
 (use-package cc-mode
   :init (progn
           (defun ar/compile ()
@@ -430,29 +433,29 @@
 (use-package ggtags
   :config (ggtags-mode)
   :bind (:map ggtags-mode-map
-         ("C-c g s" . ggtags-find-other-symbol)
-         ("C-c g h" . ggtags-view-tag-history)
-         ("C-c g r" . ggtags-find-reference)
-         ("C-c g f" . ggtags-find-file)
-         ("C-c g c" . ggtags-create-tags)
-         ("C-c g u" . ggtags-update-tags)
-         ("C-c g a" . helm-gtags-tags-in-this-function)
-         ("M-." . ggtags-find-tag-dwim)
-         ("M-," . pop-tag-mark)
-         ("C-c <" . ggtags-prev-mark)
-         ("C-c >" . ggtags-next-mark)
-         :map dired-mode-map
-         ("C-c g s" . ggtags-find-other-symbol)
-         ("C-c g h" . ggtags-view-tag-history)
-         ("C-c g r" . ggtags-find-reference)
-         ("C-c g f" . ggtags-find-file)
-         ("C-c g c" . ggtags-create-tags)
-         ("C-c g u" . ggtags-update-tags)
-         ("C-c g a" . helm-gtags-tags-in-this-function)
-         ("M-." . ggtags-find-tag-dwim)
-         ("M-," . pop-tag-mark)
-         ("C-c <" . ggtags-prev-mark)
-         ("C-c >" . ggtags-next-mark)))
+              ("C-c g s" . ggtags-find-other-symbol)
+              ("C-c g h" . ggtags-view-tag-history)
+              ("C-c g r" . ggtags-find-reference)
+              ("C-c g f" . ggtags-find-file)
+              ("C-c g c" . ggtags-create-tags)
+              ("C-c g u" . ggtags-update-tags)
+              ("C-c g a" . helm-gtags-tags-in-this-function)
+              ("M-." . ggtags-find-tag-dwim)
+              ("M-," . pop-tag-mark)
+              ("C-c <" . ggtags-prev-mark)
+              ("C-c >" . ggtags-next-mark)
+              :map dired-mode-map
+              ("C-c g s" . ggtags-find-other-symbol)
+              ("C-c g h" . ggtags-view-tag-history)
+              ("C-c g r" . ggtags-find-reference)
+              ("C-c g f" . ggtags-find-file)
+              ("C-c g c" . ggtags-create-tags)
+              ("C-c g u" . ggtags-update-tags)
+              ("C-c g a" . helm-gtags-tags-in-this-function)
+              ("M-." . ggtags-find-tag-dwim)
+              ("M-," . pop-tag-mark)
+              ("C-c <" . ggtags-prev-mark)
+              ("C-c >" . ggtags-next-mark)))
 
 (use-package helm-gtags
   :requires (helm ggtags)
@@ -519,9 +522,9 @@
          (ein:notebook-python-mode . py-autopep8-enable-on-save)))
 
 (use-package blacken
-    :requires (elpy ein)
-    :hook ((elpy-mode . blacken-mode)
-           (ein:notebook-python-mode . blacken-mode)))
+  :requires (elpy ein)
+  :hook ((elpy-mode . blacken-mode)
+         (ein:notebook-python-mode . blacken-mode)))
 
 ;;=============================================================================
 ;; WEB-DEVELOPMENT CUSTOMIZATIONS
