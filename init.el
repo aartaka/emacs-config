@@ -558,10 +558,9 @@
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
 
-(use-package base16-theme
-  :custom (base16-theme-256-color-source 'colors)
-  :config (load-theme 'base16-tomorrow-night t))
 
+(use-package monochrome-theme
+  :config (load-theme 'monochrome t))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
