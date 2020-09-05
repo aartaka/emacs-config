@@ -67,6 +67,12 @@
      ("Reply-to" . "comments-noreply"))
    "Found somewhere on the Internet and altered to work with Google Docs."))
 
+(use-package erc
+  :custom
+  (erc-autojoin-channels-alist . ((list ".*\.freenode\.net" "lisp" "nyxt"))))
+(use-package erc-colorize)
+(use-package erc-image)
+
 (use-package projectile
   :config (projectile-global-mode))
 
