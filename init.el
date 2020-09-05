@@ -364,12 +364,12 @@
       (set-variable column-enforce-column 100 t)
       (set (make-local-variable lisp-indent-function)
            'common-lisp-indent-function)))
-  :config (setf inferior-lisp-program "sbcl"
-                sly-lisp-implementations '((sbcl ("sbcl"))
-                                           (ccl ("ccl"))))
+  :custom
+  (inferior-lisp-program "sbcl")
+  (sly-lisp-implementations '((sbcl ("sbcl"))))
   :bind (("C-h -" . ar/hyperspec-lookup)
          ("C-h #" . ar/hyperspec-lookup-reader-macro)
-         ("C-h %" . ar/hyperspec-lookup-format)) ;; Tilde is somewhat hard to reach
+         ("C-h ~" . ar/hyperspec-lookup-format))
   :hook ((lisp-mode . sly-editing-mode)
          (lisp-mode . ar/set-lisp-indent-and-columns)
          (sly-mode . company-mode)
