@@ -41,9 +41,6 @@
   :hook ((after-init . keyfreq-mode)
          (after-init . keyfreq-autosave-mode)))
 
-(use-package pretty-sha-path
-  :hook (after-init . global-pretty-sha-path-mode))
-
 (use-package bbdb
   :config
   (progn
