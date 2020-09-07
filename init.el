@@ -340,8 +340,8 @@
 (use-package sly-quicklisp :requires sly)
 (use-package helm-sly :requires (sly helm))
 (use-package sly
-  :requires (company clhs)
-  :init
+  :requires clhs
+  :config
   (progn
     (defun ar/hyperspec-lookup (symbol)
       (interactive (list (common-lisp-hyperspec-read-symbol-name)))
@@ -402,6 +402,7 @@
          (eval-expression-minibuffer-setup . paredit-mode)
          (lisp-mode . paredit-mode)
          (lisp-interaction-mode . paredit-mode)
+         (scheme-mode . paredit-mode)
          (arc-mode . paredit-mode)))
 
 (use-package paredit-everywhere
