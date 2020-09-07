@@ -79,7 +79,6 @@
   :init
   (progn
     (require 'helm-config)
-    (require 'helm-grep)
     (if (version< "26.0.50" emacs-version)
         (eval-when-compile (require 'helm-lib)))
 
@@ -151,10 +150,18 @@
   (projectile-completion-system 'helm)
   (projectile-indexing-method 'alien))
 
+(use-package helm-ag
+  :custom
+  (helm-ag-base-command "rg --no-heading")
+  (helm-ag-fuzzy-match t)
+  (helm-ag-success-exit-status '(0 2))
+  :bind
+  ("C-M-s" . helm-do-ag-project-root))
+
 (use-package helm-swoop
   :requires helm
   :bind (("C-c h o" . helm-swoop)
-         ("C-c s" . helm-multi-swoop-all)
+         ("C-c h s" . helm-multi-swoop-all)
          :map isearch-mode-map
          ("M-i" . helm-swoop-from-isearch) ; When doing isearch, hand the word over to helm-swoop
          :map helm-swoop-map
