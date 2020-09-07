@@ -94,10 +94,9 @@
         'helm-eshell-history))
 
     (when (executable-find "curl")
-      (setq helm-google-suggest-use-curl-p t))
-
-    (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages))
-  :config (helm-mode 1)
+      (setq helm-google-suggest-use-curl-p t)))
+  :config
+  (helm-mode 1)
   :custom
   (helm-lisp-fuzzy-completion t)
   (helm-scroll-amount 4)
@@ -127,14 +126,13 @@
          ("C-x C-f" . helm-find-files)
          ("C-x C-d" . helm-browse-project)
          ("C-c r" . helm-recentf)
+         :map helm-command-map
          ("C-h SPC" . helm-all-mark-rings)
-         ("C-c h o" . helm-occur)
          ("C-c h o" . helm-occur)
          ("C-c h w" . helm-wikipedia-suggest)
          ("C-c h g" . helm-google-suggest)
          ("C-c h x" . helm-register)
          ([remap list-buffers] . helm-buffers-list)
-         ([remap find-tag] . helm-etags-select)
          :map minibuffer-local-map
          ("M-n" . helm-minibuffer-history)
          ("M-p" . helm-minibuffer-history)
