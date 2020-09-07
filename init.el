@@ -37,6 +37,7 @@
 (use-package auto-complete)
 
 (use-package keyfreq
+  :commands (keyfreq-mode keyfreq-autosave-mode)
   :hook ((after-init . keyfreq-mode)
          (after-init . keyfreq-autosave-mode)))
 
@@ -96,7 +97,7 @@
     (when (executable-find "curl")
       (setq helm-google-suggest-use-curl-p t)))
   :config
-  (helm-mode 1)
+  (helm-mode)
   :custom
   (helm-lisp-fuzzy-completion t)
   (helm-scroll-amount 4)
@@ -207,30 +208,21 @@
                               '("-new-tab")
                             '("-new-window")))
                       (list url)))))
-          ;; There is a weird Emacs behavior: it counts ".emacs.d/init.el" file for ".emacs" file.
-          ;; This behavior has reasons behind it, both historical and technical,
-          ;; so I just need to deal with it.
-          (defun ar/subdir-here (subdir-string)
-            "Adds the given dirname to the current directory, place-independently."
-            (concat (expand-file-name ".") "/.emacs.d/" subdir-string))
           (require 'em-term)
           (require 'epa-file)
           (require 'dired))
   :config
   (progn
     ;; Configure contribs and non-MELPA packages path
-    (add-to-list 'load-path (ar/subdir-here "lisp/"))
-    (let ((default-directory (ar/subdir-here "lisp/")))
+    (add-to-list 'load-path "~/.emacs.d/lisp/")
+    (let ((default-directory "~/.emacs.d/lisp/"))
       (normal-top-level-add-subdirs-to-load-path))
     ;; Misc customizationsn
     (fset 'yes-or-no-p 'y-or-n-p)        ;replace y-e-s by y
     (defconst query-replace-highlight t) ;highlight during query
     (defconst search-highlight t)        ;highlight incremental search
 
-    (when window-system
-      (tool-bar-mode -1)                 ;disable toolbar
-      (menu-bar-mode -1)                 ;disable menubar
-      (scroll-bar-mode -1))  			 ;disable scrollbar
+    (when window-system (ar/set-frame-setting))
 
     ;; Unicode support
     (set-language-environment "UTF-8")
@@ -268,8 +260,8 @@
          (after-init . auto-save-visited-mode)
          (after-init . global-font-lock-mode)
          (after-init . line-number-mode)
+         (after-init . column-number-mode)
          (after-init . epa-file-enable)
-         (after-init . helm-mode)
          (prog-mode . ar/show-trailing-whitespace)
          (before-make-frame-hook . ar/set-frame-setting)))
 
@@ -395,6 +387,7 @@
               (eql ?\@ (char-before (point))))))
   :custom (paredit-space-for-delimiter-predicates
            '(no-space-between-@-open-paren))
+  :commands paredit-mode
   :hook ((sly-mode . paredit-mode)
          (sly-editing . paredit-mode)
          (emacs-lisp-mode . paredit-mode)
@@ -576,8 +569,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (ox-gfm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair))))
+   '(ox-gfm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
