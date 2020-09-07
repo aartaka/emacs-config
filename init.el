@@ -322,7 +322,6 @@
       "** TODO %?\n  SCHEDULE %^{Date and Time}T\n"))))
 
 (use-package magit
-  :requires helm
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch))
   :config (setf vc-handled-backends nil))
