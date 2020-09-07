@@ -327,9 +327,6 @@
 ;;===============================================================================
 
 (require 'clhs)
-(use-package sly-asdf :requires sly)
-(use-package sly-quicklisp :requires sly)
-(use-package helm-sly :requires (sly helm))
 (use-package sly
   :requires clhs
   :config
@@ -354,23 +351,31 @@
       (let ((browse-url-browser-function 'eww-browse-url))
         (hyperspec-lookup-format character)))
 
-    (defun ar/set-lisp-indent-and-columns ()
+    (defun ar/set-lisp-indent ()
       (interactive)
-      (set-variable column-enforce-column 100 t)
       (set (make-local-variable lisp-indent-function)
-           'common-lisp-indent-function)))
+           'common-lisp-indent-function))
+    (defun ar/set-lisp-columns ()
+      (interactive)
+      (set-variable column-enforce-column 100 t)))
   :custom
   (inferior-lisp-program "sbcl")
-  (sly-lisp-implementations '((sbcl ("sbcl"))))
+  (sly-lisp-implementations
+   '((sbcl ("sbcl") :coding-system utf-8-unix)
+     (ccl "ccl")))
+  :commands (sly-editing-mode )
   :bind (("C-h -" . ar/hyperspec-lookup)
          ("C-h #" . ar/hyperspec-lookup-reader-macro)
          ("C-h ~" . ar/hyperspec-lookup-format))
   :hook ((lisp-mode . sly-editing-mode)
-         (lisp-mode . ar/set-lisp-indent-and-columns)
+         (lisp-mode . ar/set-lisp-indent)
+         (lisp-mode . ar/set-lisp-columns)
          (sly-mode . company-mode)
          (sly-editing . company-mode)
-         (sly-mode . golden-ratio-mode)
-         (sly-mode . ar/set-lisp-indent-and-columns)))
+         (sly-mode . golden-ratio-mode)))
+(use-package sly-asdf)
+(use-package sly-quicklisp)
+(use-package helm-sly)
 
 ;; https://raw.githubusercontent.com/arclanguage/anarki/master/extras/inferior-arc.el
 (require 'inferior-arc)
@@ -378,7 +383,12 @@
 (require 'arc)
 (add-to-list 'auto-mode-alist '("\\.arc\\'" . arc-mode))
 (use-package racket-mode)
-(use-package geiser)
+(use-package geiser
+  :after sly
+  :commands geiser-mode
+  :hook ((scheme-mode . geiser-mode)
+         (scheme-mode . ar/set-lisp-columns)
+         (scheme-mode . golden-ration-mode)))
 
 (use-package paredit
   :config
@@ -395,6 +405,7 @@
          (lisp-mode . paredit-mode)
          (lisp-interaction-mode . paredit-mode)
          (scheme-mode . paredit-mode)
+         (geiser-mode . paredit-mode)
          (arc-mode . paredit-mode)))
 
 (use-package paredit-everywhere
