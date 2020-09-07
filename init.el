@@ -30,7 +30,6 @@
 
 (use-package golden-ratio)
 (use-package all-the-icons)
-(use-package better-defaults)
 (use-package miniedit)
 
 (use-package company :hook (after-init . global-company-mode))
