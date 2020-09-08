@@ -363,10 +363,11 @@
   (sly-lisp-implementations
    '((sbcl ("sbcl") :coding-system utf-8-unix)
      (ccl "ccl")))
-  :commands (sly-editing-mode )
   :bind (("C-h -" . ar/hyperspec-lookup)
          ("C-h #" . ar/hyperspec-lookup-reader-macro)
          ("C-h ~" . ar/hyperspec-lookup-format))
+  :commands (sly-editing-mode )
+  :mode ("\\.lisp\\'" . sly-editing-mode)
   :hook ((lisp-mode . sly-editing-mode)
          (lisp-mode . ar/set-lisp-indent)
          (lisp-mode . ar/set-lisp-columns)
@@ -386,6 +387,7 @@
 (use-package geiser
   :after sly
   :commands geiser-mode
+  :mode ("\\.scm\\'" . geiser-mode)
   :hook ((scheme-mode . geiser-mode)
          (scheme-mode . ar/set-lisp-columns)
          (scheme-mode . golden-ration-mode)))
@@ -513,6 +515,8 @@
   (progn (elpy-enable)
          (add-to-list 'python-shell-completion-native-disabled-interpreters
                       "jupyter"))
+  :commands elpy-mode
+  :mode ("\\.py\\'" . elpy-mode)
   :hook (elpy-mode . ar/switch-company-to-ac))
 
 (use-package ein
@@ -542,7 +546,9 @@
 ;;=============================================================================
 
 (use-package web-mode)
-(use-package js2-mode)
+(use-package js2-mode
+  :commands js2-mode
+  :mode ("\\.js\\'" . js2-mode))
 (use-package skewer-less
   :init (defun ar/browse-this-file (file)
           (interactive (list (buffer-file-name)))
