@@ -328,7 +328,7 @@
 
 (require 'clhs)
 (use-package sly
-  :requires clhs
+  :after clhs
   :config
   (progn
     (defun ar/hyperspec-lookup (symbol)
@@ -355,9 +355,10 @@
       (interactive)
       (set (make-local-variable lisp-indent-function)
            'common-lisp-indent-function))
+
     (defun ar/set-lisp-columns ()
       (interactive)
-      (set-variable column-enforce-column 100 t)))
+      (set-variable 'column-enforce-column 100 t)))
   :custom
   (inferior-lisp-program "sbcl")
   (sly-lisp-implementations
