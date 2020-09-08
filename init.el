@@ -367,12 +367,8 @@
   :bind (("C-h -" . ar/hyperspec-lookup)
          ("C-h #" . ar/hyperspec-lookup-reader-macro)
          ("C-h ~" . ar/hyperspec-lookup-format))
-  :commands (sly-editing-mode )
-  :mode ("\\.lisp\\'" . sly-editing-mode)
-  :hook ((lisp-mode . sly-editing-mode)
+  :hook ((lisp-mode . ar/set-lisp-columns)
          (lisp-mode . ar/set-lisp-indent)
-         (lisp-mode . ar/set-lisp-columns)
-         (sly-mode . company-mode)
          (sly-editing . company-mode)
          (sly-mode . golden-ratio-mode)))
 (use-package sly-asdf)
@@ -388,7 +384,6 @@
 (use-package geiser
   :after sly
   :commands geiser-mode
-  :mode ("\\.scm\\'" . geiser-mode)
   :hook ((scheme-mode . geiser-mode)
          (scheme-mode . ar/set-lisp-columns)
          (scheme-mode . golden-ration-mode)))
@@ -516,8 +511,6 @@
   (progn (elpy-enable)
          (add-to-list 'python-shell-completion-native-disabled-interpreters
                       "jupyter"))
-  :commands elpy-mode
-  :mode ("\\.py\\'" . elpy-mode)
   :hook (elpy-mode . ar/switch-company-to-ac))
 
 (use-package ein
@@ -547,9 +540,7 @@
 ;;=============================================================================
 
 (use-package web-mode)
-(use-package js2-mode
-  :commands js2-mode
-  :mode ("\\.js\\'" . js2-mode))
+(use-package js2-mode)
 (use-package skewer-less
   :init (defun ar/browse-this-file (file)
           (interactive (list (buffer-file-name)))
@@ -587,7 +578,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ox-gfm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair)))
+   '(ox-gfm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair))
+ '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
