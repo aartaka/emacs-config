@@ -311,7 +311,9 @@
       "** TODO %?\n   DEADLINE %^{Task deadline}T\n   %U")
      ("c" "Chaotic schedules" entry
       (file+headline ,(concat org-directory "/tasks.org") "Chaotic")
-      "** TODO %?\n  SCHEDULE %^{Date and Time}T\n"))))
+      "** TODO %?\n  SCHEDULE %^{Date and Time}T\n")))
+  (org-clock-persist 'history)
+  :config (org-clock-persistence-insinuate))
 
 (use-package magit
   :bind (("C-x g" . magit-status)
