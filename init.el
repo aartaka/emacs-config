@@ -310,8 +310,8 @@
       (file+headline ,(concat org-directory "/tasks.org") "Tasks")
       "** TODO %?\n   DEADLINE %^{Task deadline}T\n   %U")
      ("c" "Chaotic schedules" entry
-      (file+headline ,(concat org-directory "/tasks.org") "Chaotic")
-      "** TODO %?\n  SCHEDULE %^{Date and Time}T\n")))
+      (file+headline ,(concat org-directory "/schedule.org") "Chaotic")
+      "** %?\n %^{Date and Time}T\n")))
   (org-clock-persist 'history)
   :config (org-clock-persistence-insinuate))
 
