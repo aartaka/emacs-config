@@ -284,10 +284,6 @@
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
 
-(use-package ox-gfm :requires org)
-(use-package ox-html5slide :requires org)
-(use-package ox-tiddly :requires org)
-
 (defvar org-directory "~/org")
 (use-package org
   :bind (("C-c l" . org-store-link)
@@ -318,6 +314,16 @@
       "** TODO %?\n  SCHEDULE %^{Date and Time}T\n")))
   (org-clock-persist 'history)
   :config (org-clock-persistence-insinuate))
+
+(use-package ox-gfm
+  :after org
+  :config (add-to-list 'org-export-backends 'gfm))
+(use-package ox-html5slide
+  :after org
+  :config (add-to-list 'org-export-backends 'html5slide))
+(use-package ox-tiddly
+  :after org
+  :config (add-to-list 'org-export-backends 'tiddly))
 
 (use-package magit
   :bind (("C-x g" . magit-status)
