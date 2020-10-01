@@ -252,6 +252,9 @@
   (indent-tabs-mode nil)              ;use space to indent by default
   (tab-width 4)                       ;set appearance of a tab that is represented by 4 spaces
   :bind (("C-x C-d" . dired)
+         ("C-x C-b" . helm-buffers-list)
+         ("C-s" . isearch-forward-regexp)
+         ("C-r" . isearch-backward-regexp)
          ("<f12>" . eshell)
          ("C-z" . nil) ; Because suspend-emacs makes me mad in X
          ("C-c w" . whitespace-mode) ; Highligh whitespaces
