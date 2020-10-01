@@ -421,90 +421,24 @@
 (use-package paredit-everywhere
   :hook (prog-mode . paredit-everywhere-mode))
 
-;;===============================================================================
+;;==============================================================================
 ;; C/C++ CUSTOMISATIONS
 ;;==============================================================================
 
 (use-package cc-mode
-  :init (progn
-          (defun ar/compile ()
-            (interactive)
-            (setq-local compilation-read-command nil)
-            (call-interactively 'compile))
-          (defun ar/enable-gtags ()
-            (interactive)
-            (when (derived-mode-p 'c-mode 'c++-mode
-                                  'java-mode 'asm-mode)
-              (helm-gtags-mode 1))))
-  :requires helm-gtags
+  :config (setf (cdr (assoc 'other c-default-style)) "linux")
   :custom
-  (c-default-style "linux" "Because they reason well about it.")
+  (c-basic-offset 8)
   ;; use gdb-many-windows by default
   (gdb-many-windows t)
   ;; Non-nil means display source file containing the main routine at startup
   (gdb-show-main t)
   :bind (("<f5>" . ar/compile)
          :map c-mode-map
-         ("<tab>" . company-complete)
+         ("<tab>" . company-indent-or-complete-common)
          :map c++-mode-map
-         ("<tab>" . company-complete))
-  :hook ((c-mode-common . hs-minor-mode)
-         (c-mode-common . ar/enable-gtags)))
-
-(use-package ggtags
-  :config (ggtags-mode)
-  :bind (:map ggtags-mode-map
-              ("C-c g s" . ggtags-find-other-symbol)
-              ("C-c g h" . ggtags-view-tag-history)
-              ("C-c g r" . ggtags-find-reference)
-              ("C-c g f" . ggtags-find-file)
-              ("C-c g c" . ggtags-create-tags)
-              ("C-c g u" . ggtags-update-tags)
-              ("C-c g a" . helm-gtags-tags-in-this-function)
-              ("M-." . ggtags-find-tag-dwim)
-              ("M-," . pop-tag-mark)
-              ("C-c <" . ggtags-prev-mark)
-              ("C-c >" . ggtags-next-mark)
-              :map dired-mode-map
-              ("C-c g s" . ggtags-find-other-symbol)
-              ("C-c g h" . ggtags-view-tag-history)
-              ("C-c g r" . ggtags-find-reference)
-              ("C-c g f" . ggtags-find-file)
-              ("C-c g c" . ggtags-create-tags)
-              ("C-c g u" . ggtags-update-tags)
-              ("C-c g a" . helm-gtags-tags-in-this-function)
-              ("M-." . ggtags-find-tag-dwim)
-              ("M-," . pop-tag-mark)
-              ("C-c <" . ggtags-prev-mark)
-              ("C-c >" . ggtags-next-mark)))
-
-(use-package helm-gtags
-  :requires (helm ggtags)
-  :custom
-  (helm-gtags-ignore-case t)
-  (helm-gtags-auto-update t)
-  (helm-gtags-use-input-at-cursor t)
-  (helm-gtags-pulse-at-cursor t)
-  (helm-gtags-prefix-key "\C-cg")
-  (helm-gtags-suggested-key-mapping t)
-  :bind
-  (:map helm-gtags-mode-map
-        ("C-c g a" . helm-gtags-tags-in-this-function)
-        ("C-j" . helm-gtags-select)
-        ("M-." . helm-gtags-dwim)
-        ("M-," . helm-gtags-pop-stack)
-        ("C-c <" . helm-gtags-previous-history)
-        ("C-c >" . helm-gtags-next-history))
-  :hook (;; Enable helm-gtags-mode in Dired so you can jump to any tag
-         ;; when navigate project tree with Dired
-         (dired-mode . helm-gtags-mode)
-         ;; Enable helm-gtags-mode in Eshell for the same reason as above
-         (eshell-mode . helm-gtags-mode)
-         ;; Enable helm-gtags-mode in languages that GNU Global supports
-         (c-mode . helm-gtags-mode)
-         (c++-mode . helm-gtags-mode)
-         (java-mode . helm-gtags-mode)
-         (asm-mode . helm-gtags-mode)))
+         ("<tab>" . company-indent-or-complete-common))
+  :hook ((c-mode-common . hs-minor-mode)))
 
 ;;==============================================================================
 ;; C# CUSTOMISATIONS
