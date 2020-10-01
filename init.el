@@ -32,7 +32,8 @@
 (use-package all-the-icons)
 (use-package miniedit)
 
-(use-package company :hook (after-init . global-company-mode))
+(use-package company :hook (after-init . global-company-mode)
+  :config (add-to-list 'company-backends 'company-omnisharp))
 (use-package company-quickhelp :hook (after-init . company-quickhelp-mode))
 (use-package auto-complete)
 
@@ -499,9 +500,23 @@
          (java-mode . helm-gtags-mode)
          (asm-mode . helm-gtags-mode)))
 
-;;===============================================================================
+;;==============================================================================
+;; C# CUSTOMISATIONS
+;;==============================================================================
+
+(use-package omnisharp
+  :config (omnisharp-install-server nil)
+  :hook ((csharp-mode . omnisharp-mode)
+         (csharp-mode . company-mode)
+         (csharp-mode . flycheck-mode))
+  :custom (omnisharp-debug t)
+  :bind (:map omnisharp-mode-map
+         ("C-c r r" . omnisharp-run-code-action-refactoring)
+         ("C-c C-c" . recompile)))
+
+;;==============================================================================
 ;; PYTHON CUSTOMIZATIONS
-;;===============================================================================
+;;==============================================================================
 
 (use-package elpy
   :init (defun ar/switch-company-to-ac ()
@@ -586,8 +601,9 @@
    '("aea30125ef2e48831f46695418677b9d676c3babf43959c8e978c0ad672a7329" "1263771faf6967879c3ab8b577c6c31020222ac6d3bac31f331a74275385a452" "ef403aa0588ca64e05269a7a5df03a5259a00303ef6dfbd2519a9b81e4bce95c" "b8929cff63ffc759e436b0f0575d15a8ad7658932f4b2c99415f3dde09b32e97" "bc4c89a7b91cfbd3e28b2a8e9e6750079a985237b960384f158515d32c7f0490" "39dd7106e6387e0c45dfce8ed44351078f6acd29a345d8b22e7b8e54ac25bac4" "a6764d1da0588bf27632f3db4078f9174f2cf1fc1d9cab97eec27b0a712d7518" "3380a2766cf0590d50d6366c5a91e976bdc3c413df963a0ab9952314b4577299" default))
  '(eshell-visual-commands
    '("vi" "screen" "tmux" "top" "htop" "less" "more" "lynx" "links" "ncftp" "mutt" "pine" "tin" "trn" "elm" "protonvpn"))
+ '(org-export-with-toc nil)
  '(package-selected-packages
-   '(ox-gfm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair))
+   '(omnisharp ox-gfm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair))
  '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
