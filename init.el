@@ -65,8 +65,17 @@
      ("Reply-to" . "no_reply")
      ("From" . "comments-noreply")
      ("Mail-Followup-to". "comments-noreply")
-     ("Reply-to" . "comments-noreply"))
-   "Found somewhere on the Internet and altered to work with Google Docs."))
+     ("Reply-to" . "comments-noreply")
+     ("From" . "notification")
+     ("Mail-Followup-to" . "notification")
+     ("Reply-to" . "notification")
+     ("From" . "notifications")
+     ("Mail-Followup-to" . "notifications")
+     ("Reply-to" . "notifications")
+     ("From" . "info")
+     ("Mail-Followup-to" . "info")
+     ("Reply-to" . "info"))
+   "Found somewhere on the Internet and altered to work with the services I use."))
 
 (use-package erc
   :custom
