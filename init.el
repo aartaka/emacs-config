@@ -248,19 +248,24 @@
     (when (member "Hack" (font-family-list))
       (set-frame-font "Hack-17" t t)))
   :custom
-  (ls-lisp-dirs-first t)              ;display dirs first in dired
-  (ecb-tip-of-the-day nil)            ;turn off ECB tips
-  (split-height-threshold 0)          ;split windows over horisontal line
-  (split-width-threshold nil)         ;and not opposite
-  (inhibit-startup-screen t)          ;no splash screen
-  (initial-buffer-choice #'eshell)    ;startup on eshell
+
+  (backup-by-copying t)
+  (backup-directory-alist
+   '(("." . "~/.saves/")) "For backups to not clutter everything.")
+  (delete-old-versions t "Delete old file backups silently.")
+  (ls-lisp-dirs-first t "Display dirs first in dired.")
+  (ecb-tip-of-the-day nil "Turn off ECB tips.")
+  (split-height-threshold 0 "Split windows over horisontal line")
+  (split-width-threshold nil "...and not opposite.")
+  (inhibit-startup-screen t "No splash screen.")
+  (initial-buffer-choice #'eshell "Startup on eshell.")
   (x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-  (prefer-coding-system 'utf-8)       ;prefer UTF-8
-  (flyspell-issue-message-flag nil)   ;don't print per-word messages
-  (normal-erase-is-backspace t)       ;fix weird backspace
+  (prefer-coding-system 'utf-8 "Prefer UTF-8.")
+  (flyspell-issue-message-flag nil "Don't print per-word messages.")
+  (normal-erase-is-backspace t "Fix weird backspace.")
   (browse-url-browser-function #'ar/browse-url-icecat)
-  (indent-tabs-mode nil)              ;use space to indent by default
-  (tab-width 4)                       ;set appearance of a tab that is represented by 4 spaces
+  (indent-tabs-mode nil "Use space to indent by default.")
+  (tab-width 4 "Set tab representation width to 4 spaces.")
   :bind (("C-x C-d" . dired)
          ("C-x C-b" . helm-buffers-list)
          ("C-s" . isearch-forward-regexp)
