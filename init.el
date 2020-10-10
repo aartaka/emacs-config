@@ -332,9 +332,9 @@
 (use-package ox-gfm
   :after org
   :config (add-to-list 'org-export-backends 'gfm))
-(use-package ox-html5slide
+(use-package ox-twbs
   :after org
-  :config (add-to-list 'org-export-backends 'html5slide))
+  :config (add-to-list 'org-export-backends 'twbs))
 (use-package ox-tiddly
   :after org
   :config (add-to-list 'org-export-backends 'tiddly))
@@ -557,7 +557,7 @@
    '("vi" "screen" "tmux" "top" "htop" "less" "more" "lynx" "links" "ncftp" "mutt" "pine" "tin" "trn" "elm" "protonvpn"))
  '(org-export-with-toc nil)
  '(package-selected-packages
-   '(omnisharp ox-gfm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair))
+   '(omnisharp ox-twbs ox-ioslide ox-gfm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair))
  '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
