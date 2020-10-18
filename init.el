@@ -164,6 +164,7 @@
   (helm-ag-base-command "rg --no-heading")
   (helm-ag-fuzzy-match t)
   (helm-ag-success-exit-status '(0 2))
+  (helm-ag-insert-at-point 'symbol)
   :bind
   ("C-M-s" . helm-do-ag-project-root))
 
