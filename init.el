@@ -42,152 +42,6 @@
   :hook ((after-init . keyfreq-mode)
          (after-init . keyfreq-autosave-mode)))
 
-(use-package bbdb
-  :config
-  (progn
-    (bbdb-initialize 'gnus 'message)
-    (bbdb-mua-auto-update-init 'gnus 'message))
-  :custom
-  (bbdb-mua-auto-update-p t)
-  (bbdb-mua-pop-up nil "I don't want BBDB to pop up anytime I read emails.")
-  (bbdb-ignore-message-alist
-   '(("From" . "donotreply")
-     ("Mail-Followup-to" . "donotreply")
-     ("Reply-to" . "donotreply")
-     ("From" . "noreply")
-     ("Mail-Followup-to" . "noreply")
-     ("Reply-to" . "noreply")
-     ("From" . "no-reply")
-     ("Mail-Followup-to" . "no-reply")
-     ("Reply-to" . "no-reply")
-     ("From" . "no_reply")
-     ("Mail-Followup-to" . "no_reply")
-     ("Reply-to" . "no_reply")
-     ("From" . "comments-noreply")
-     ("Mail-Followup-to". "comments-noreply")
-     ("Reply-to" . "comments-noreply")
-     ("From" . "notification")
-     ("Mail-Followup-to" . "notification")
-     ("Reply-to" . "notification")
-     ("From" . "notifications")
-     ("Mail-Followup-to" . "notifications")
-     ("Reply-to" . "notifications")
-     ("From" . "info")
-     ("Mail-Followup-to" . "info")
-     ("Reply-to" . "info"))
-   "Found somewhere on the Internet and altered to work with the services I use."))
-
-(use-package erc
-  :custom
-  (erc-autojoin-channels-alist . ((list ".*\.freenode\.net" "lisp" "nyxt"))))
-(use-package erc-colorize)
-(use-package erc-image)
-
-(use-package md4rd
-  :custom
-  (md4rd-subs-active '(lisp emacs guix nyxt) "Subreddits I'm interested in.")
-  :hook
-  (md4rd-mode . md4rd-indent-all-the-lines))
-
-(use-package projectile
-  :config (projectile-global-mode))
-
-(use-package helm
-  :init
-  (progn
-    (require 'helm-config)
-    (if (version< "26.0.50" emacs-version)
-        (eval-when-compile (require 'helm-lib)))
-
-    (defun ar/helm-hide-minibuffer-maybe ()
-      (when (with-helm-buffer helm-echo-input-in-header-line)
-        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-          (overlay-put ov 'window (selected-window))
-          (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
-                                  `(:background ,bg-color :foreground ,bg-color)))
-          (setq-local cursor-type nil))))
-    (defun ar/helm-eshell-enable-history ()
-      (define-key eshell-mode-map (kbd "M-l")
-        'helm-eshell-history))
-
-    (when (executable-find "curl")
-      (setq helm-google-suggest-use-curl-p t)))
-  :config
-  (helm-mode)
-  :custom
-  (helm-lisp-fuzzy-completion t)
-  (helm-scroll-amount 4)
-  (helm-ff-search-library-in-sexp t)
-  (helm-split-window-in-side-p t)
-  (helm-echo-input-in-header-line t)
-  (helm-ff-file-name-history-use-recentf t)
-  (helm-move-to-line-cycle-in-source t)
-  (helm-buffer-skip-remote-checking t)
-  (helm-mode-fuzzy-match t)
-  (helm-buffers-fuzzy-matching t)
-  (helm-org-headings-fontify t)
-  (helm-M-x-fuzzy-match t)
-  (helm-imenu-fuzzy-match t)
-  (helm-lisp-fuzzy-completion t)
-  (helm-buffer-skip-remote-checking t)
-  (helm-locate-fuzzy-match t)
-  (helm-display-header-line nil)
-  :hook ((helm-minibuffer-set-up . ar/helm-hide-minibuffer-maybe)
-         (helm-goto-line-before . helm-save-current-pos-to-mark-ring)
-         (eshell-mode . ar/helm-eshell-enable-history))
-  :bind (("C-x c" . nil)
-         ("C-c h" . helm-command-prefix)
-         ("M-x" . helm-M-x)
-         ("M-y" . helm-show-kill-ring)
-         ("C-x b" . helm-buffers-list)
-         ("C-x C-f" . helm-find-files)
-         ("C-x C-d" . helm-browse-project)
-         ("C-c r" . helm-recentf)
-         :map helm-command-map
-         ("C-h SPC" . helm-all-mark-rings)
-         ("C-c h o" . helm-occur)
-         ("C-c h w" . helm-wikipedia-suggest)
-         ("C-c h g" . helm-google-suggest)
-         ("C-c h x" . helm-register)
-         ([remap list-buffers] . helm-buffers-list)
-         :map minibuffer-local-map
-         ("M-n" . helm-minibuffer-history)
-         ("M-p" . helm-minibuffer-history)
-         :map helm-map
-         ("<tab>" . helm-execute-persistent-action) ; rebind tab to do persistent action
-         ("C-i" . helm-execute-persistent-action)   ; make TAB works in terminal
-         ("C-z" . helm-select-action)))             ; list actions using C-z
-
-(use-package helm-projectile
-  :requires (helm projectile)
-  :config (helm-projectile-on)
-  :custom
-  (projectile-completion-system 'helm)
-  (projectile-indexing-method 'alien))
-
-(use-package helm-ag
-  :custom
-  (helm-ag-base-command "rg --no-heading")
-  (helm-ag-fuzzy-match t)
-  (helm-ag-success-exit-status '(0 2))
-  (helm-ag-insert-at-point 'symbol)
-  :bind
-  ("C-M-s" . helm-do-ag-project-root))
-
-(use-package helm-swoop
-  :requires helm
-  :bind (("C-c h o" . helm-swoop)
-         ("C-c h s" . helm-multi-swoop-all)
-         :map isearch-mode-map
-         ("M-i" . helm-swoop-from-isearch) ; When doing isearch, hand the word over to helm-swoop
-         :map helm-swoop-map
-         ("M-i" . helm-multi-swoop-all-from-helm-swoop)) ; From helm-swoop to helm-multi-swoop-all
-  :custom
-  (helm-multi-swoop-edit-save t) ; Save buffer when helm-multi-swoop-edit complete
-  (helm-swoop-split-with-multiple-windows t) ; If this value is t, split window inside the current window
-  (helm-swoop-split-direction 'split-window-vertically) ; Split direcion. 'split-window-vertically or 'split-window-horizontally
-  (helm-swoop-speed-or-color t)) ; If nil, you can slightly boost invoke speed in exchange for text color(use-package helm-swoop
-
 (use-package yasnippet
   :config (yas-global-mode))
 (use-package yasnippet-snippets :requires yasnippet)
@@ -305,6 +159,173 @@
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
 
+(use-package magit
+  :bind (("C-x g" . magit-status)
+         ("C-x M-g" . magit-dispatch))
+  :config (setf vc-handled-backends nil))
+
+(use-package clean-aindent-mode
+  :bind ("RET" . newline-and-indent)
+  :custom (clean-aindent-is-simple-indent t))
+
+;;==============================================================================
+;; SOCIAL
+;;==============================================================================
+
+(use-package bbdb
+  :config
+  (progn
+    (bbdb-initialize 'gnus 'message)
+    (bbdb-mua-auto-update-init 'gnus 'message))
+  :custom
+  (bbdb-mua-auto-update-p t)
+  (bbdb-mua-pop-up nil "I don't want BBDB to pop up anytime I read emails.")
+  (bbdb-ignore-message-alist
+   '(("From" . "donotreply")
+     ("Mail-Followup-to" . "donotreply")
+     ("Reply-to" . "donotreply")
+     ("From" . "noreply")
+     ("Mail-Followup-to" . "noreply")
+     ("Reply-to" . "noreply")
+     ("From" . "no-reply")
+     ("Mail-Followup-to" . "no-reply")
+     ("Reply-to" . "no-reply")
+     ("From" . "no_reply")
+     ("Mail-Followup-to" . "no_reply")
+     ("Reply-to" . "no_reply")
+     ("From" . "comments-noreply")
+     ("Mail-Followup-to". "comments-noreply")
+     ("Reply-to" . "comments-noreply")
+     ("From" . "notification")
+     ("Mail-Followup-to" . "notification")
+     ("Reply-to" . "notification")
+     ("From" . "notifications")
+     ("Mail-Followup-to" . "notifications")
+     ("Reply-to" . "notifications")
+     ("From" . "info")
+     ("Mail-Followup-to" . "info")
+     ("Reply-to" . "info"))
+   "Found somewhere on the Internet and altered to work with the services I use."))
+
+(use-package erc
+  :custom
+  (erc-autojoin-channels-alist . ((list ".*\.freenode\.net" "lisp" "nyxt"))))
+(use-package erc-colorize)
+(use-package erc-image)
+
+(use-package md4rd
+  :custom
+  (md4rd-subs-active '(lisp emacs guix nyxt) "Subreddits I'm interested in.")
+  :hook
+  (md4rd-mode . md4rd-indent-all-the-lines))
+
+;;==============================================================================
+;; HELM AND FRIENDS
+;;==============================================================================
+
+(use-package helm
+  :init
+  (progn
+    (require 'helm-config)
+    (if (version< "26.0.50" emacs-version)
+        (eval-when-compile (require 'helm-lib)))
+
+    (defun ar/helm-hide-minibuffer-maybe ()
+      (when (with-helm-buffer helm-echo-input-in-header-line)
+        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+          (overlay-put ov 'window (selected-window))
+          (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                  `(:background ,bg-color :foreground ,bg-color)))
+          (setq-local cursor-type nil))))
+    (defun ar/helm-eshell-enable-history ()
+      (define-key eshell-mode-map (kbd "M-l")
+        'helm-eshell-history))
+
+    (when (executable-find "curl")
+      (setq helm-google-suggest-use-curl-p t)))
+  :config
+  (helm-mode)
+  :custom
+  (helm-lisp-fuzzy-completion t)
+  (helm-scroll-amount 4)
+  (helm-ff-search-library-in-sexp t)
+  (helm-split-window-in-side-p t)
+  (helm-echo-input-in-header-line t)
+  (helm-ff-file-name-history-use-recentf t)
+  (helm-move-to-line-cycle-in-source t)
+  (helm-buffer-skip-remote-checking t)
+  (helm-mode-fuzzy-match t)
+  (helm-buffers-fuzzy-matching t)
+  (helm-org-headings-fontify t)
+  (helm-M-x-fuzzy-match t)
+  (helm-imenu-fuzzy-match t)
+  (helm-lisp-fuzzy-completion t)
+  (helm-buffer-skip-remote-checking t)
+  (helm-locate-fuzzy-match t)
+  (helm-display-header-line nil)
+  :hook ((helm-minibuffer-set-up . ar/helm-hide-minibuffer-maybe)
+         (helm-goto-line-before . helm-save-current-pos-to-mark-ring)
+         (eshell-mode . ar/helm-eshell-enable-history))
+  :bind (("C-x c" . nil)
+         ("C-c h" . helm-command-prefix)
+         ("M-x" . helm-M-x)
+         ("M-y" . helm-show-kill-ring)
+         ("C-x b" . helm-buffers-list)
+         ("C-x C-f" . helm-find-files)
+         ("C-x C-d" . helm-browse-project)
+         ("C-c r" . helm-recentf)
+         :map helm-command-map
+         ("C-h SPC" . helm-all-mark-rings)
+         ("C-c h o" . helm-occur)
+         ("C-c h w" . helm-wikipedia-suggest)
+         ("C-c h g" . helm-google-suggest)
+         ("C-c h x" . helm-register)
+         ([remap list-buffers] . helm-buffers-list)
+         :map minibuffer-local-map
+         ("M-n" . helm-minibuffer-history)
+         ("M-p" . helm-minibuffer-history)
+         :map helm-map
+         ("<tab>" . helm-execute-persistent-action) ; rebind tab to do persistent action
+         ("C-i" . helm-execute-persistent-action)   ; make TAB works in terminal
+         ("C-z" . helm-select-action)))             ; list actions using C-z
+
+(use-package projectile
+  :config (projectile-global-mode))
+
+(use-package helm-projectile
+  :requires (helm projectile)
+  :config (helm-projectile-on)
+  :custom
+  (projectile-completion-system 'helm)
+  (projectile-indexing-method 'alien))
+
+(use-package helm-ag
+  :custom
+  (helm-ag-base-command "rg --no-heading")
+  (helm-ag-fuzzy-match t)
+  (helm-ag-success-exit-status '(0 2))
+  (helm-ag-insert-at-point 'symbol)
+  :bind
+  ("C-M-s" . helm-do-ag-project-root))
+
+(use-package helm-swoop
+  :requires helm
+  :bind (("C-c h o" . helm-swoop)
+         ("C-c h s" . helm-multi-swoop-all)
+         :map isearch-mode-map
+         ("M-i" . helm-swoop-from-isearch) ; When doing isearch, hand the word over to helm-swoop
+         :map helm-swoop-map
+         ("M-i" . helm-multi-swoop-all-from-helm-swoop)) ; From helm-swoop to helm-multi-swoop-all
+  :custom
+  (helm-multi-swoop-edit-save t) ; Save buffer when helm-multi-swoop-edit complete
+  (helm-swoop-split-with-multiple-windows t) ; If this value is t, split window inside the current window
+  (helm-swoop-split-direction 'split-window-vertically) ; Split direcion. 'split-window-vertically or 'split-window-horizontally
+  (helm-swoop-speed-or-color t)) ; If nil, you can slightly boost invoke speed in exchange for text color(use-package helm-swoop
+
+;;==============================================================================
+;; ORG
+;;==============================================================================
+
 (defvar org-directory "~/org")
 (use-package org
   :bind (("C-c l" . org-store-link)
@@ -343,15 +364,6 @@
 (use-package ox-tiddly
   :after org
   :config (add-to-list 'org-export-backends 'tiddly))
-
-(use-package magit
-  :bind (("C-x g" . magit-status)
-         ("C-x M-g" . magit-dispatch))
-  :config (setf vc-handled-backends nil))
-
-(use-package clean-aindent-mode
-  :bind ("RET" . newline-and-indent)
-  :custom (clean-aindent-is-simple-indent t))
 
 ;;===============================================================================
 ;; LISP CUSTOMIZATIONS, WEEEEEEE!
