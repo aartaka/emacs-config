@@ -315,6 +315,7 @@
   :custom
   (org-startup-with-inline-images t "Inline images in Org files!")
   (org-startup-with-latex-preview t "Inline LaTeX formulas!")
+  (org-hide-emphasis-markers t "Hide the markup to have make it prettier.")
   (org-agenda-files `(,(concat org-directory "/schedule.org")
                       ,(concat org-directory "/tasks.org")
                       ,(concat org-directory "/notes.org")))
