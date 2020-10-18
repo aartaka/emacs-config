@@ -324,10 +324,7 @@
   (org-log-redeadline 'note "Ask for rescheduling reason.")
   (org-hide-leading-stars t "I need only one star to know that it's heading.")
   (org-capture-templates
-   `(("t" "Todo" entry
-      (file+headline ,(concat org-directory "/tasks.org") "Todos")
-      "** TODO %?\n  %i\n  %a")
-     ("d" "Deadline" entry
+   `(("d" "Deadline" entry
       (file+headline ,(concat org-directory "/tasks.org") "Tasks")
       "** TODO %?\n   DEADLINE %^{Task deadline}T\n   %U")
      ("c" "Chaotic schedules" entry
