@@ -204,7 +204,10 @@
      ("Reply-to" . "notifications")
      ("From" . "info")
      ("Mail-Followup-to" . "info")
-     ("Reply-to" . "info"))
+     ("Reply-to" . "info")
+     ("From" . "drive-shares-noreply")
+     ("Mail-Followup-to" . "drive-shares-noreply")
+     ("Reply-to" . "drive-shares-noreply"))
    "Found somewhere on the Internet and altered to work with the services I use."))
 
 (use-package erc
