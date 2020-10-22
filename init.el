@@ -109,6 +109,7 @@
 ;;==============================================================================
 
 (use-package autopair
+  :diminish autopair-mode
   :config (autopair-global-mode t))
 
 (use-package golden-ratio)
@@ -116,6 +117,7 @@
 (use-package miniedit)
 
 (use-package company
+  :diminish company-mode
   :hook (after-init . global-company-mode)
   :config (add-to-list 'company-backends 'company-omnisharp))
 (use-package company-quickhelp
@@ -128,6 +130,7 @@
          (after-init . keyfreq-autosave-mode)))
 
 (use-package yasnippet
+  :diminish yas-minor-mode
   :config (yas-global-mode))
 (use-package yasnippet-snippets :requires yasnippet)
 (use-package yasnippet-classic-snippets :requires yasnippet)
@@ -230,9 +233,14 @@
          (before-make-frame-hook . ar/set-frame-setting)))
 
 (use-package column-enforce-mode
+  :diminish column-enforce-mode
   :config (global-column-enforce-mode))
 
+(use-package eldoc
+  :diminish eldoc-mode)
+
 (use-package flyspell
+  :diminish flyspell-mode
   :hook ((markdown-mode . flyspell-mode)
          (text-mode . turn-on-flyspell)
          (prog-mode . flyspell-prog-mode))
@@ -322,6 +330,7 @@
 ;;==============================================================================
 
 (use-package helm
+  :diminish helm-mode
   :init
   (progn
     (require 'helm-config)
@@ -388,6 +397,7 @@
          ("C-z" . helm-select-action)))             ; list actions using C-z
 
 (use-package projectile
+  :diminish projectile-mode
   :config (projectile-global-mode))
 
 (use-package helm-projectile
@@ -530,6 +540,7 @@
          (scheme-mode . golden-ration-mode)))
 
 (use-package paredit
+  :diminish paredit-mode
   :config
   (defun no-space-between-@-open-paren (endp delimiter)
     (not (and (eql ?\( delimiter)
@@ -548,11 +559,19 @@
          (arc-mode . paredit-mode)))
 
 (use-package paredit-everywhere
+  :diminish paredit-everywhere-mode
   :hook (prog-mode . paredit-everywhere-mode))
 
 ;;==============================================================================
 ;; C/C++ CUSTOMISATIONS
 ;;==============================================================================
+
+(use-package hideshow
+  :diminish hs-minor-mode
+  :custom
+  (hs-isearch-open t "Set whether isearch opens folded blocks.")
+  (hs-hide-comments t "Hide the comments too when you do hs-hide-all.")
+  :bind ("C--" . hs-toggle-hiding))
 
 (use-package cc-mode
   :config (setf (cdr (assoc 'other c-default-style)) "linux")
@@ -609,6 +628,7 @@
   :hook (ein:notebook-python-mode . ar/switch-company-to-ac))
 
 (use-package flycheck
+  :diminish flycheck-mode
   :requires (elpy ein)
   :custom (elpy-modules (delq 'elpy-module-flymake elpy-modules))
   :hook ((ein:notebook-python-mode . flycheck-mode)
