@@ -586,7 +586,7 @@
          ("<tab>" . company-indent-or-complete-common)
          :map c++-mode-map
          ("<tab>" . company-indent-or-complete-common))
-  :hook ((c-mode-common . hs-minor-mode)))
+  :hook (c-mode-common . hs-minor-mode))
 
 ;;==============================================================================
 ;; C# CUSTOMISATIONS
