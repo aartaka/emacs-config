@@ -115,9 +115,11 @@
 (use-package all-the-icons)
 (use-package miniedit)
 
-(use-package company :hook (after-init . global-company-mode)
+(use-package company
+  :hook (after-init . global-company-mode)
   :config (add-to-list 'company-backends 'company-omnisharp))
-(use-package company-quickhelp :hook (after-init . company-quickhelp-mode))
+(use-package company-quickhelp
+  :hook (after-init . company-quickhelp-mode))
 (use-package auto-complete)
 
 (use-package keyfreq
