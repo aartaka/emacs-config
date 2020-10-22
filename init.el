@@ -1,15 +1,7 @@
-;;=============================================================================
-;; MELPA CONFIGURATIONS
-;;=============================================================================
-
 (require 'package)
 
 (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
 (package-initialize)
-
-;;===============================================================================
-;; OTHER ESSENTIAL CONFIGURATIONS AND HELPERS
-;;===============================================================================
 
 (eval-when-compile
   (require 'use-package)
@@ -24,6 +16,97 @@
   :custom
   (auto-package-update-delete-old-versions t)
   (auto-package-update-hide-results t))
+
+;;==============================================================================
+;; EXWM
+;;==============================================================================
+
+(use-package exwm
+  :config
+  (progn
+    (add-hook 'exwm-update-class-hook
+              (lambda ()
+                (exwm-workspace-rename-buffer exwm-class-name)))
+    (exwm-enable))
+  :custom ((exwm-workspace-number 4)
+           (exwm-input-global-keys
+            `(;; 's-r': Reset (to line-mode).
+              ([?\s-r] . exwm-reset)
+              ;; 's-w': Switch workspace.
+              ([?\s-w] . exwm-workspace-switch)
+              ;; 's-&': Launch application.
+              ([?\s-&] . (lambda (command)
+                           (interactive (list (read-shell-command "$ ")))
+                           (start-process-shell-command command nil command)))
+              ;; 's-N': Switch to certain workspace.
+              ,@(mapcar (lambda (i)
+                          `(,(kbd (format "s-%d" i)) .
+                            (lambda ()
+                              (interactive)
+                              (exwm-workspace-switch-create ,i))))
+                        (number-sequence 0 9))))
+           (exwm-input-simulation-keys
+            '(([?\C-b] . [left])
+              ([?\C-f] . [right])
+              ([?\C-p] . [up])
+              ([?\C-n] . [down])
+              ([?\C-a] . [home])
+              ([?\C-e] . [end])
+              ([?\M-v] . [prior])
+              ([?\C-v] . [next])
+              ([?\C-d] . [delete])
+              ([?\C-k] . [S-end delete])))
+           (display-time-24hr-format t))
+  :hook ((exwm-mode . display-battery-mode)
+         (exwm-mode . display-time-mode)))
+
+(use-package exwm-firefox-core
+  :after exwm
+  :config
+  (add-hook 'exwm-manage-finish-hook
+            (lambda ()
+              (cond ((and exwm-class-name
+                          (or (string= exwm-class-name "IceCat")
+                              (string= exwm-class-name "Firefox")
+                              (string= exwm-class-name "Nightly")))
+                     (exwm-input-set-local-simulation-keys
+                      `(([?\C-b] . [left])
+                        ([?\C-f] . [right])
+                        ([?\C-p] . [up])
+                        ([?\C-n] . [down])
+                        ([?\C-a] . [home])
+                        ([?\C-e] . [end])
+                        ([?\M-v] . [prior])
+                        ([?\C-v] . [next])
+                        ([?\C-d] . [delete])
+                        ([?\C-k] . [S-end delete])
+                        ([?\M-<] . [home])
+                        ([?\M->] . [end])
+                        ([?\M-.] . ,(kbd "M-<right>"))
+                        ([?\M-,] . ,(kbd "M-<left>"))
+                        ([?\C-R] . [<f5>])
+                        ([?\C-s] . [?\C-f])
+                        ([?\C-g] . [escape])
+                        ([?\C-d] . [?\C-l])
+                        ([?\C-o] . [?\C-t])
+                        ([?\C-k] . [?\C-w])
+                        ([?\C-1] . [<f11>])
+                        ;; The ones that I owe to Vimium
+                        ([?\M-l] . [?F]) ; Open the link in the new tab
+                        ([?\C-l] . [?f]) ; Open the link in this tab
+                        ;; Text-editing ones
+                        ([?\C-y] . [?\C-v])
+                        ([?\C-w] . [?\C-x])
+                        ([?\M-w] . [?\C-c])
+                        ([?\C-/] . [?\C-z])
+                        ([?\M-f] . ,(kbd "C-<right>"))
+                        ([?\M-b] . ,(kbd "C-<left>"))
+                        ;; Unbind the quirky original keybindings
+                        ([?\C-t] . [escape]))))))))
+
+;;==============================================================================
+;; OTHER ESSENTIAL CONFIGURATIONS AND HELPERS
+;;==============================================================================
 
 (use-package autopair
   :config (autopair-global-mode t))
@@ -581,8 +664,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))
  '(package-selected-packages
-   '(md4rd ox-gfm wgrep-helm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair org-mode))
+   '(exwm-firefox-core smart-mode-line helm-exwm exwm md4rd ox-gfm wgrep-helm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair org-mode))
  '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
