@@ -197,7 +197,6 @@
     (when (member "Hack" (font-family-list))
       (set-frame-font "Hack-17" t t)))
   :custom
-
   (backup-by-copying t)
   (backup-directory-alist
    '(("." . "~/.saves/")) "For backups to not clutter everything.")
