@@ -1,5 +1,9 @@
 (require 'package)
 
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(let ((default-directory "~/.emacs.d/lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
 (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
 (package-initialize)
 
@@ -172,10 +176,6 @@
           (require 'dired))
   :config
   (progn
-    ;; Configure contribs and non-MELPA packages path
-    (add-to-list 'load-path "~/.emacs.d/lisp/")
-    (let ((default-directory "~/.emacs.d/lisp/"))
-      (normal-top-level-add-subdirs-to-load-path))
     ;; Misc customizationsn
     (fset 'yes-or-no-p 'y-or-n-p)        ;replace y-e-s by y
     (defconst query-replace-highlight t) ;highlight during query
@@ -477,11 +477,11 @@
 ;; LISP CUSTOMIZATIONS, WEEEEEEE!
 ;;===============================================================================
 
-(require 'clhs)
 (use-package sly
   :after clhs
   :config
   (progn
+    (require 'clhs)
     (defun ar/hyperspec-lookup (symbol)
       (interactive (list (common-lisp-hyperspec-read-symbol-name)))
       (let ((browse-url-browser-function 'eww-browse-url))
