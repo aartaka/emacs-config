@@ -226,6 +226,7 @@
          (after-init . line-number-mode)
          (after-init . column-number-mode)
          (after-init . epa-file-enable)
+         (after-init . global-auto-revert-mode)
          (prog-mode . ar/show-trailing-whitespace)
          (before-make-frame-hook . ar/set-frame-setting)))
 
@@ -686,7 +687,7 @@
  '(custom-safe-themes
    '("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))
  '(package-selected-packages
-   '(exwm-firefox-core smart-mode-line helm-exwm exwm md4rd ox-gfm wgrep-helm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair org-mode))
+   '(auto-revert exwm-firefox-core smart-mode-line helm-exwm exwm md4rd ox-gfm wgrep-helm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair org-mode))
  '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
