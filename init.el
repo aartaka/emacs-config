@@ -46,7 +46,45 @@
                             (lambda ()
                               (interactive)
                               (exwm-workspace-switch-create ,i))))
-                        (number-sequence 0 9))))
+                        (number-sequence 0 9))
+              (,(kbd "s-C-e") . (lambda ()
+                                  (interactive)
+                                  (start-process-shell-command
+                                   "Emacs" nil "emacs")))
+              (,(kbd "s-C-t") . (lambda ()
+                                  (interactive)
+                                  (start-process-shell-command
+                                   "ST" nil "st")))
+              (,(kbd "s-C-i") . (lambda ()
+                                  (interactive)
+                                  (start-process-shell-command
+                                   "IceCat" nil "icecat")))
+              (,(kbd "s-C-k") . (lambda ()
+                                  (interactive)
+                                  (start-process-shell-command
+                                   "KeePassXC" nil "keepassxc")))
+              (,(kbd "s-C-l") . (lambda ()
+                                  (interactive)
+                                  (start-process-shell-command
+                                   "LibreOffice" nil "libreoffice")))
+              (,(kbd "s-C-g") . (lambda ()
+                                  (interactive)
+                                  (start-process-shell-command
+                                   "GIMP" nil "gimp")))
+              (,(kbd "s-C-5") .
+               (lambda ()
+                 (interactive)
+                 (start-process-shell-command
+                  "CL-WebKitEnv" nil ,(concat "guix environment "
+                                              "-l projects/throwaway-guix-packages/cl-webkit.scm "
+                                              "-- emacs"))))
+              (,(kbd "s-C-7") .
+               (lambda ()
+                 (interactive)
+                 (start-process-shell-command
+                  "NyxtEnv" nil ,(concat "guix environment --no-grafts "
+                                         "-l ~/git-cloned/nyxt/build-scripts/guix.scm "
+                                         "--ad-hoc nss-certs -- emacs"))))))
            (exwm-input-simulation-keys
             '(([?\C-b] . [left])
               ([?\C-f] . [right])
