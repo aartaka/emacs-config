@@ -36,9 +36,7 @@
            (exwm-input-global-keys
             `(;; 's-r': Reset (to line-mode).
               ([?\s-r] . exwm-reset)
-              ;; 's-w': Switch workspace.
               ([?\s-w] . exwm-workspace-switch)
-              ;; 's-&': Launch application.
               ([?\s-&] . (lambda (command)
                            (interactive (list (read-shell-command "$ ")))
                            (start-process-shell-command command nil command)))
