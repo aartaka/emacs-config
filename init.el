@@ -30,8 +30,8 @@
   (progn
     (add-hook 'exwm-update-class-hook
               (lambda ()
-                (exwm-workspace-rename-buffer exwm-class-name)))
-    (exwm-enable))
+                (setq mode-line-format nil)
+                (exwm-workspace-rename-buffer exwm-class-name))))
   :custom ((exwm-workspace-number 4)
            (exwm-input-global-keys
             `(;; 's-r': Reset (to line-mode).
