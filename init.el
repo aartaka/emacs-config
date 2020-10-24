@@ -97,8 +97,8 @@
               ([?\C-d] . [delete])
               ([?\C-k] . [S-end delete])))
            (display-time-24hr-format t))
-  :hook ((exwm-mode . display-battery-mode)
-         (exwm-mode . display-time-mode)))
+  :hook ((after-init . display-battery-mode)
+         (after-init . display-time-mode)))
 
 (use-package exwm-firefox-core
   :after exwm
