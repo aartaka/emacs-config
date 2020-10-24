@@ -76,15 +76,15 @@
                  (interactive)
                  (start-process-shell-command
                   "CL-WebKitEnv" nil ,(concat "guix environment "
-                                              "-l projects/throwaway-guix-packages/cl-webkit.scm "
-                                              "-- emacs"))))
+                                              "-l ~/projects/throwaway-guix-packages/cl-webkit.scm "
+                                              "-- emacs -f sly"))))
               (,(kbd "s-C-7") .
                (lambda ()
                  (interactive)
                  (start-process-shell-command
                   "NyxtEnv" nil ,(concat "guix environment --no-grafts "
                                          "-l ~/git-cloned/nyxt/build-scripts/guix.scm "
-                                         "--ad-hoc nss-certs -- emacs"))))))
+                                         "--ad-hoc nss-certs -- emacs -f sly"))))))
            (exwm-input-simulation-keys
             '(([?\C-b] . [left])
               ([?\C-f] . [right])
