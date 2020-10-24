@@ -164,6 +164,9 @@
   :hook (after-init . company-quickhelp-mode))
 (use-package auto-complete)
 
+(use-package wordnut)
+(use-package synosaurus)
+
 (use-package keyfreq
   :commands (keyfreq-mode keyfreq-autosave-mode)
   :hook ((after-init . keyfreq-mode)
