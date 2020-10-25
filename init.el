@@ -215,8 +215,7 @@
                             '("-new-window")))
                       (list url)))))
           (require 'em-term)
-          (require 'epa-file)
-          (require 'dired))
+          (require 'epa-file))
   :config
   (progn
     ;; Misc customizationsn
