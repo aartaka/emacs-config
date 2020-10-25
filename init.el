@@ -718,9 +718,6 @@
 (use-package powerline
   :config (powerline-default-theme))
 
-;; Just in case I'd switch back to Tomorrow Night
-(use-package base16-theme)
-
 (use-package monochrome-theme
   :config
   (load-theme 'monochrome t)
@@ -734,7 +731,7 @@
  '(custom-safe-themes
    '("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default))
  '(package-selected-packages
-   '(auto-revert exwm-firefox-core smart-mode-line helm-exwm exwm md4rd ox-gfm wgrep-helm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less mmm-mode skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools pdfgrep esup elisp--witness--lisp flymake-racket racket-mode ggtags helm-gtags use-package w3 base16-theme autopair org-mode))
+   '(pinentry powerline synosaurus wordnut auto-revert exwm-firefox-core exwm md4rd ox-gfm bbdb pretty-sha-path miniedit web-mode yasnippet-classic-snippets yasnippet-snippets yasnippet-lean skewer-less skewer rainbow-mode keyfreq all-the-icons sly nov pdf-tools esup elisp--witness--lisp flymake-racket racket-mode use-package w3 autopair org-mode))
  '(send-mail-function 'smtpmail-send-it))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
