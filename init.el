@@ -520,6 +520,15 @@
 ;; LISP CUSTOMIZATIONS, WEEEEEEE!
 ;;===============================================================================
 
+(defun ar/set-lisp-indent ()
+    (interactive)
+    (set (make-local-variable lisp-indent-function)
+         'common-lisp-indent-function))
+
+(defun ar/set-lisp-columns ()
+  (interactive)
+  (set-variable 'column-enforce-column 100 t))
+
 (use-package sly
   :after clhs
   :config
@@ -543,16 +552,7 @@
     (defun ar/hyperspec-lookup-format (character)
       (interactive (list (common-lisp-hyperspec--read-format-character)))
       (let ((browse-url-browser-function 'eww-browse-url))
-        (hyperspec-lookup-format character)))
-
-    (defun ar/set-lisp-indent ()
-      (interactive)
-      (set (make-local-variable lisp-indent-function)
-           'common-lisp-indent-function))
-
-    (defun ar/set-lisp-columns ()
-      (interactive)
-      (set-variable 'column-enforce-column 100 t)))
+        (hyperspec-lookup-format character))))
   :custom
   (inferior-lisp-program "sbcl")
   (sly-lisp-implementations
