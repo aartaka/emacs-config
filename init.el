@@ -716,6 +716,9 @@
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
 
+(use-package powerline
+  :config (powerline-default-theme))
+
 ;; Just in case I'd switch back to Tomorrow Night
 (use-package base16-theme)
 
