@@ -152,7 +152,8 @@
   :diminish autopair-mode
   :config (autopair-global-mode t))
 
-(use-package golden-ratio)
+(use-package golden-ratio
+  :diminish golden-ratio-mode)
 (use-package all-the-icons)
 (use-package miniedit)
 
