@@ -124,13 +124,12 @@
                         ([?\M->] . [end])
                         ([?\M-.] . ,(kbd "M-<right>"))
                         ([?\M-,] . ,(kbd "M-<left>"))
-                        ([?\C-R] . [<f5>])
+                        ([?\C-R] . ,(kbd "<f5>"))
                         ([?\C-s] . [?\C-f])
                         ([?\C-g] . [escape])
                         ([?\C-d] . [?\C-l])
                         ([?\C-o] . [?\C-t])
                         ([?\C-k] . [?\C-w])
-                        ([?\C-1] . [<f11>])
                         ;; The ones that I owe to Vimium
                         ([?\M-l] . [?F]) ; Open the link in the new tab
                         ([?\C-l] . [?f]) ; Open the link in this tab
