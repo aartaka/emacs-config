@@ -159,8 +159,7 @@
 
 (use-package company
   :diminish company-mode
-  :hook (after-init . global-company-mode)
-  :config (add-to-list 'company-backends 'company-omnisharp))
+  :hook (after-init . global-company-mode))
 (use-package company-quickhelp
   :hook (after-init . company-quickhelp-mode))
 (use-package auto-complete)
@@ -634,15 +633,18 @@
 ;; C# CUSTOMISATIONS
 ;;==============================================================================
 
-(use-package omnisharp
-  :config (omnisharp-install-server nil)
-  :hook ((csharp-mode . omnisharp-mode)
-         (csharp-mode . company-mode)
-         (csharp-mode . flycheck-mode))
-  :custom (omnisharp-debug t)
-  :bind (:map omnisharp-mode-map
-         ("C-c r r" . omnisharp-run-code-action-refactoring)
-         ("C-c C-c" . recompile)))
+(use-package csharp-mode
+  :config (setf (cdr (assoc 'csharp-mode c-default-style)) "csharp"))
+
+;; (use-package omnisharp
+;;   :config (omnisharp-install-server nil)
+;;   :hook ((csharp-mode . omnisharp-mode)
+;;          (csharp-mode . company-mode)
+;;          (csharp-mode . flycheck-mode))
+;;   :custom (omnisharp-debug t)
+;;   :bind (:map omnisharp-mode-map
+;;          ("C-c r r" . omnisharp-run-code-action-refactoring)
+;;          ("C-c C-c" . recompile)))
 
 ;;==============================================================================
 ;; PYTHON CUSTOMIZATIONS
