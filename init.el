@@ -174,10 +174,9 @@
 (use-package yasnippet
   :diminish yas-minor-mode
   :config (yas-global-mode))
-(use-package yasnippet-snippets :requires yasnippet)
-(use-package yasnippet-classic-snippets :requires yasnippet)
+(use-package yasnippet-snippets)
+(use-package yasnippet-classic-snippets)
 (use-package helm-c-yasnippet
-  :requires (yasnippet helm)
   :custom (helm-yas-space-match-any-greedy t)
   :bind ("C-c y" . helm-yas-complete))
 
@@ -212,8 +211,7 @@
                               '("-new-tab")
                             '("-new-window")))
                       (list url)))))
-          (require 'em-term)
-          (require 'epa-file))
+          (require 'em-term))
   :config
   (progn
     ;; Misc customizationsn
