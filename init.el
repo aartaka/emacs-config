@@ -180,8 +180,7 @@
   :custom (helm-yas-space-match-any-greedy t)
   :bind ("C-c y" . helm-yas-complete))
 
-(use-package pinentry
-  :config (pinentry-start))
+(pinentry-start)
 
 (use-package emacs
   :init (progn
