@@ -37,6 +37,7 @@
             `(;; 's-r': Reset (to line-mode).
               ([?\s-r] . exwm-reset)
               ([?\s-w] . exwm-workspace-switch)
+              ([?\s-q] . exwm-input-send-next-key)
               ([?\s-&] . (lambda (command)
                            (interactive (list (read-shell-command "$ ")))
                            (start-process-shell-command command nil command)))
