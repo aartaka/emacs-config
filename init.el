@@ -164,8 +164,10 @@
   :hook (after-init . company-quickhelp-mode))
 (use-package auto-complete)
 
-(use-package wordnut)
-(use-package synosaurus)
+(use-package wordnut
+  :bind ("C-c d" . wordnut-search))
+(use-package synosaurus
+  :bind ("C-c t" . synosaurus-lookup))
 
 (use-package keyfreq
   :commands (keyfreq-mode keyfreq-autosave-mode)
