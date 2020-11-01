@@ -608,7 +608,6 @@
   :after sly
   :commands geiser-mode
   :hook ((scheme-mode . geiser-mode)
-         (scheme-mode . ar/set-lisp-columns)
          (scheme-mode . golden-ratio-mode)))
 
 (use-package paredit
