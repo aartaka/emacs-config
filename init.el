@@ -502,6 +502,15 @@
       (file+headline ,(concat org-directory "/schedule.org") "Chaotic")
       "** %?\n %^{Date and Time}T\n")))
   (org-clock-persist 'history)
+  (org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"
+                           "bibtex %b"
+                           ;; "biber --output-directory %o $(basename %f .tex)"
+                           "pdflatex -interaction nonstopmode -output-directory %o %f"
+                           "pdflatex -interaction nonstopmode -output-directory %o %f")
+                         "I need to cite things via BibTeX")
+  (org-latex-with-hyperref t)
+  (org-latex-prefer-user-labels t)
+  (org-ref-show-broken-links t "To troubleshoot the broken links.")
   :config (org-clock-persistence-insinuate))
 
 (use-package babel)
@@ -515,6 +524,26 @@
 (use-package ox-tiddly
   :after org
   :config (add-to-list 'org-export-backends 'tiddly))
+
+(use-package org-ref
+  :init
+  (progn
+   (setq reftex-default-bibliography '("~/Documents/bibtex/bibliography.bib")
+         org-ref-bibliography-notes "~/Documents/bibtex/notes.org"
+         org-ref-default-bibliography reftex-default-bibliography
+         org-ref-pdf-directory "~/Documents/bibtex/bibtex-pdfs/"
+         bibtex-completion-bibliography "~/Documents/bibtex/bibliography.bib"
+         bibtex-completion-library-path "~/Documents/bibtex/bibtex-pdfs"
+         bibtex-completion-notes-path "~/Documents/bibtex/helm-bibtex-notes"))
+  :config
+  (progn
+    (require 'org-ref-pdf)
+    (require 'org-ref-url-utils))
+  :bind ("C-c j" . org-ref-helm-insert-cite-link)
+  :custom
+  (tex-bibtex-command "biber")
+  (tex-run-command "pdftex")
+  (latex-run-command "pdflatex"))
 
 ;;===============================================================================
 ;; LISP CUSTOMIZATIONS, WEEEEEEE!
