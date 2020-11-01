@@ -642,7 +642,8 @@
   :custom
   (hs-isearch-open t "Set whether isearch opens folded blocks.")
   (hs-hide-comments t "Hide the comments too when you do hs-hide-all.")
-  :bind ("C--" . hs-toggle-hiding))
+  :bind ("C--" . hs-toggle-hiding)
+  :hook (hs-minor-mode . hs-hide-all))
 
 (use-package cc-mode
   :config (setf (cdr (assoc 'other c-default-style)) "linux")
