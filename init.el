@@ -504,6 +504,8 @@
   (org-clock-persist 'history)
   :config (org-clock-persistence-insinuate))
 
+(use-package babel)
+
 (use-package ox-gfm
   :after org
   :config (add-to-list 'org-export-backends 'gfm))
