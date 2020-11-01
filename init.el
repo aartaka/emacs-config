@@ -84,7 +84,7 @@
                  (interactive)
                  (start-process-shell-command
                   "NyxtEnv" nil ,(concat "guix environment --no-grafts "
-                                         "-l ~/git-cloned/nyxt/build-scripts/guix.scm "
+                                         "-l ~/git/nyxt/build-scripts/guix.scm "
                                          "--ad-hoc nss-certs -- emacs -f sly"))))))
            (exwm-input-simulation-keys
             '(([?\C-b] . [left])
