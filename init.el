@@ -747,8 +747,9 @@
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
 
-(use-package powerline
-  :config (powerline-default-theme))
+(use-package smart-mode-line
+  :config (sml/setup)
+  :custom (sml/theme 'respectful))
 
 (use-package monochrome-theme
   :config
