@@ -640,6 +640,10 @@
 (use-package hideshow
   :diminish hs-minor-mode
   :custom
+  (hs-special-modes-alist
+           (append '((csharp-mode "{" "}" "/[*/]" nil nil))
+                   hs-special-modes-alist)
+           "Hide C# blocks.")
   (hs-isearch-open t "Set whether isearch opens folded blocks.")
   (hs-hide-comments t "Hide the comments too when you do hs-hide-all.")
   :bind ("C--" . hs-toggle-hiding)
@@ -665,7 +669,11 @@
 ;;==============================================================================
 
 (use-package csharp-mode
-  :config (setf (cdr (assoc 'csharp-mode c-default-style)) "csharp"))
+  :init (defun ar/set-csharp-style ()
+          (interactive)
+          (c-set-style "csharp"))
+  :hook ((csharp-mode . ar/set-csharp-style)
+         (csharp-mode . hs-minor-mode)))
 
 ;; (use-package omnisharp
 ;;   :config (omnisharp-install-server nil)
