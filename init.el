@@ -751,10 +751,8 @@
   :config (sml/setup)
   :custom (sml/theme 'respectful))
 
-(use-package monochrome-theme
-  :config
-  (load-theme 'monochrome t)
-  (load-theme 'aartaka-monochrome t))
+(require 'laconia-theme)
+(load-theme 'laconia t)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
