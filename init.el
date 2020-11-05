@@ -763,7 +763,9 @@
 
 (use-package smart-mode-line
   :config (sml/setup)
-  :custom (sml/theme 'respectful))
+  :custom
+  (sml/theme 'respectful)
+  (sml/no-confirm-load-theme t))
 
 (require 'laconia-theme)
 (load-theme 'laconia t)
