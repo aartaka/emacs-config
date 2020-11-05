@@ -38,7 +38,7 @@
               ([?\s-r] . exwm-reset)
               ([?\s-w] . exwm-workspace-switch)
               ([?\s-q] . exwm-input-send-next-key)
-              ([?\s-&] . (lambda (command)
+              ([?\s-!] . (lambda (command)
                            (interactive (list (read-shell-command "$ ")))
                            (start-process-shell-command command nil command)))
               ;; 's-N': Switch to certain workspace.
