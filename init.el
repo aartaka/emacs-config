@@ -665,6 +665,10 @@
          ("<tab>" . company-indent-or-complete-common))
   :hook (c-mode-common . hs-minor-mode))
 
+(use-package nhexl-mode
+  :custom
+  (nhexl-display-unprintables t))
+
 ;;==============================================================================
 ;; C# CUSTOMISATIONS
 ;;==============================================================================
