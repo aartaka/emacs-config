@@ -506,6 +506,8 @@
       (file+headline ,(concat org-directory "/schedule.org") "Chaotic")
       "** %?\n %^{Date and Time}T\n")))
   (org-clock-persist 'history)
+  (org-export-with-toc nil)
+  (org-export-with-section-numbers nil)
   (org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"
                            "bibtex %b"
                            ;; "biber --output-directory %o $(basename %f .tex)"
