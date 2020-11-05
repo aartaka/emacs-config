@@ -550,17 +550,18 @@
 ;; LISP CUSTOMIZATIONS, WEEEEEEE!
 ;;===============================================================================
 
-(defun ar/set-lisp-indent ()
-    (interactive)
-    (set (make-local-variable lisp-indent-function)
-         'common-lisp-indent-function))
-
-(defun ar/set-lisp-columns ()
-  (interactive)
-  (set-variable 'column-enforce-column 100 t))
-
 (use-package sly
   :after clhs
+  :init
+  (progn
+    (defun ar/set-lisp-indent ()
+      (interactive)
+      (set (make-local-variable lisp-indent-function)
+           'common-lisp-indent-function))
+
+    (defun ar/set-lisp-columns ()
+      (interactive)
+      (set-variable 'column-enforce-column 100 t)))
   :config
   (progn
     (require 'clhs)
