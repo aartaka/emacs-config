@@ -727,11 +727,6 @@
   :hook ((elpy-mode . py-autopep8-enable-on-save)
          (ein:notebook-python-mode . py-autopep8-enable-on-save)))
 
-(use-package blacken
-  :requires (elpy ein)
-  :hook ((elpy-mode . blacken-mode)
-         (ein:notebook-python-mode . blacken-mode)))
-
 ;;=============================================================================
 ;; WEB-DEVELOPMENT CUSTOMIZATIONS
 ;;=============================================================================
