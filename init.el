@@ -183,7 +183,8 @@
   :custom (helm-yas-space-match-any-greedy t)
   :bind ("C-c y" . helm-yas-complete))
 
-(pinentry-start)
+(eval-when-compile
+  (pinentry-start))
 
 (use-package emacs
   :init (progn
