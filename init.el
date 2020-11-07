@@ -522,7 +522,23 @@
   :config (org-clock-persistence-insinuate)
   :hook (org-mode . org-indent-mode))
 
-(use-package babel)
+(use-package babel
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((C . t)
+     (css . t)
+     (ditaa . t)
+     (calc . t)
+     (emacs-lisp . t)
+     (dot . t)
+     (js . t)
+     (latex . t)
+     (lisp . t)
+     (org . t)
+     (python . t)
+     (scheme . t)
+     (sql . t))))
 
 (use-package ox-gfm
   :after org
