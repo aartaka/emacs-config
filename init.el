@@ -317,6 +317,10 @@
 ;; SOCIAL
 ;;==============================================================================
 
+(use-package gnus
+  :custom
+  (max-lisp-eval-depth 500 "Gnus can crush Emacs on deep recursion"))
+
 (use-package bbdb
   :config
   (progn
