@@ -580,7 +580,6 @@
 ;;===============================================================================
 
 (use-package sly
-  :after clhs
   :init
   (progn
     (defun ar/set-lisp-indent ()
@@ -615,9 +614,6 @@
         (hyperspec-lookup-format character))))
   :custom
   (inferior-lisp-program "sbcl")
-  (sly-lisp-implementations
-   '((sbcl ("sbcl") :coding-system utf-8-unix)
-     (ccl "ccl")))
   :bind (("C-h -" . ar/hyperspec-lookup)
          ("C-h #" . ar/hyperspec-lookup-reader-macro)
          ("C-h ~" . ar/hyperspec-lookup-format))
