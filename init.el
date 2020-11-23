@@ -31,8 +31,7 @@
     (add-hook 'exwm-update-class-hook
               (lambda ()
                 (setq mode-line-format nil)
-                (exwm-workspace-rename-buffer exwm-class-name)))
-    (add-hook 'exwm-init-hook (lambda () (shell-command "bash ~/.emacs.d/spc2ctl.sh"))))
+                (exwm-workspace-rename-buffer exwm-class-name))))
   :custom ((exwm-workspace-number 4)
            (exwm-input-global-keys
             `(;; 's-r': Reset (to line-mode).
