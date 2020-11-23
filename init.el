@@ -513,7 +513,7 @@
       "** TODO %?\n   DEADLINE %^{Task deadline}T\n   %U")
      ("c" "Chaotic schedules" entry
       (file+headline ,(concat org-directory "/schedule.org") "Chaotic")
-      "** %?\n %^{Date and Time}T\n")))
+      "** %? %^{Date and Time}T\n")))
   (org-clock-persist 'history)
   (org-export-with-toc nil)
   (org-export-with-section-numbers nil)
