@@ -768,6 +768,9 @@
 (use-package rainbow-mode
   :hook (html-mode . rainbow-mode))
 
+(use-package sqlup-mode
+  :hook (sql-interactive-mode . sqlup-mode))
+
 ;;==============================================================================
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
