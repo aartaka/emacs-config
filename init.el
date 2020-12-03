@@ -519,21 +519,25 @@
 
 (use-package babel
   :config
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((C . t)
-     (css . t)
-     (ditaa . t)
-     (calc . t)
-     (emacs-lisp . t)
-     (dot . t)
-     (js . t)
-     (latex . t)
-     (lisp . t)
-     (org . t)
-     (python . t)
-     (scheme . t)
-     (sql . t))))
+  (progn
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((C . t)
+       (css . t)
+       (ditaa . t)
+       (calc . t)
+       (emacs-lisp . t)
+       (dot . t)
+       (js . t)
+       (latex . t)
+       (lisp . t)
+       (org . t)
+       (python . t)
+       (scheme . t)
+       (sql . t)
+       (sqlite . t)))
+    (add-to-list 'org-latex-packages-alist
+                 '("AUTO" "babel" t ("pdflatex")))))
 
 (use-package ox-gfm
   :after org
