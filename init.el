@@ -223,8 +223,9 @@
 
     (when window-system (ar/set-frame-setting))
 
-    (when (member "Hack" (font-family-list))
-      (set-frame-font "Hack-17" t t)))
+    (if (member "Hack" (font-family-list))
+        (set-frame-font "Hack-17" t t)
+      (set-frame-font "17" t t)))
   :custom
   (backup-by-copying t)
   (backup-directory-alist
