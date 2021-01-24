@@ -194,8 +194,6 @@
             (setf show-trailing-whitespace 1))
           (defun ar/set-frame-setting ()
             (interactive)
-            (when (member "Hack" (font-family-list))
-              (set-frame-font "Hack-17" t t))
             (tool-bar-mode -1)
             (menu-bar-mode -1)
             (scroll-bar-mode -1))
@@ -225,8 +223,8 @@
     (when window-system (ar/set-frame-setting))
 
     (if (member "Hack" (font-family-list))
-        (set-frame-font "Hack-17" t t)
-      (set-frame-font "17" t t)))
+        (set-frame-font "Hack-14" t t)
+      (set-frame-font "14" t t)))
   :custom
   (backup-by-copying t)
   (backup-directory-alist
