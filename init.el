@@ -1,7 +1,7 @@
 (require 'package)
 
-(add-to-list 'load-path "~/.emacs.d/lisp/")
-(let ((default-directory "~/.emacs.d/lisp/"))
+(add-to-list 'load-path "~/.config/emacs/lisp/")
+(let ((default-directory "~/.config/emacs/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
@@ -792,7 +792,7 @@
 (require 'laconia-theme)
 (load-theme 'laconia t)
 
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file "~/.config/emacs/custom.el")
 (load custom-file)
 
 (put 'narrow-to-region 'disabled nil)
