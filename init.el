@@ -1,7 +1,7 @@
 (require 'package)
 
 (add-to-list 'load-path "~/.config/emacs/lisp/")
-(add-to-list 'load-path "~/git/laconia-theme/")
+(add-to-list 'load-path "~/.config/emacs/laconia-theme/")
 (let ((default-directory "~/.config/emacs/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
