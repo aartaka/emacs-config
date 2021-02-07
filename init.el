@@ -737,9 +737,7 @@
   :hook (elpy-mode . ar/switch-company-to-ac))
 
 (use-package ein
-  :config (progn
-            (require 'ein-notebook)
-            (require 'ein-subpackages))
+  :config (require 'ein-notebook)
   :hook (ein:notebook-python-mode . ar/switch-company-to-ac))
 
 (use-package flycheck
