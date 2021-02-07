@@ -608,7 +608,11 @@
     (defun ar/hyperspec-lookup-format (character)
       (interactive (list (common-lisp-hyperspec--read-format-character)))
       (let ((browse-url-browser-function 'eww-browse-url))
-        (hyperspec-lookup-format character))))
+        (hyperspec-lookup-format character)))
+    (setf sly-lisp-implementations
+          '((sbcl ("sbcl") :coding-system utf-8-unix)
+            (ecl  ("ecl"))
+            (ccl  ("ccl")))))
   :custom
   (inferior-lisp-program "sbcl")
   :bind (("C-h -" . ar/hyperspec-lookup)
