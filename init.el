@@ -615,6 +615,7 @@
             (ccl  ("ccl")))))
   :custom
   (inferior-lisp-program "sbcl")
+  (sly-connection-update-interval 0.1)
   :bind (("C-h -" . ar/hyperspec-lookup)
          ("C-h #" . ar/hyperspec-lookup-reader-macro)
          ("C-h ~" . ar/hyperspec-lookup-format))
