@@ -60,6 +60,10 @@
                                   (interactive)
                                   (start-process-shell-command
                                    "IceCat" nil "icecat")))
+              (,(kbd "s-C-n") . (lambda ()
+                                  (interactive)
+                                  (start-process-shell-command
+                                   "Nyxt" nil "nyxt")))
               (,(kbd "s-C-k") . (lambda ()
                                   (interactive)
                                   (start-process-shell-command
