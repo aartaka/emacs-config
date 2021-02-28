@@ -614,8 +614,9 @@
       (interactive (list (common-lisp-hyperspec--read-format-character)))
       (let ((browse-url-browser-function 'eww-browse-url))
         (hyperspec-lookup-format character)))
-    (setf sly-lisp-implementations
+    (setq sly-lisp-implementations
           '((sbcl ("sbcl") :coding-system utf-8-unix)
+            (sbcl-nyxt ("/home/aartaka/.guix-extra-profiles/nyxt-sbcl-profile/nyxt-sbcl-profile/bin/sbcl"))
             (ecl  ("ecl"))
             (ccl  ("ccl")))))
   :custom
