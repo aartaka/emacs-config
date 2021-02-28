@@ -230,6 +230,7 @@
         (set-frame-font "Hack-14" t t)
       (set-frame-font "14" t t)))
   :custom
+  (visible-bell t "This beeping sound annoys me so much...")
   (backup-by-copying t)
   (backup-directory-alist
    '(("." . "~/.saves/")) "For backups to not clutter everything.")
