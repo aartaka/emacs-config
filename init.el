@@ -163,7 +163,8 @@
 
 (use-package company
   :diminish company-mode
-  :hook (after-init . global-company-mode))
+  :hook (after-init . global-company-mode)
+  :custom (company-idle-delay 0.01))
 (use-package company-quickhelp
   :hook (after-init . company-quickhelp-mode))
 (use-package auto-complete)
