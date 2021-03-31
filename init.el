@@ -514,11 +514,11 @@
   (org-clock-persist 'history)
   (org-export-with-toc nil)
   (org-export-with-section-numbers nil)
-  (org-latex-pdf-process '("pdflatex -interaction nonstopmode -output-directory %o %f"
+  (org-latex-pdf-process '("xelatex -etex -interaction=nonstopmode -output-directory=%o %f"
                            "bibtex %b"
                            ;; "biber --output-directory %o $(basename %f .tex)"
-                           "pdflatex -interaction nonstopmode -output-directory %o %f"
-                           "pdflatex -interaction nonstopmode -output-directory %o %f")
+                           "xelatex -etex -interaction=nonstopmode -output-directory=%o %f"
+                           "xelatex -etex -interaction=nonstopmode -output-directory=%o %f")
                          "I need to cite things via BibTeX")
   (org-latex-with-hyperref t)
   (org-latex-prefer-user-labels t)
