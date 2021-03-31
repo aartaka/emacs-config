@@ -2,6 +2,7 @@
 
 (add-to-list 'load-path "~/.config/emacs/lisp/")
 (add-to-list 'load-path "~/.config/emacs/laconia-theme/")
+(add-to-list 'load-path "~/git/nyxt/build-scripts/")
 (let ((default-directory "~/.config/emacs/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
@@ -585,6 +586,7 @@
 (use-package sly
   :init
   (progn
+    (require 'nyxt-guix)
     (defun ar/set-lisp-indent ()
       (interactive)
       (set (make-local-variable lisp-indent-function)
@@ -616,8 +618,10 @@
       (let ((browse-url-browser-function 'eww-browse-url))
         (hyperspec-lookup-format character)))
     (setq sly-lisp-implementations
-          '((sbcl ("sbcl") :coding-system utf-8-unix)
-            (sbcl-nyxt ("/home/aartaka/.guix-extra-profiles/nyxt-sbcl-profile/nyxt-sbcl-profile/bin/sbcl"))
+          `((sbcl ("sbcl") :coding-system utf-8-unix)
+            (sbcl-nyxt (lambda () (nyxt-make-guix-sbcl-for-nyxt
+                                   "~/git/nyxt"
+                                   :ad-hoc '("guix" "gnupg" "git" "xdg-utils"))))
             (ecl  ("ecl"))
             (ccl  ("ccl")))))
   :custom
