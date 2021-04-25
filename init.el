@@ -561,7 +561,10 @@
   (org-latex-with-hyperref t)
   (org-latex-prefer-user-labels t)
   (org-ref-show-broken-links t "To troubleshoot the broken links.")
-  :config (org-clock-persistence-insinuate)
+  (org-beamer-theme "CambridgeUS")
+  :config
+  (org-clock-persistence-insinuate)
+  (require 'ox-beamer)
   :hook (org-mode . org-indent-mode))
 
 (use-package babel
