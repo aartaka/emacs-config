@@ -153,10 +153,6 @@
 ;; OTHER ESSENTIAL CONFIGURATIONS AND HELPERS
 ;;==============================================================================
 
-(use-package autopair
-  :diminish autopair-mode
-  :config (autopair-global-mode t))
-
 (use-package golden-ratio
   :diminish golden-ratio-mode)
 (use-package all-the-icons)
