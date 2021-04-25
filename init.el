@@ -770,6 +770,7 @@
 
 (use-package web-mode)
 (use-package js2-mode)
+(use-package rjsx-mode)
 (use-package skewer-less
   :init (defun ar/browse-this-file (file)
           (interactive (list (buffer-file-name)))
