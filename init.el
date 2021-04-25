@@ -505,6 +505,31 @@
   (org-log-done 'note "Ask for closing note.")
   (org-log-redeadline 'note "Ask for rescheduling reason.")
   (org-hide-leading-stars t "I need only one star to know that it's heading.")
+  (org-latex-classes
+   '(("article" "\\documentclass[11pt]{article}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("extarticle" "\\documentclass[14pt]{extarticle}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("report" "\\documentclass[11pt]{report}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+     ("book" "\\documentclass[11pt]{book}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
   (org-capture-templates
    `(("d" "Deadline" entry
       (file+headline ,(concat org-directory "/tasks.org") "Tasks")
@@ -513,6 +538,22 @@
       (file+headline ,(concat org-directory "/schedule.org") "Chaotic")
       "** %? %^{Date and Time}T\n")))
   (org-clock-persist 'history)
+  (org-latex-default-packages-alist
+   '(("AUTO" "inputenc"  t ("pdflatex"))
+     ("T1"   "fontenc"   t ("pdflatex"))
+     (""     "graphicx"  t)
+     (""     "grffile"   t)
+     (""     "longtable" nil)
+     (""     "wrapfig"   nil)
+     (""     "rotating"  nil)
+     ("normalem" "ulem"  t)
+     (""     "amsmath"   t)
+     (""     "textcomp"  t)
+     (""     "amssymb"   t)
+     (""     "capt-of"   nil)
+     (""     "titletoc"  nil)
+     (""     "hyperref"  nil)
+     (""     "cleveref"  nil)))
   (org-export-with-toc nil)
   (org-export-with-section-numbers nil)
   (org-latex-pdf-process '("xelatex -etex -interaction=nonstopmode -output-directory=%o %f"
