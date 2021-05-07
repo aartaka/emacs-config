@@ -76,21 +76,7 @@
               (,(kbd "s-C-g") . (lambda ()
                                   (interactive)
                                   (start-process-shell-command
-                                   "GIMP" nil "gimp")))
-              (,(kbd "s-C-5") .
-               (lambda ()
-                 (interactive)
-                 (start-process-shell-command
-                  "CL-WebKitEnv" nil ,(concat "guix environment "
-                                              "-l ~/projects/throwaway-guix-packages/cl-webkit.scm "
-                                              "-- emacs -f sly"))))
-              (,(kbd "s-C-7") .
-               (lambda ()
-                 (interactive)
-                 (start-process-shell-command
-                  "NyxtEnv" nil ,(concat "guix environment --no-grafts "
-                                         "-l ~/git/nyxt/build-scripts/guix.scm "
-                                         "--ad-hoc nss-certs -- emacs -f sly"))))))
+                                   "GIMP" nil "gimp")))))
            (exwm-input-simulation-keys
             '(([?\C-b] . [left])
               ([?\C-f] . [right])
