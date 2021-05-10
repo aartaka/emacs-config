@@ -551,7 +551,9 @@
   :config
   (org-clock-persistence-insinuate)
   (require 'ox-beamer)
-  :hook (org-mode . org-indent-mode))
+  :hook ((org-mode . org-indent-mode)
+         (org-mode . adaptive-wrap-prefix-mode)
+         (org-mode . visual-line-mode)))
 
 (use-package babel
   :config
