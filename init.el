@@ -657,6 +657,10 @@
             (sbcl-nyxt (lambda () (nyxt-make-guix-sbcl-for-nyxt
                                    "~/git/nyxt"
                                    :ad-hoc '("guix" "gnupg" "git" "xdg-utils"))))
+            (sbcl-nyxt-force (lambda () (nyxt-make-guix-sbcl-for-nyxt
+                                         "~/git/nyxt"
+                                         :ad-hoc '("guix" "gnupg" "git" "xdg-utils")
+                                         :force t)))
             (ecl  ("ecl"))
             (ccl  ("ccl")))))
   :custom
