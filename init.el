@@ -146,10 +146,16 @@
 (use-package all-the-icons)
 (use-package miniedit)
 
+(use-package helm-company)
 (use-package company
   :diminish company-mode
+  :requires (helm-company)
   :hook (after-init . global-company-mode)
-  :custom (company-idle-delay 0.01))
+  :custom (company-idle-delay 0.01)
+  :bind (:map company-mode-map
+         ("C-:" . 'helm-company)
+         :map company-active-map
+         ("C-:" . 'helm-company)))
 (use-package company-quickhelp
   :hook (after-init . company-quickhelp-mode))
 (use-package auto-complete)
