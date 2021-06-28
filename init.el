@@ -165,11 +165,6 @@
 (use-package synosaurus
   :bind ("C-c t" . synosaurus-lookup))
 
-(use-package keyfreq
-  :commands (keyfreq-mode keyfreq-autosave-mode)
-  :hook ((after-init . keyfreq-mode)
-         (after-init . keyfreq-autosave-mode)))
-
 (use-package yasnippet
   :diminish yas-minor-mode
   :config (yas-global-mode))
