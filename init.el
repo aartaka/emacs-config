@@ -346,7 +346,7 @@
 
 (use-package erc
   :custom
-  (erc-autojoin-channels-alist . ((list ".*\.freenode\.net" "lisp" "nyxt"))))
+  (erc-autojoin-channels-alist . ((list ".*\.libera.chat" "lisp" "nyxt"))))
 (use-package erc-colorize)
 (use-package erc-image)
 
