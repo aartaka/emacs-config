@@ -213,9 +213,9 @@
 
     (when window-system (ar/set-frame-setting))
 
-    (if (member "Hack" (font-family-list))
-        (set-frame-font "Hack-14" t t)
-      (set-frame-font "14" t t)))
+    (if (member "IBM Plex Mono" (font-family-list))
+        (set-frame-font "IBM Plex Mono-17" t t)
+      (set-frame-font "17" t t)))
   :custom
   (visible-bell t "This beeping sound annoys me so much...")
   (backup-by-copying t)
