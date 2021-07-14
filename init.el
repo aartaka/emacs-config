@@ -31,10 +31,16 @@
 
 (use-package exwm
   :config
-  (add-hook 'exwm-update-class-hook
-            (lambda ()
-              (setq mode-line-format nil)
-              (exwm-workspace-rename-buffer exwm-class-name)))
+  (progn (add-hook 'exwm-manage-finish-hook
+             (lambda ()
+               (when (and exwm-class-name
+                          (string= exwm-class-name "Nyxt"))
+                 (exwm-input-release-keyboard
+                  (exwm--buffer->id (window-buffer))))))
+         (add-hook 'exwm-update-class-hook
+                   (lambda ()
+                     (setq mode-line-format nil)
+                     (exwm-workspace-rename-buffer exwm-class-name))))
   :custom ((exwm-workspace-number 4)
            (exwm-input-global-keys
             `(;; 's-r': Reset (to line-mode).
