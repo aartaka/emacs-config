@@ -287,7 +287,10 @@
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
 
+(use-package transient)
+
 (use-package magit
+  :after transient
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch))
   :config (setf vc-handled-backends nil))
