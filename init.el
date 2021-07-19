@@ -5,7 +5,7 @@
 (add-to-list 'load-path "~/git/nyxt/build-scripts/")
 (let ((default-directory "~/.config/emacs/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-(setq espeak-default-speech-rate 250)
+(setq espeak-default-speech-rate 230)
 (load-file "~/.guix-extra-profiles/emacs-profile/emacs-profile/share/emacs/site-lisp/emacspeak/lisp/emacspeak-setup.el")
 
 (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
