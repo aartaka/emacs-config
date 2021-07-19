@@ -8,6 +8,8 @@
 (setq espeak-default-speech-rate 230)
 (load-file "~/.guix-extra-profiles/emacs-profile/emacs-profile/share/emacs/site-lisp/emacspeak/lisp/emacspeak-setup.el")
 
+(global-unset-key [\C-e \C-b])
+
 (add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
 (package-initialize)
 
