@@ -660,13 +660,17 @@
         (hyperspec-lookup-format character)))
     (setq sly-lisp-implementations
           `((sbcl ("sbcl") :coding-system utf-8-unix)
-            (sbcl-nyxt (lambda () (nyxt-make-guix-sbcl-for-nyxt
-                                   "~/git/nyxt"
-                                   :ad-hoc '("guix" "gnupg" "git" "xdg-utils"))))
-            (sbcl-nyxt-force (lambda () (nyxt-make-guix-sbcl-for-nyxt
-                                         "~/git/nyxt"
-                                         :ad-hoc '("guix" "gnupg" "git" "xdg-utils")
-                                         :force t)))
+            (sbcl-nyxt
+             (lambda ()
+               (nyxt-make-guix-sbcl-for-nyxt
+                "~/git/nyxt"
+                :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"))))
+            (sbcl-nyxt-force
+             (lambda ()
+               (nyxt-make-guix-sbcl-for-nyxt
+                "~/git/nyxt"
+                :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config")
+                :force t)))
             (ecl  ("ecl"))
             (ccl  ("ccl")))))
   :custom
