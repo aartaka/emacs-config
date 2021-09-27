@@ -541,6 +541,9 @@
      (""     "titletoc"  nil)
      (""     "hyperref"  nil)
      (""     "cleveref"  nil)))
+  (org-latex-packages-alist
+   `(,@org-latex-packages-alist
+     ("" "tabu" t)))
   (org-export-with-toc nil)
   (org-export-with-section-numbers nil)
   (org-latex-pdf-process '("xelatex -etex -interaction=nonstopmode -output-directory=%o %f"
