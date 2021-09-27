@@ -501,31 +501,6 @@
   (org-log-done 'note "Ask for closing note.")
   (org-log-redeadline 'note "Ask for rescheduling reason.")
   (org-hide-leading-stars t "I need only one star to know that it's heading.")
-  (org-latex-classes
-   '(("article" "\\documentclass[11pt]{article}"
-      ("\\section{%s}" . "\\section*{%s}")
-      ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-     ("extarticle" "\\documentclass[14pt]{extarticle}"
-      ("\\section{%s}" . "\\section*{%s}")
-      ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
-     ("report" "\\documentclass[11pt]{report}"
-      ("\\part{%s}" . "\\part*{%s}")
-      ("\\chapter{%s}" . "\\chapter*{%s}")
-      ("\\section{%s}" . "\\section*{%s}")
-      ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
-     ("book" "\\documentclass[11pt]{book}"
-      ("\\part{%s}" . "\\part*{%s}")
-      ("\\chapter{%s}" . "\\chapter*{%s}")
-      ("\\section{%s}" . "\\section*{%s}")
-      ("\\subsection{%s}" . "\\subsection*{%s}")
-      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
   (org-capture-templates
    `(("d" "Deadline" entry
       (file+headline ,(concat org-directory "/tasks.org") "Tasks")
@@ -565,6 +540,15 @@
   :config
   (org-clock-persistence-insinuate)
   (require 'ox-beamer)
+  (unless (assoc "extarticle" org-latex-classes)
+    (add-to-list 'org-latex-classes
+                 '("extarticle"
+                   "\\documentclass[14pt]{extarticle}"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
   :hook ((org-mode . org-indent-mode)
          (org-mode . visual-line-mode)))
 
