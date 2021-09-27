@@ -510,8 +510,9 @@
       "** %? %^{Date and Time}T\n")))
   (org-clock-persist 'history)
   (org-latex-default-packages-alist
-   '(("AUTO" "inputenc"  t ("pdflatex"))
-     ("T1"   "fontenc"   t ("pdflatex"))
+   '(("T2A,OT1"   "fontenc"   t)
+     ("utf8" "inputenc"  t)
+     ("russian" "babel" t)
      (""     "graphicx"  t)
      (""     "grffile"   t)
      (""     "longtable" nil)
@@ -570,9 +571,7 @@
        (python . t)
        (scheme . t)
        (sql . t)
-       (sqlite . t)))
-    (add-to-list 'org-latex-packages-alist
-                 '("AUTO" "babel" t ("pdflatex")))))
+       (sqlite . t)))))
 
 (use-package ox-gfm
   :after org
