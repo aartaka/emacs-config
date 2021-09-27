@@ -665,12 +665,14 @@
              (lambda ()
                (nyxt-make-guix-sbcl-for-nyxt
                 "~/git/nyxt"
-                :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"))))
+                :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
+                          "keepassxc" "gedit"))))
             (sbcl-nyxt-force
              (lambda ()
                (nyxt-make-guix-sbcl-for-nyxt
                 "~/git/nyxt"
-                :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config")
+                :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
+                          "keepassxc" "gedit")
                 :force t)))
             (ecl  ("ecl"))
             (ccl  ("ccl")))))
