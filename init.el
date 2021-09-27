@@ -286,6 +286,21 @@
 ;; Need to install pdf-tools for this to work
 (pdf-loader-install)
 
+;;; Not exactly related to pdf-tools, but let it be there
+(defun unpdf ()
+  "Run pdftotext on the entire buffer."
+  (interactive)
+  (let* ((file-name (buffer-file-name))
+         (buffer (get-buffer-create
+                  (concat "*unpdf:" (file-name-nondirectory file-name) "*"))))
+    (with-current-buffer buffer
+      (shell-command
+       (concat "pdftotext " file-name " -")
+       (current-buffer)
+       t)
+      (setf buffer-read-only t)
+      (switch-to-buffer buffer))))
+
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
 
