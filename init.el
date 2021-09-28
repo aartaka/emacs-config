@@ -287,18 +287,17 @@
 (pdf-loader-install)
 
 ;;; Not exactly related to pdf-tools, but let it be there
-(defun unpdf ()
+(defun unpdf (&optional arg)
   "Run pdftotext on the entire buffer."
-  (interactive)
+  (interactive "p")
   (let* ((file-name (buffer-file-name))
          (buffer (get-buffer-create
                   (concat "*unpdf:" (file-name-nondirectory file-name) "*"))))
     (with-current-buffer buffer
       (shell-command
-       (concat "pdftotext " file-name " -")
+       (format "pdftotext %s -" file-name)
        (current-buffer)
        t)
-      (setf buffer-read-only t)
       (switch-to-buffer buffer))))
 
 (use-package nov
