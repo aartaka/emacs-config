@@ -290,15 +290,28 @@
 (defun unpdf (&optional arg)
   "Run pdftotext on the entire buffer."
   (interactive "p")
-  (let* ((file-name (buffer-file-name))
-         (buffer (get-buffer-create
-                  (concat "*unpdf:" (file-name-nondirectory file-name) "*"))))
-    (with-current-buffer buffer
-      (shell-command
-       (format "pdftotext %s -" file-name)
-       (current-buffer)
-       t)
-      (switch-to-buffer buffer))))
+  (flet ((avg-bbox
+          (file)
+          (let ((pages (pdf-info-number-of-pages file))
+                as bs cs ds)
+            (dotimes (i pages)
+              (destructuring-bind (&optional a b c d)
+                  (ignore-errors (pdf-info-boundingbox i ))
+                (when (and a b c d)
+                  (setf as (+ as a)
+                        bs (+ bs b)
+                        cs (+ cs c)
+                        ds (+ ds a)))))
+            (list (/ as pages) (/ bs pages) (/ cs pages) (/ ds pages)))))
+    (let* ((file-name (buffer-file-name))
+           (buffer (get-buffer-create
+                    (concat "*unpdf:" (file-name-nondirectory file-name) "*"))))
+      (with-current-buffer buffer
+        (shell-command
+         (format "pdftotext %s -" file-name)
+         (current-buffer)
+         t)
+        (switch-to-buffer buffer)))))
 
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
