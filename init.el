@@ -289,7 +289,7 @@
 ;;; Not exactly related to pdf-tools, but let it be there
 (defun unpdf ()
   "Run pdftotext on the entire buffer."
-  (interactive "p")
+  (interactive)
   (let* ((file-name (buffer-file-name))
          (buffer (get-buffer-create
                   (concat "*unpdf:" (file-name-nondirectory file-name) "*"))))
