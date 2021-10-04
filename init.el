@@ -287,41 +287,19 @@
 (pdf-loader-install)
 
 ;;; Not exactly related to pdf-tools, but let it be there
-(defun unpdf (&optional arg)
+(defun unpdf ()
   "Run pdftotext on the entire buffer."
   (interactive "p")
-  (cl-flet ((avg-bbox
-             (file)
-             (let ((pages (pdf-info-number-of-pages file))
-                   (avg-bb '()))
-               (unless (> pages 100)
-                 (loop for page from 1 upto pages
-                       for bb = (ignore-errors (pdf-info-boundingbox page file))
-                       collect bb into avg-bb
-                       finally return (--map
-                                       (/ it pages)
-                                       (reduce (lambda (a b) (cl-mapcar #'+ a b))
-                                               avg-bb)))))))
-    (let* ((file-name (buffer-file-name))
-           (buffer (get-buffer-create
-                    (concat "*unpdf:" (file-name-nondirectory file-name) "*")))
-           (bb (avg-bbox file-name))
-           (margin pdf-view-bounding-box-margin))
-      (with-current-buffer buffer
-        (shell-command
-         (format "pdftotext %s -x %d -y %d -W %d -H %d"
-                 file-name
-                 (- (nth 0 bb)
-                    (/ margin 2.0))
-                 (- (nth 1 bb)
-                    (/ margin 2.0))
-                 (+ (- (nth 2 bb) (nth 0 bb))
-                    margin)
-                 (+ (- (nth 3 bb) (nth 1 bb))
-                    margin))
-         (current-buffer)
-         t)
-        (switch-to-buffer buffer)))))
+  (let* ((file-name (buffer-file-name))
+         (buffer (get-buffer-create
+                  (concat "*unpdf:" (file-name-nondirectory file-name) "*"))))
+    (with-current-buffer buffer
+      (shell-command
+       (format "pdftotext %s -"
+               file-name)
+       (current-buffer)
+       t)
+      (switch-to-buffer buffer))))
 
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
