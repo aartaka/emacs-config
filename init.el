@@ -290,25 +290,35 @@
 (defun unpdf (&optional arg)
   "Run pdftotext on the entire buffer."
   (interactive "p")
-  (flet ((avg-bbox
-          (file)
-          (let ((pages (pdf-info-number-of-pages file))
-                as bs cs ds)
-            (dotimes (i pages)
-              (destructuring-bind (&optional a b c d)
-                  (ignore-errors (pdf-info-boundingbox i ))
-                (when (and a b c d)
-                  (setf as (+ as a)
-                        bs (+ bs b)
-                        cs (+ cs c)
-                        ds (+ ds a)))))
-            (list (/ as pages) (/ bs pages) (/ cs pages) (/ ds pages)))))
+  (cl-flet ((avg-bbox
+             (file)
+             (let ((pages (pdf-info-number-of-pages file))
+                   (avg-bb '()))
+               (unless (> pages 100)
+                 (loop for page from 1 upto pages
+                       for bb = (ignore-errors (pdf-info-boundingbox page file))
+                       collect bb into avg-bb
+                       finally return (--map
+                                       (/ it pages)
+                                       (reduce (lambda (a b) (cl-mapcar #'+ a b))
+                                               avg-bb)))))))
     (let* ((file-name (buffer-file-name))
            (buffer (get-buffer-create
-                    (concat "*unpdf:" (file-name-nondirectory file-name) "*"))))
+                    (concat "*unpdf:" (file-name-nondirectory file-name) "*")))
+           (bb (avg-bbox file-name))
+           (margin pdf-view-bounding-box-margin))
       (with-current-buffer buffer
         (shell-command
-         (format "pdftotext %s -" file-name)
+         (format "pdftotext %s -x %d -y %d -W %d -H %d"
+                 file-name
+                 (- (nth 0 bb)
+                    (/ margin 2.0))
+                 (- (nth 1 bb)
+                    (/ margin 2.0))
+                 (+ (- (nth 2 bb) (nth 0 bb))
+                    margin)
+                 (+ (- (nth 3 bb) (nth 1 bb))
+                    margin))
          (current-buffer)
          t)
         (switch-to-buffer buffer)))))
