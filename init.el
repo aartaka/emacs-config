@@ -86,7 +86,46 @@
               (,(kbd "s-C-g") . (lambda ()
                                   (interactive)
                                   (start-process-shell-command
-                                   "GIMP" nil "gimp")))))
+                                   "GIMP" nil "gimp")))
+              ;; The function keys
+              (,(kbd "<XF86AudioRaiseVolume>") .
+               (lambda ()
+                 (interactive)
+                 (start-process-shell-command
+                  "" nil "pamixer --allow-boost -i 5")))
+              (,(kbd "<XF86AudioLowerVolume>") .
+               (lambda ()
+                 (interactive)
+                 (start-process-shell-command
+                  "" nil "pamixer -d 5")))
+              (,(kbd "<XF86AudioMute>") .
+               (lambda ()
+                 (interactive)
+                 (with-temp-buffer
+                   (call-process-shell-command
+                    (concat "bash " "~/.config/emacs/mute.sh")))))
+              (,(kbd "<XF86MonBrightnessUp>") .
+               (lambda ()
+                 (interactive)
+                 (with-temp-buffer
+                   (call-process-shell-command "xgamma" nil (current-buffer))
+                   (goto-char (point-min))
+                   (search-forward-regexp "[0-9].[0-9]*")
+                   (call-process-shell-command
+                    (format
+                     "xgamma -gamma %f"
+                     (+ (number-at-point) 0.1))))))
+              (,(kbd "<XF86MonBrightnessDown>") .
+               (lambda ()
+                 (interactive)
+                 (with-temp-buffer
+                   (call-process-shell-command "xgamma" nil (current-buffer))
+                   (goto-char (point-min))
+                   (search-forward-regexp "[0-9].[0-9]*")
+                   (call-process-shell-command
+                    (format
+                     "xgamma -gamma %f"
+                     (- (number-at-point) 0.1))))))))
            (exwm-input-simulation-keys
             '(([?\C-b] . [left])
               ([?\C-f] . [right])
