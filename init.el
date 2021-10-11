@@ -729,11 +729,6 @@
 (use-package sly-quicklisp)
 (use-package helm-sly)
 
-;; https://raw.githubusercontent.com/arclanguage/anarki/master/extras/inferior-arc.el
-(require 'inferior-arc)
-;; https://raw.githubusercontent.com/arclanguage/anarki/master/extras/arc.el
-(require 'arc)
-(add-to-list 'auto-mode-alist '("\\.arc\\'" . arc-mode))
 (use-package racket-mode)
 (use-package geiser
   :after sly
