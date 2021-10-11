@@ -334,7 +334,7 @@
                   (concat "*unpdf:" (file-name-nondirectory file-name) "*"))))
     (with-current-buffer buffer
       (shell-command
-       (format "pdftotext %s -"
+       (format "pdftotext \"%s\" -"
                file-name)
        (current-buffer)
        t)
