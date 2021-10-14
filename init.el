@@ -602,7 +602,6 @@
   (org-latex-with-hyperref t)
   (org-latex-prefer-user-labels t)
   (org-ref-show-broken-links t "To troubleshoot the broken links.")
-  (org-beamer-theme "CambridgeUS")
   :config
   (org-clock-persistence-insinuate)
   (require 'ox-beamer)
@@ -615,6 +614,8 @@
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+  (setf (cadr (assoc* "beamer" org-latex-classes :test 'equalp))
+             "\\documentclass[presentation,xcolor=dvipsnames]{beamer}")
   :hook ((org-mode . org-indent-mode)
          (org-mode . visual-line-mode)))
 
