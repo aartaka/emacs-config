@@ -806,6 +806,14 @@
 (use-package go-mode)
 (use-package flymake-go)
 
+(use-package brainfuck-mode
+  :init (defun hs-brainfuck ()
+          (setf hs-block-start-regexp "\\["
+                hs-block-end-regexp "\\]"))
+  :hook
+  (brainfuck-mode . hs-minor-mode)
+  (brainfuck-mode . hs-brainfuck))
+
 ;;==============================================================================
 ;; C# CUSTOMISATIONS
 ;;==============================================================================
