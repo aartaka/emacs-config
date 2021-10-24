@@ -714,13 +714,13 @@
                (nyxt-make-guix-sbcl-for-nyxt
                 "~/git/nyxt"
                 :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
-                          "keepassxc" "gedit"))))
+                          "keepassxc" "gedit" "xclip"))))
             (sbcl-nyxt-force
              (lambda ()
                (nyxt-make-guix-sbcl-for-nyxt
                 "~/git/nyxt"
                 :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
-                          "keepassxc" "gedit")
+                          "keepassxc" "gedit" "xclip")
                 :force t)))
             (ecl  ("ecl"))
             (ccl  ("ccl")))))
