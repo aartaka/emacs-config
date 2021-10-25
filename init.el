@@ -67,10 +67,6 @@
                                   (interactive)
                                   (start-process-shell-command
                                    "ST" nil "st")))
-              (,(kbd "s-C-i") . (lambda ()
-                                  (interactive)
-                                  (start-process-shell-command
-                                   "IceCat" nil "icecat")))
               (,(kbd "s-C-n") . (lambda ()
                                   (interactive)
                                   (start-process-shell-command
