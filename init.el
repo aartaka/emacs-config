@@ -1,12 +1,20 @@
 (require 'package)
 
 (add-to-list 'load-path "~/.config/emacs/lisp/")
+
+;; Laconia setup
 (add-to-list 'load-path "~/.config/emacs/laconia-theme/")
+(require 'laconia-theme)
+(load-theme 'laconia t)
+
 (add-to-list 'load-path "~/git/nyxt/build-scripts/")
+(add-to-list 'load-path "~/git/moirai.el/")
 (let ((default-directory "~/.config/emacs/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
+
+;; Emacspeak setup. Commented out because I don't use it often.
 (setq espeak-default-speech-rate 230)
-(load-file "~/.guix-extra-profiles/emacs-profile/emacs-profile/share/emacs/site-lisp/emacspeak/lisp/emacspeak-setup.el")
+;; (load-file "~/.guix-extra-profiles/emacs-profile/emacs-profile/share/emacs/site-lisp/emacspeak/lisp/emacspeak-setup.el")
 
 (global-unset-key [\C-e \C-b])
 
@@ -908,9 +916,6 @@
   :custom
   (sml/theme 'respectful)
   (sml/no-confirm-load-theme t))
-
-(require 'laconia-theme)
-(load-theme 'laconia t)
 
 (setq custom-file "~/.config/emacs/custom.el")
 (load custom-file)
