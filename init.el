@@ -427,12 +427,6 @@
 (use-package erc-colorize)
 (use-package erc-image)
 
-(use-package md4rd
-  :custom
-  (md4rd-subs-active '(lisp emacs guix nyxt) "Subreddits I'm interested in.")
-  :hook
-  (md4rd-mode . md4rd-indent-all-the-lines))
-
 (use-package telega)
 
 ;;==============================================================================
