@@ -86,21 +86,13 @@
             (tool-bar-mode -1)
             (menu-bar-mode -1)
             (scroll-bar-mode -1))
-          (defun ar/browse-url-icecat (url &optional new-window)
+          (defun ar/browse-url-nyxt (url &optional new-window)
             "See `browse-url-firefox' for reference"
             (interactive (browse-url-interactive-arg "URL: "))
             (setq url (browse-url-encode-url url))
             (let* ((process-environment (browse-url-process-environment)))
               (apply 'start-process
-                     (concat "icecat " url) nil
-                     browse-url-firefox-program
-                     (append
-                      browse-url-firefox-arguments
-                      (if (browse-url-maybe-new-window new-window)
-                          (if browse-url-firefox-new-window-is-tab
-                              '("-new-tab")
-                            '("-new-window")))
-                      (list url)))))
+                     "Nyxt" nil "nyxt" (list url))))
           (require 'em-term))
   :config
   (progn
@@ -130,7 +122,7 @@
   (prefer-coding-system 'utf-8 "Prefer UTF-8.")
   (flyspell-issue-message-flag nil "Don't print per-word messages.")
   (normal-erase-is-backspace t "Fix weird backspace.")
-  (browse-url-browser-function #'ar/browse-url-icecat)
+  (browse-url-browser-function #'ar/browse-url-nyxt)
   (indent-tabs-mode nil "Use space to indent by default.")
   (tab-width 4 "Set tab representation width to 4 spaces.")
   :bind (("C-x C-d" . dired)
