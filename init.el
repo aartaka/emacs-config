@@ -654,7 +654,7 @@
          org-ref-bibliography-notes "~/Documents/bibtex/notes.org"
          org-ref-default-bibliography reftex-default-bibliography
          org-ref-pdf-directory "~/Documents/bibtex/bibtex-pdfs/"
-         bibtex-completion-bibliography "~/Documents/bibtex/bibliography.bib"
+         bibtex-completion-bibliography '("~/Documents/bibtex/bibliography.bib")
          bibtex-completion-library-path "~/Documents/bibtex/bibtex-pdfs"
          bibtex-completion-notes-path "~/Documents/bibtex/helm-bibtex-notes"))
   :config
