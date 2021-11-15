@@ -192,16 +192,7 @@
   :after transient
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch))
-  :config (setf vc-handled-backends nil)
-  (defun magit-status-pull (&optional directory cache)
-    (start-process-shell-command
-     "Pulling the most recent version of the code"
-     nil
-     (format "cd \"%s\"; git pull" directory))
-    (message "Git-pulling for %s" directory))
-  (advice-add
-   'magit-status :after
-   #'magit-status-pull))
+  :config (setf vc-handled-backends nil))
 (use-package clean-aindent-mode
   :bind ("RET" . newline-and-indent)
   :custom (clean-aindent-is-simple-indent t))
