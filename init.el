@@ -639,7 +639,26 @@
   :config
   (defun bf-setup ()
     (setf comment-start ";"
-          comment-end ""))
+          comment-end "")
+    (setf (buffer-local-value 'indent-line-function (current-buffer))
+          (lambda ()
+            (unless (= (point) (point-min))
+              (let* ((text-before (subseq (buffer-string) (point-min) (1- (point-at-bol))))
+                     (opening (count ?\[ text-before))
+                     (old-point (point))
+                     (old-indent
+                      (progn (beginning-of-line)
+                             (skip-chars-forward " \t")
+                             (point)))
+                     (closing (+ (count ?\] text-before)
+                                 (if (= (char-after) ?\])
+                                     1 0)))
+                     (depth
+                      (1+ (- opening closing)))
+                     (new-indent (progn
+                                   (indent-line-to depth)
+                                   (point))))
+                (setf (point) (+ old-point (- new-indent old-indent))))))))
   (add-to-list 'hs-special-modes-alist
                '(brainfuck-mode "\\[" "\\]" ";" nil))
   :hook
