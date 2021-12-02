@@ -697,13 +697,18 @@
           (company-mode -1)
           (auto-complete-mode +1))
   :custom
-  (python-shell-interpreter "ipython")
+  (python-shell-interpreter "python3")
   (python-shell-prompt-detect-failure-warning nil)
   :config
   (progn (elpy-enable)
          (add-to-list 'python-shell-completion-native-disabled-interpreters
                       "jupyter"))
   :hook (elpy-mode . ar/switch-company-to-ac))
+
+(defun run-django-python ()
+  "Run a python shell tailor-made for Django development."
+  (interactive)
+  (run-python "guix shell -D python-djangorestframework python-djangorestframework -- python3"))
 
 (use-package ein
   :config (require 'ein-notebook)
