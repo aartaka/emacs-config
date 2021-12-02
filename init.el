@@ -691,19 +691,16 @@
 ;;==============================================================================
 
 (use-package elpy
-  :init (defun ar/switch-company-to-ac ()
-          (interactive)
-          ;; Elpy/EIN is not in good rels with Company somewhy
-          (company-mode -1)
-          (auto-complete-mode +1))
   :custom
+  (elpy-get-info-from-shell t)
+  (elpy-rpc-python-command "python3")
   (python-shell-interpreter "python3")
   (python-shell-prompt-detect-failure-warning nil)
   :config
   (progn (elpy-enable)
          (add-to-list 'python-shell-completion-native-disabled-interpreters
                       "jupyter"))
-  :hook (elpy-mode . ar/switch-company-to-ac))
+  :hook (python-mode . elpy-mode))
 
 (defun run-django-python ()
   "Run a python shell tailor-made for Django development."
