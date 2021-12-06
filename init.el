@@ -534,7 +534,7 @@
       (let ((browse-url-browser-function 'eww-browse-url))
         (hyperspec-lookup-format character)))
     (setq sly-lisp-implementations
-          `((sbcl ("sbcl") :coding-system utf-8-unix)
+          `((sbcl ("sbcl" "--dynamic-space-size" "1024") :coding-system utf-8-unix)
             (sbcl-nyxt
              (lambda ()
                (nyxt-make-guix-sbcl-for-nyxt
