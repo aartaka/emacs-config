@@ -702,10 +702,24 @@
                       "jupyter"))
   :hook (python-mode . elpy-mode))
 
+(advice-add
+ 'elpy-doc :around
+ (lambda (orig &rest args)
+   (condition-case nil
+       (apply orig args)
+     (error
+      (elpy-doc--show
+       (python-shell-send-string-no-output
+        (concat "help(" (thing-at-point 'filename) ")")))))))
+
 (defun run-django-python ()
   "Run a python shell tailor-made for Django development."
   (interactive)
-  (run-python "guix shell -D python-djangorestframework python-djangorestframework -- python3"))
+  (run-python
+   (concat
+    "guix shell -D python-djangorestframework python-djangorestframework -- python3 \""
+    (projectile-project-root)
+    "manage.py\" shell -i python")))
 
 (use-package ein
   :config (require 'ein-notebook)
