@@ -717,9 +717,10 @@
   (interactive)
   (run-python
    (concat
-    "guix shell -D python-djangorestframework python-djangorestframework -- python3 \""
-    (projectile-project-root)
-    "manage.py\" shell -i python")))
+    "guix shell -m " (concat "\"" (projectile-project-root) "manifest.scm\"")
+    " -- python3 "
+    (concat "\"" (projectile-project-root) "manage.py\"")
+    " shell -i python")))
 
 (use-package ein
   :config (require 'ein-notebook)
