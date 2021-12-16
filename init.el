@@ -489,7 +489,7 @@
   (progn
     (require 'org-ref-pdf)
     (require 'org-ref-url-utils))
-  :bind ("C-c j" . org-ref-helm-insert-cite-link)
+  :bind ("C-c j" . org-ref-cite-insert-helm)
   :custom
   (tex-bibtex-command "biber")
   (tex-run-command "pdftex")
