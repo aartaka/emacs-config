@@ -370,9 +370,22 @@
 
 (defvar org-directory "~/org")
 (use-package org
+  :init
+  (defun insert-em-dash ()
+    (interactive)
+    (insert-char #x2014))
+  (defun insert-right-angle-quote ()
+    (interactive)
+    (insert-char #xBB))
+  (defun insert-left-angle-quote ()
+    (interactive)
+    (insert-char #xAB))
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
+         ("C-'" . insert-left-angle-quote)
+         ("C-M-'" . insert-right-angle-quote)
+         ("C-M--" . insert-em-dash)
          :map org-mode-map
          ("M-q" . org-fill-paragraph))
   :custom
