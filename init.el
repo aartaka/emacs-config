@@ -387,6 +387,7 @@
          ("C-M-'" . insert-right-angle-quote)
          ("C-M--" . insert-em-dash)
          :map org-mode-map
+         ("C-'" . insert-left-angle-quote)
          ("M-q" . org-fill-paragraph))
   :custom
   (org-startup-with-inline-images t "Inline images in Org files!")
