@@ -742,10 +742,16 @@
 
 (use-package flycheck
   :diminish flycheck-mode
-  :requires (elpy ein)
-  :custom (elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  :requires (s elpy ein)
+  :config
+  (setq flycheck-disabled-checkers (append flycheck-disabled-checkers
+                                           '(javascript-jshint json-jsonlist)))
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  :custom
+  (elpy-modules (delq 'elpy-module-flymake elpy-modules))
   :hook ((ein:notebook-python-mode . flycheck-mode)
-         (elpy-mode . flycheck-mode)))
+         (elpy-mode . flycheck-mode)
+         (web-mode . flycheck-mode)))
 
 (use-package py-autopep8
   :requires (elpy ein)
@@ -756,8 +762,13 @@
 ;; WEB-DEVELOPMENT CUSTOMIZATIONS
 ;;=============================================================================
 
-(use-package web-mode)
-(use-package js2-mode)
+(use-package web-mode
+  :mode ("\\.jsx?$" . web-mode)
+  :custom
+  (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+  (web-mode-markup-indent-offset 4))
+(use-package js2-mode
+  :hook (web-mode . js2-minor-mode))
 (use-package rjsx-mode)
 (use-package skewer-less
   :init (defun ar/browse-this-file (file)
@@ -775,8 +786,13 @@
          (css-mode . skewer-css-mode)
          (html-mode . httpd-start)))
 
+(use-package add-node-modules-path
+  :hook (flycheck-mode . add-node-modules-path))
+
 (use-package rainbow-mode
-  :hook (html-mode . rainbow-mode))
+  :hook
+  (html-mode . rainbow-mode)
+  (web-mode . rainbow-mode))
 
 (use-package sqlup-mode
   :hook (sql-interactive-mode . sqlup-mode))
