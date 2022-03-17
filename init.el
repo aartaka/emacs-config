@@ -2,10 +2,11 @@
 
 (add-to-list 'load-path "~/.config/emacs/lisp/")
 
-;; Laconia setup
-(add-to-list 'load-path "~/.config/emacs/laconia-theme/")
-(require 'laconia-theme)
-(load-theme 'laconia t)
+(add-to-list 'load-path "~/.config/emacs/stimmung-themes/")
+(require 'stimmung-themes)
+(setf stimmung-themes-dark-highlight-color "#330101")
+(load-file "~/.config/emacs/stimmung-themes/stimmung-themes-dark-theme.el")
+(load-theme 'stimmung-themes-dark t)
 
 (add-to-list 'load-path "~/git/nyxt/build-scripts/")
 (add-to-list 'load-path "~/git/moirai.el/")
@@ -836,6 +837,11 @@
   :custom
   (sml/theme 'respectful)
   (sml/no-confirm-load-theme t))
+
+;; (use-package stimmung-themes
+;;   :config (load-theme 'stimmung-themes-dark t)
+;;   :custom (stimmung-themes-dark-highlight-color "indian red"
+;;                                                 "To make highlight red-ish."))
 
 (setq custom-file "~/.config/emacs/custom.el")
 (load custom-file)
