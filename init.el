@@ -610,6 +610,36 @@
   :diminish paredit-everywhere-mode
   :hook (prog-mode . paredit-everywhere-mode))
 
+(use-package clojure-mode
+  :interpreter
+  ("\\.edn$" . clojure-mode)
+  ("\\.boot$" . clojure-mode)
+  ("\\.cljs.*$" . clojure-mode)
+  :hook
+  (clojure-mode . paredit-mode)
+  (clojure-mode . subword-mode))
+(use-package clojure-mode-extra-font-locking)
+
+(use-package parseclj)
+
+(use-package cider
+  :config
+  (defun cider-refresh ()
+    (interactive)
+    (cider-interactive-eval (format "(user/reset)")))
+  :custom
+  (cider-repl-pop-to-buffer-on-connect t)
+  (cider-show-error-buffer t)
+  (cider-auto-select-error-buffer t)
+  (cider-repl-history-file "~/.config/emacs/cider-history")
+  (cider-repl-wrap-history t)
+  :hook
+  (cider-mode . eldoc-mode)
+  (cider-repl-mode . paredit-mode)
+  :bind
+  (:map clojure-mode-map
+   ("C-M-r" . cider-refresh)))
+
 ;;==============================================================================
 ;; C/C++ CUSTOMISATIONS
 ;;==============================================================================
