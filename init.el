@@ -158,14 +158,6 @@
          (prog-mode . flyspell-prog-mode))
   :custom (ispell-list-command "--list" "EmacsWiki said it helps."))
 
-(require 'screenshot)
-(setq screenshot-schemes
-      '(("local"
-         :dir "~/Documents/screenshots/")
-        ("current-directory"          ; No need to modify
-         :dir default-directory)))
-(setq screenshot-default-scheme "local")
-
 ;; Need to install pdf-tools for this to work
 (pdf-loader-install)
 
