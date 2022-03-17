@@ -765,16 +765,18 @@
 
 (use-package flycheck
   :diminish flycheck-mode
-  :requires (s elpy ein)
+  :requires (elpy ein)
+  :init (require 's)
   :config
-  (setq flycheck-disabled-checkers (append flycheck-disabled-checkers
-                                           '(javascript-jshint json-jsonlist)))
+  (setq flycheck-disabled-checkers
+        (append flycheck-disabled-checkers
+                '(javascript-jshint json-jsonlist)))
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   :custom
   (elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  :hook ((ein:notebook-python-mode . flycheck-mode)
-         (elpy-mode . flycheck-mode)
-         (web-mode . flycheck-mode)))
+  :hook ((after-init . global-flycheck-mode)
+         (ein:notebook-python-mode . flycheck-mode)
+         (elpy-mode . flycheck-mode)))
 
 (use-package py-autopep8
   :requires (elpy ein)
@@ -789,7 +791,7 @@
   :mode ("\\.jsx?$" . web-mode)
   :custom
   (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-  (web-mode-markup-indent-offset 4))
+  (web-mode-markup-indent-offset 2))
 (use-package js2-mode
   :hook (web-mode . js2-minor-mode))
 (use-package rjsx-mode)
