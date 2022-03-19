@@ -502,6 +502,9 @@
   (tex-run-command "pdftex")
   (latex-run-command "pdflatex"))
 
+(use-package markdown-mode)
+(use-package edit-indirect)
+
 ;;===============================================================================
 ;; LISP CUSTOMIZATIONS, WEEEEEEE!
 ;;===============================================================================
