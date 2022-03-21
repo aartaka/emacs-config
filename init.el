@@ -1,6 +1,7 @@
 (require 'package)
 
 (add-to-list 'load-path "~/.config/emacs/lisp/")
+(add-to-list 'load-path "~/.guix-profile/share/emacs/site-lisp/")
 
 (add-to-list 'load-path "~/.config/emacs/stimmung-themes/")
 (require 'stimmung-themes)
