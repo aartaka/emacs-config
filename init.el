@@ -162,6 +162,11 @@
 ;; Need to install pdf-tools for this to work
 (pdf-loader-install)
 
+(use-package emms
+  :config
+  (emms-all)
+  (emms-default-players))
+
 ;;; Not exactly related to pdf-tools, but let it be there
 (defun unpdf ()
   "Run pdftotext on the entire buffer."
