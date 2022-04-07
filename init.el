@@ -197,15 +197,13 @@
 ;; SOCIAL
 ;;==============================================================================
 
-(use-package gnus
-  :custom
-  (max-lisp-eval-depth 500 "Gnus can crush Emacs on deep recursion"))
+(load-file "~/.config/emacs/.mu4e")
 
 (use-package bbdb
   :config
   (progn
-    (bbdb-initialize 'gnus 'message)
-    (bbdb-mua-auto-update-init 'gnus 'message))
+    (bbdb-initialize 'mu4e 'message)
+    (bbdb-mua-auto-update-init 'mu4e 'message))
   :custom
   (bbdb-mua-auto-update-p t)
   (bbdb-mua-pop-up nil "I don't want BBDB to pop up anytime I read emails.")
