@@ -202,42 +202,29 @@
 ;; SOCIAL
 ;;==============================================================================
 
+(require 'mu4e)
+(load "~/.config/emacs/lisp/mu4e-config.el")
+(require 'mu4e-config)
 
-(use-package mu4e-alert
-  :init
-  (require 'mu4e)
-  (load-file "~/.config/emacs/lisp/.mu4e")
-  :config
-  (defun ar/mu4e-set-account ()
-    "Set the account for composing a message.
+(defun ar/mu4e-set-account ()
+  "Set the account for composing a message.
 This function is taken from:
 http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
 https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
-    (let* ((account
-            (if mu4e-compose-parent-message
-                (let ((maildir (mu4e-message-field mu4e-compose-parent-message :maildir)))
-                  (string-match "/\\(.*?\\)/" maildir)
-                  (match-string 1 maildir))
-              (completing-read (format "Compose with account: (%s) "
-                                       (mapconcat #'(lambda (var) (car var))
-                                                  ar/mu4e-account-alist "/"))
-                               (mapcar #'(lambda (var) (car var)) ar/mu4e-account-alist)
-                               nil t nil nil (caar ar/mu4e-account-alist))))
-           (account-vars (cdr (assoc account ar/mu4e-account-alist))))
-      (if account-vars
-          (mapc #'(lambda (var)
-                    (set (car var) (cadr var)))
-                account-vars)
-        (error "No email account found"))))
-  :hook (mu4e-compose-pre . ar/mu4e-set-account)
-  :custom
-  (mu4e-contexts ar/mu3e-contexts)
-  (mu4e-sent-folder "/home/aartaka/Mail/sent")
-  (mu4e-drafts-folder "/home/aartaka/Mail/drafts")
-  (user-mail-address "a.bologov.sas@gmail.com")
-  (smtpmail-default-smtp-server "smtp.gmail.com")
-  (smtpmail-smtp-server "smtp.gmail.com")
-  (smtpmail-smtp-service 587))
+  (let* ((account
+          (completing-read (format "Compose with account: (%s) "
+                                   (mapconcat #'(lambda (var) (car var))
+                                              ar/mu4e-account-alist "/"))
+                           (mapcar #'(lambda (var) (car var)) ar/mu4e-account-alist)
+                           nil t nil nil (caar ar/mu4e-account-alist)))
+         (account-vars (cdr (assoc account ar/mu4e-account-alist))))
+    (if account-vars
+        (mapc #'(lambda (var)
+                  (set (car var) (cadr var)))
+              account-vars)
+      (error "No email account found"))))
+
+(add-hook 'mu4e-compose-pre-hook 'ar/mu4e-set-account)
 
 (use-package bbdb
   :config
