@@ -110,6 +110,7 @@
         (set-frame-font "IBM Plex Mono-17" t t)
       (set-frame-font "17" t t)))
   :custom
+  (save-interprogram-paste-before-kill t "Integrate system clipboard into Emacs.")
   (visible-bell t "This beeping sound annoys me so much...")
   (backup-by-copying t)
   (backup-directory-alist
