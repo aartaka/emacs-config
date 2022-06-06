@@ -10,6 +10,7 @@
 (load-theme 'stimmung-themes-dark t)
 
 (add-to-list 'load-path "~/git/nyxt/build-scripts/")
+(require 'nyxt-guix)
 (add-to-list 'load-path "~/git/moirai.el/")
 (let ((default-directory "~/.config/emacs/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
@@ -538,7 +539,6 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (use-package sly
   :init
   (progn
-    (require 'nyxt-guix)
     (defun ar/set-lisp-indent ()
       (interactive)
       (set (make-local-variable lisp-indent-function)
@@ -570,7 +570,8 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
       (let ((browse-url-browser-function 'eww-browse-url))
         (hyperspec-lookup-format character)))
     (setq sly-lisp-implementations
-          `((sbcl ("sbcl" "--dynamic-space-size" "1024") :coding-system utf-8-unix)
+          `((sbcl ("sbcl" "--dynamic-space-size" "3000") :coding-system utf-8-unix)
+            (sbcl-plain ("sbcl") :coding-system utf-8-unix)
             (sbcl-nyxt
              (lambda ()
                (nyxt-make-guix-sbcl-for-nyxt
