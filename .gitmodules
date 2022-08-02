@@ -1,0 +1,3 @@
+[submodule "stimmung-themes"]
+	path = stimmung-themes
+	url = https://github.com/motform/stimmung-themes
