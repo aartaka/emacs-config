@@ -1,3 +1,6 @@
 [submodule "stimmung-themes"]
 	path = stimmung-themes
 	url = https://github.com/motform/stimmung-themes
+[submodule "laconia-theme"]
+	path = laconia-theme
+	url = https://github.com/aartaka/laconia-theme
