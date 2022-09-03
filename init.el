@@ -478,7 +478,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
-  (setf (cadr (assoc* "beamer" org-latex-classes :test 'equalp))
+  (setf (cadr (cl-assoc "beamer" org-latex-classes :test 'equal))
              "\\documentclass[presentation,xcolor=x11names]{beamer}")
   :hook ((org-mode . org-indent-mode)
          (org-mode . visual-line-mode)))
