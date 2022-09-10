@@ -576,7 +576,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
       (let ((browse-url-browser-function 'eww-browse-url))
         (hyperspec-lookup-format character)))
     (setq sly-lisp-implementations
-          `((sbcl ("sbcl" "--dynamic-space-size" "3000") :coding-system utf-8-unix)
+          `((sbcl ("sbcl" "--dynamic-space-size" "5000") :coding-system utf-8-unix)
             (sbcl-plain ("sbcl") :coding-system utf-8-unix)
             (sbcl-nyxt
              (lambda ()
