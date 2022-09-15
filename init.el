@@ -739,27 +739,6 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   (brainfuck-mode . bf-setup))
 
 ;;==============================================================================
-;; C# CUSTOMISATIONS
-;;==============================================================================
-
-(use-package csharp-mode
-  :init (defun ar/set-csharp-style ()
-          (interactive)
-          (c-set-style "csharp"))
-  :hook ((csharp-mode . ar/set-csharp-style)
-         (csharp-mode . hs-minor-mode)))
-
-;; (use-package omnisharp
-;;   :config (omnisharp-install-server nil)
-;;   :hook ((csharp-mode . omnisharp-mode)
-;;          (csharp-mode . company-mode)
-;;          (csharp-mode . flycheck-mode))
-;;   :custom (omnisharp-debug t)
-;;   :bind (:map omnisharp-mode-map
-;;          ("C-c r r" . omnisharp-run-code-action-refactoring)
-;;          ("C-c C-c" . recompile)))
-
-;;==============================================================================
 ;; PYTHON CUSTOMIZATIONS
 ;;==============================================================================
 
