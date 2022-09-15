@@ -2,6 +2,8 @@
 
 (add-to-list 'load-path "~/.config/emacs/lisp/")
 (add-to-list 'load-path "~/.guix-profile/share/emacs/site-lisp/")
+(add-to-list 'load-path "~/.guix-extra-profiles/emacs-profile/emacs-profile/share/emacs/site-lisp/mu4e/")
+(add-to-list 'load-path "~/.guix-extra-profiles/emacs-profile/emacs-profile/share/emacs/site-lisp/")
 
 (add-to-list 'load-path "~/.config/emacs/stimmung-themes/")
 (require 'stimmung-themes)
