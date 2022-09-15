@@ -60,8 +60,6 @@
          ("C-:" . 'helm-company)
          :map company-active-map
          ("C-:" . 'helm-company)))
-(use-package company-quickhelp
-  :hook (after-init . company-quickhelp-mode))
 (use-package auto-complete)
 
 (use-package wordnut
@@ -173,6 +171,7 @@
   :config
   (emms-all)
   (emms-default-players))
+(use-package helm-emms)
 
 ;;; Not exactly related to pdf-tools, but let it be there
 (defun unpdf ()
@@ -209,29 +208,29 @@
 ;; SOCIAL
 ;;==============================================================================
 
-(require 'mu4e)
-(load "~/.config/emacs/lisp/mu4e-config.el")
-(require 'mu4e-config)
-
-(defun ar/mu4e-set-account ()
-  "Set the account for composing a message.
+(use-package mu4e
+  :config
+  (load "~/.config/emacs/lisp/mu4e-config.el")
+  (require 'mu4e-config)
+  (defun ar/mu4e-set-account ()
+    "Set the account for composing a message.
 This function is taken from:
 http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
 https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
-  (let* ((account
-          (completing-read (format "Compose with account: (%s) "
-                                   (mapconcat #'(lambda (var) (car var))
-                                              ar/mu4e-account-alist "/"))
-                           (mapcar #'(lambda (var) (car var)) ar/mu4e-account-alist)
-                           nil t nil nil (caar ar/mu4e-account-alist)))
-         (account-vars (cdr (assoc account ar/mu4e-account-alist))))
-    (if account-vars
-        (mapc #'(lambda (var)
-                  (set (car var) (cadr var)))
-              account-vars)
-      (error "No email account found"))))
-
-(add-hook 'mu4e-compose-pre-hook 'ar/mu4e-set-account)
+    (let* ((account
+            (completing-read (format "Compose with account: (%s) "
+                                     (mapconcat #'(lambda (var) (car var))
+                                                ar/mu4e-account-alist "/"))
+                             (mapcar #'(lambda (var) (car var)) ar/mu4e-account-alist)
+                             nil t nil nil (caar ar/mu4e-account-alist)))
+           (account-vars (cdr (assoc account ar/mu4e-account-alist))))
+      (if account-vars
+          (mapc #'(lambda (var)
+                    (set (car var) (cadr var)))
+                account-vars)
+        (error "No email account found"))))
+  :hook
+  (mu4e-compose-pre . ar/mu4e-set-account))
 
 (use-package bbdb
   :config
@@ -377,7 +376,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   ("C-M-s" . helm-do-ag-project-root))
 
 (use-package helm-swoop
-  :requires helm
+  :requires (helm)
   :bind (("C-c h o" . helm-swoop)
          ("C-c h s" . helm-multi-swoop-all)
          :map isearch-mode-map
@@ -505,6 +504,12 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
        (sql . t)
        (sqlite . t)))))
 
+(use-package ox-gemini
+  :after org
+  :config (add-to-list 'org-export-backends 'gemini))
+(use-package ox-pandoc
+  :after org
+  :config (add-to-list 'org-export-backends 'pandoc))
 (use-package ox-gfm
   :after org
   :config (add-to-list 'org-export-backends 'gfm))
@@ -536,6 +541,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   (latex-run-command "pdflatex"))
 
 (use-package markdown-mode)
+(use-package gemini-mode)
 (use-package edit-indirect)
 
 ;;===============================================================================
@@ -606,8 +612,12 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
          (sly-editing . company-mode)
          (sly-mode . golden-ratio-mode)))
 (use-package sly-asdf)
+(use-package sly-macrostep)
+(use-package sly-named-readtables)
+(use-package sly-repl-ansi-color)
 (use-package sly-quicklisp)
 (use-package helm-sly)
+(use-package helm-xref)
 
 (use-package racket-mode)
 (use-package geiser
@@ -635,6 +645,12 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
          (geiser-mode . paredit-mode)
          (arc-mode . paredit-mode)))
 
+(use-package tagedit
+  :config (tagedit-add-paredit-like-keybindings)
+  :hook
+  (html-mode . tagedit-mode)
+  (web-mode . tagedit-mode))
+
 (use-package paredit-everywhere
   :diminish paredit-everywhere-mode
   :hook (prog-mode . paredit-everywhere-mode))
@@ -650,6 +666,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (use-package clojure-mode-extra-font-locking)
 
 (use-package parseclj)
+(use-package parseedn)
 
 (use-package cider
   :config
@@ -793,6 +810,8 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
          (ein:notebook-python-mode . flycheck-mode)
          (elpy-mode . flycheck-mode)))
 
+(use-package helm-flycheck)
+
 (use-package py-autopep8
   :requires (elpy ein)
   :hook ((elpy-mode . py-autopep8-enable-on-save)
@@ -832,7 +851,9 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (use-package rainbow-mode
   :hook
   (html-mode . rainbow-mode)
-  (web-mode . rainbow-mode))
+  (web-mode . rainbow-mode)
+  (css-mode . rainbow-mode)
+  (lisp-mode . rainbow-mode))
 
 (use-package sqlup-mode
   :hook (sql-interactive-mode . sqlup-mode))
