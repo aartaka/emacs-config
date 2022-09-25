@@ -574,7 +574,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
        (list
         (let ((completion-ignore-case t))
           (completing-read "Look up reader-macro: "
-                           common-lisp-hyperspnec--reader-macros nil t
+                           common-lisp-hyperspec--reader-macros nil t
                            (common-lisp-hyperspec-reader-macro-at-point)))))
       (let ((browse-url-browser-function 'eww-browse-url))
         (hyperspec-lookup-reader-macro macro)))
