@@ -199,7 +199,10 @@
   :after transient
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch))
-  :config (setf vc-handled-backends nil))
+  :config (setf vc-handled-backends nil)
+  (add-to-list 'magit-tag-version-regexp-alist
+               '("^[-._+ ]?-pre-release-\\.?$" . -4)
+               t 'equal))
 (use-package clean-aindent-mode
   :bind ("RET" . newline-and-indent)
   :custom (clean-aindent-is-simple-indent t))
