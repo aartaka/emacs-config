@@ -735,14 +735,14 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
     (setf (buffer-local-value 'indent-line-function (current-buffer))
           (lambda ()
             (unless (= (point) (point-min))
-              (let* ((text-before (subseq (buffer-string) (point-min) (1- (point-at-bol))))
-                     (opening (count ?\[ text-before))
+              (let* ((text-before (cl-subseq (buffer-string) (point-min) (1- (point-at-bol))))
+                     (opening (cl-count ?\[ text-before))
                      (old-point (point))
                      (old-indent
                       (progn (beginning-of-line)
                              (skip-chars-forward " \t")
                              (point)))
-                     (closing (+ (count ?\] text-before)
+                     (closing (+ (cl-count ?\] text-before)
                                  (if (= (char-after) ?\])
                                      1 0)))
                      (depth
