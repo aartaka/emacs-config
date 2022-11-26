@@ -126,7 +126,6 @@
   (split-height-threshold 0 "Split windows over horisontal line")
   (split-width-threshold nil "...and not opposite.")
   (inhibit-startup-screen t "No splash screen.")
-  (initial-buffer-choice #'eshell "Startup on eshell.")
   (x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
   (prefer-coding-system 'utf-8 "Prefer UTF-8.")
   (flyspell-issue-message-flag nil "Don't print per-word messages.")
@@ -609,6 +608,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   :custom
   (inferior-lisp-program "sbcl")
   (sly-connection-update-interval 0.1)
+  (initial-buffer-choice #'sly-scratch "Startup on sly scratch buffer.")
   :bind (("C-h -" . ar/hyperspec-lookup)
          ("C-h #" . ar/hyperspec-lookup-reader-macro)
          ("C-h ~" . ar/hyperspec-lookup-format))
