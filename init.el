@@ -609,7 +609,11 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
                 :no-grafts t
                 :force t)))
             (ecl  ("ecl"))
-            (ccl  ("ccl")))))
+            (ccl  ("ccl"))
+            (gcl ("gcl"))
+            (abcl ("abcl"))
+            (clisp ("clisp"))
+            (clasp ("clasp")))))
   :custom
   (inferior-lisp-program "sbcl")
   (sly-connection-update-interval 0.1)
