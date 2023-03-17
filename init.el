@@ -548,6 +548,11 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (use-package gemini-mode)
 (use-package edit-indirect)
 
+(use-package writegood-mode
+  :bind (("C-c C-g g" . writegood-grade-level)
+         ("C-c C-g e" . writegood-reading-ease))
+  :hook ((text-mode . writegood-mode)))
+
 ;;===============================================================================
 ;; LISP CUSTOMIZATIONS, WEEEEEEE!
 ;;===============================================================================
