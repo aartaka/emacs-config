@@ -544,6 +544,8 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   (tex-run-command "pdftex")
   (latex-run-command "pdflatex"))
 
+(use-package org-make-toc)
+
 (use-package markdown-mode)
 (use-package gemini-mode)
 (use-package edit-indirect)
