@@ -506,7 +506,9 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
        (python . t)
        (scheme . t)
        (sql . t)
-       (sqlite . t)))))
+       (sqlite . t))))
+  :custom (org-babel-C-compiler
+           "clang" "Change C compiler to Clang—diagnostics are better"))
 
 (use-package ox-gemini
   :after org
