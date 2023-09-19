@@ -293,6 +293,18 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 ;; HELM AND FRIENDS
 ;;==============================================================================
 
+(defun ar/helm-hide-minibuffer-maybe ()
+  (when (with-helm-buffer helm-echo-input-in-header-line)
+    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+      (overlay-put ov 'window (selected-window))
+      (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                              `(:background ,bg-color :foreground ,bg-color)))
+      (setq-local cursor-type nil))))
+
+(defun ar/helm-eshell-enable-history ()
+  (define-key eshell-mode-map (kbd "M-l")
+    'helm-eshell-history))
+
 (use-package helm
   :diminish helm-mode
   :init
@@ -300,18 +312,6 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
     (require 'helm-config)
     (if (version< "26.0.50" emacs-version)
         (eval-when-compile (require 'helm-lib)))
-
-    (defun ar/helm-hide-minibuffer-maybe ()
-      (when (with-helm-buffer helm-echo-input-in-header-line)
-        (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-          (overlay-put ov 'window (selected-window))
-          (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
-                                  `(:background ,bg-color :foreground ,bg-color)))
-          (setq-local cursor-type nil))))
-    (defun ar/helm-eshell-enable-history ()
-      (define-key eshell-mode-map (kbd "M-l")
-        'helm-eshell-history))
-
     (when (executable-find "curl")
       (setq helm-google-suggest-use-curl-p t)))
   :config
