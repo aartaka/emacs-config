@@ -49,131 +49,139 @@
 
 (use-package golden-ratio
   :diminish golden-ratio-mode)
-(use-package all-the-icons)
-(use-package miniedit)
+(require 'all-the-icons)
+(require 'miniedit)
 
-(use-package helm-company)
-(use-package company
-  :diminish company-mode
-  :requires (helm-company)
-  :hook (after-init . global-company-mode)
-  :custom (company-idle-delay 0.01)
-  :bind (:map company-mode-map
-         ("C-:" . 'helm-company)
-         :map company-active-map
-         ("C-:" . 'helm-company)))
-(use-package auto-complete)
+(require 'helm-company)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay 0.01)
+(define-key company-mode-map "C-:" 'helm-company)
+(define-key company-active-map "C-:" 'helm-company)
+(require 'auto-complete)
 
-(use-package wordnut
-  :bind ("C-c d" . wordnut-search))
-(use-package synosaurus
-  :bind ("C-c t" . synosaurus-lookup))
+(require 'wordnut)
+(define-key global-map (kbd "C-c d") 'wordnut-search)
+(require 'synosaurus)
+(define-key global-map (kbd "C-c t") 'synosaurus-lookup)
 
-(use-package yasnippet
-  :diminish yas-minor-mode
-  :config (yas-global-mode))
-(use-package yasnippet-snippets)
-(use-package yasnippet-classic-snippets)
-(use-package helm-c-yasnippet
-  :custom (helm-yas-space-match-any-greedy t)
-  :bind ("C-c y" . helm-yas-complete))
+(require 'yasnippet)
+(yas-global-mode)
+(require 'yasnippet-snippets)
+(require 'yasnippet-classic-snippets)
+(define-key global-map (kbd "C-c y") 'helm-yas-complete)
+(setq helm-yas-space-match-any-greedy t)
 
 (eval-when-compile
   (pinentry-start))
 
-(use-package emacs
-  :init (progn
-          (defun ar/show-trailing-whitespace ()
-            (interactive)
-            ;; Show unncessary whitespace that can mess up your diff
-            (setf show-trailing-whitespace 1))
-          (defun ar/set-frame-setting ()
-            (interactive)
-            (tool-bar-mode -1)
-            (menu-bar-mode -1)
-            (scroll-bar-mode -1))
-          (defun ar/browse-url-nyxt (url &optional new-window)
-            "See `browse-url-firefox' for reference"
-            (interactive (browse-url-interactive-arg "URL: "))
-            (setq url (browse-url-encode-url url))
-            (let* ((process-environment (browse-url-process-environment)))
-              (apply 'start-process
-                     "Nyxt" nil "nyxt" (list url))))
-          (require 'em-term))
-  :config
-  (progn
-    ;; Misc customizationsn
-    (fset 'yes-or-no-p 'y-or-n-p)        ;replace y-e-s by y
-    (defconst query-replace-highlight t) ;highlight during query
-    (defconst search-highlight t)        ;highlight incremental search
+(defun ar/show-trailing-whitespace ()
+  (interactive)
+  ;; Show unncessary whitespace that can mess up your diff
+  (setf show-trailing-whitespace 1))
+(defun ar/set-frame-setting ()
+  (interactive)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1))
+(defun ar/browse-url-nyxt (url &optional new-window)
+  "See `browse-url-firefox' for reference"
+  (interactive (browse-url-interactive-arg "URL: "))
+  (setq url (browse-url-encode-url url))
+  (let* ((process-environment (browse-url-process-environment)))
+    (apply 'start-process
+           "Nyxt" nil "nyxt" (list url))))
+(require 'em-term)
 
-    (when window-system (ar/set-frame-setting))
+;; Misc customizationsn
+(fset 'yes-or-no-p 'y-or-n-p)        ;replace y-e-s by y
+(defconst query-replace-highlight t) ;highlight during query
+(defconst search-highlight t)        ;highlight incremental search
 
-    (if (member "IBM Plex Mono" (font-family-list))
-        (set-frame-font "IBM Plex Mono-17" t t)
-      (set-frame-font "17" t t)))
-  :custom
-  (server-use-tcp t "Use TCP sockets.")
-  (server-port 8500 "TCP port.")
-  (save-interprogram-paste-before-kill t "Integrate system clipboard into Emacs.")
-  (visible-bell t "This beeping sound annoys me so much...")
-  (backup-by-copying t)
-  (backup-directory-alist
-   '(("." . "~/.saves/")) "For backups to not clutter everything.")
-  (delete-old-versions t "Delete old file backups silently.")
-  (ls-lisp-dirs-first t "Display dirs first in dired.")
-  (ecb-tip-of-the-day nil "Turn off ECB tips.")
-  (split-height-threshold 0 "Split windows over horisontal line")
-  (split-width-threshold nil "...and not opposite.")
-  (inhibit-startup-screen t "No splash screen.")
-  (initial-buffer-choice #'eshell "Startup on eshell.")
-  (x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-  (prefer-coding-system 'utf-8 "Prefer UTF-8.")
-  (flyspell-issue-message-flag nil "Don't print per-word messages.")
-  (normal-erase-is-backspace t "Fix weird backspace.")
-  (browse-url-browser-function #'ar/browse-url-nyxt)
-  (indent-tabs-mode nil "Use space to indent by default.")
-  (tab-width 4 "Set tab representation width to 4 spaces.")
-  :bind (("C-x C-d" . dired)
-         ("C-x C-b" . helm-buffers-list)
-         ("C-s" . isearch-forward-regexp)
-         ("C-r" . isearch-backward-regexp)
-         ("<f12>" . eshell)
-         ("C-z" . nil) ; Because suspend-emacs makes me mad in X
-         ("C-c w" . whitespace-mode) ; Highligh whitespaces
-         ("C-c ;" . comment-or-uncomment-region)) ; Set the commenting and uncommenting to the convenient keys
-  :hook ((after-init . show-paren-mode)
-         (after-init . auto-save-visited-mode)
-         (after-init . global-font-lock-mode)
-         (after-init . line-number-mode)
-         (after-init . column-number-mode)
-         (after-init . epa-file-enable)
-         (after-init . global-auto-revert-mode)
-         (prog-mode . ar/show-trailing-whitespace)
-         (before-make-frame-hook . ar/set-frame-setting)))
+(when window-system (ar/set-frame-setting))
 
-(use-package column-enforce-mode
-  :diminish column-enforce-mode
-  :config (global-column-enforce-mode))
+(if (member "IBM Plex Mono" (font-family-list))
+    (set-frame-font "IBM Plex Mono-17" t t)
+  (set-frame-font "17" t t))
 
-(use-package eldoc
-  :diminish eldoc-mode)
+(setq
+ ;; Use TCP sockets.
+ server-use-tcp t
+ ;; TCP port.
+ server-port 8500
+ ;; Integrate system clipboard into Emacs.
+ save-interprogram-paste-before-kill t
+ ;; This beeping sound annoys me so much...
+ visible-bell t
+ backup-by-copying t
+ ;; For backups to not clutter everything.
+ backup-directory-alist '(("." . "~/.saves/"))
+ ;; Delete old file backups silently.
+ delete-old-versions t
+ ;; Display dirs first in dired.
+ ls-lisp-dirs-first t
+ ;; Turn off ECB tips.
+ ecb-tip-of-the-day nil
+ ;; Split windows over horisontal line
+ split-height-threshold 0
+ ;; No splash screen.
+ inhibit-startup-screen t
+ ;; Startup on eshell.
+ initial-buffer-choice #'eshell
+ x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)
+ prefer-coding-system 'utf-8
+ ;; Don't print per-word messages.
+ flyspell-issue-message-flag nil
+ ;; Fix weird backspace.
+ normal-erase-is-backspace t
+ browse-url-browser-function #'ar/browse-url-nyxt
+ ;; Use space to indent by default.
+ indent-tabs-mode nil
+ ;; Set tab representation width to 4 spaces.
+ tab-width 4)
 
-(use-package flyspell
-  :diminish flyspell-mode
-  :hook ((markdown-mode . flyspell-mode)
-         (text-mode . turn-on-flyspell)
-         (prog-mode . flyspell-prog-mode))
-  :custom (ispell-list-command "--list" "EmacsWiki said it helps."))
+(cl-loop for (key . function)
+         in '(("C-x C-d" . dired)
+              ("C-x C-b" . helm-buffers-list)
+              ("C-s" . isearch-forward-regexp)
+              ("C-r" . isearch-backward-regexp)
+              ("<f12>" . eshell)
+              ("C-z" . nil)       ; Because suspend-emacs makes me mad in X
+              ("C-c w" . whitespace-mode)    ; Highligh whitespaces
+              ("C-c ;" . comment-or-uncomment-region))
+         do (define-key global-map (kbd key) function))
+
+(dolist (mode '(show-paren-mode
+                auto-save-visited-mode
+                global-font-lock-mode
+                line-number-mode
+                column-number-mode
+                epa-file-enable
+                global-auto-revert-mode))
+  (add-hook 'after-init-hook mode))
+(add-hook 'prog-mode-hook 'ar/show-trailing-whitespace)
+(add-hook 'before-make-frame-hook 'ar/set-frame-setting)
+
+(require 'column-enforce-mode)
+(global-column-enforce-mode)
+
+(require 'eldoc)
+
+(require 'flyspell)
+(cl-loop for (hook . function)
+         in '((markdown-mode-hook . flyspell-mode)
+              (text-mode-hook . turn-on-flyspell)
+              (prog-mode-hook . flyspell-prog-mode))
+         do (add-hook hook function))
+;; EmacsWiki said it helps.
+(setq ispell-list-command "--list")
 
 ;; Need to install pdf-tools for this to work
 (pdf-loader-install)
 
-(use-package emms
-  :config
-  (emms-all)
-  (emms-default-players))
-(use-package helm-emms)
+(require 'emms)
+(emms-all)
+(emms-default-players)
+(require 'helm-emms)
 
 ;;; Not exactly related to pdf-tools, but let it be there
 (defun unpdf ()
@@ -193,9 +201,10 @@
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
 
-(use-package transient)
 
-(use-package magit
+(require' transient)
+
+(require 'magit
   :after transient
   :bind (("C-x g" . magit-status)
          ("C-x M-g" . magit-dispatch))
@@ -203,6 +212,9 @@
   (add-to-list 'magit-tag-version-regexp-alist
                '("^[-._+ ]?-pre-release-\\.?$" . -4)
                t 'equal))
+(define-key global-map (kbd "C-x g") 'magit-status)
+(define-key global-map (kbd "C-x M-g") 'magit-dispatch)
+
 (use-package clean-aindent-mode
   :bind ("RET" . newline-and-indent)
   :custom (clean-aindent-is-simple-indent t))
@@ -213,81 +225,79 @@
 ;; SOCIAL
 ;;==============================================================================
 
-(use-package mu4e
-  :config
-  (load "~/.config/emacs/lisp/mu4e-config.el")
-  (require 'mu4e-config)
-  (defun ar/mu4e-set-account ()
-    "Set the account for composing a message.
+(require 'mu4e)
+(load "~/.config/emacs/lisp/mu4e-config.el")
+(require 'mu4e-config)
+(defun ar/mu4e-set-account ()
+  "Set the account for composing a message.
 This function is taken from:
 http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
 https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
-    (let* ((account
-            (completing-read (format "Compose with account: (%s) "
-                                     (mapconcat #'(lambda (var) (car var))
-                                                ar/mu4e-account-alist "/"))
-                             (mapcar #'(lambda (var) (car var)) ar/mu4e-account-alist)
-                             nil t nil nil (caar ar/mu4e-account-alist)))
-           (account-vars (cdr (assoc account ar/mu4e-account-alist))))
-      (if account-vars
-          (mapc #'(lambda (var)
-                    (set (car var) (cadr var)))
-                account-vars)
-        (error "No email account found"))))
-  :hook
-  (mu4e-compose-pre . ar/mu4e-set-account))
+  (let* ((account
+          (completing-read (format "Compose with account: (%s) "
+                                   (mapconcat #'(lambda (var) (car var))
+                                              ar/mu4e-account-alist "/"))
+                           (mapcar #'(lambda (var) (car var)) ar/mu4e-account-alist)
+                           nil t nil nil (caar ar/mu4e-account-alist)))
+         (account-vars (cdr (assoc account ar/mu4e-account-alist))))
+    (if account-vars
+        (mapc #'(lambda (var)
+                  (set (car var) (cadr var)))
+              account-vars)
+      (error "No email account found"))))
+(add-hook 'mu4e-compose-pre-hook 'ar/mu4e-set-account)
 
-(use-package bbdb
-  :config
-  (progn
-    (bbdb-initialize 'mu4e 'message)
-    (bbdb-mua-auto-update-init 'mu4e 'message))
+(require 'bbdb)
+(bbdb-initialize 'mu4e 'message)
+    (bbdb-mua-auto-update-init 'mu4e 'message)
+(setq bbdb-mua-auto-update-p t
+      ;; I don't want BBDB to pop up anytime I read emails.
+      bbdb-mua-pop-up nil
+      ;; Found somewhere on the Internet and altered to work with the
+      ;; services I use.
+      bbdb-ignore-message-alist
+      '(("From" . "donotreply")
+        ("Mail-Followup-to" . "donotreply")
+        ("Reply-to" . "donotreply")
+        ("From" . "noreply")
+        ("Mail-Followup-to" . "noreply")
+        ("Reply-to" . "noreply")
+        ("From" . "no-reply")
+        ("Mail-Followup-to" . "no-reply")
+        ("Reply-to" . "no-reply")
+        ("From" . "no_reply")
+        ("Mail-Followup-to" . "no_reply")
+        ("Reply-to" . "no_reply")
+        ("From" . "comments-noreply")
+        ("Mail-Followup-to". "comments-noreply")
+        ("Reply-to" . "comments-noreply")
+        ("From" . "notification")
+        ("Mail-Followup-to" . "notification")
+        ("Reply-to" . "notification")
+        ("From" . "notifications")
+        ("Mail-Followup-to" . "notifications")
+        ("Reply-to" . "notifications")
+        ("From" . "info")
+        ("Mail-Followup-to" . "info")
+        ("Reply-to" . "info")
+        ("From" . "Info")
+        ("Mail-Followup-to" . "Info")
+        ("Reply-to" . "Info")
+        ("From" . "drive-shares-noreply")
+        ("Mail-Followup-to" . "drive-shares-noreply")
+        ("Reply-to" . "drive-shares-noreply")
+        ("From" . "notifications")
+        ("Mail-Followup-to" . "notifications")
+        ("Reply-to" . "notifications")))
+
+(require 'erc
   :custom
-  (bbdb-mua-auto-update-p t)
-  (bbdb-mua-pop-up nil "I don't want BBDB to pop up anytime I read emails.")
-  (bbdb-ignore-message-alist
-   '(("From" . "donotreply")
-     ("Mail-Followup-to" . "donotreply")
-     ("Reply-to" . "donotreply")
-     ("From" . "noreply")
-     ("Mail-Followup-to" . "noreply")
-     ("Reply-to" . "noreply")
-     ("From" . "no-reply")
-     ("Mail-Followup-to" . "no-reply")
-     ("Reply-to" . "no-reply")
-     ("From" . "no_reply")
-     ("Mail-Followup-to" . "no_reply")
-     ("Reply-to" . "no_reply")
-     ("From" . "comments-noreply")
-     ("Mail-Followup-to". "comments-noreply")
-     ("Reply-to" . "comments-noreply")
-     ("From" . "notification")
-     ("Mail-Followup-to" . "notification")
-     ("Reply-to" . "notification")
-     ("From" . "notifications")
-     ("Mail-Followup-to" . "notifications")
-     ("Reply-to" . "notifications")
-     ("From" . "info")
-     ("Mail-Followup-to" . "info")
-     ("Reply-to" . "info")
-     ("From" . "Info")
-     ("Mail-Followup-to" . "Info")
-     ("Reply-to" . "Info")
-     ("From" . "drive-shares-noreply")
-     ("Mail-Followup-to" . "drive-shares-noreply")
-     ("Reply-to" . "drive-shares-noreply")
-     ("From" . "notifications")
-     ("Mail-Followup-to" . "notifications")
-     ("Reply-to" . "notifications"))
-   "Found somewhere on the Internet and altered to work with the services I use."))
+  ())
+(setq erc-autojoin-channels-alist '((list ".*\.libera.chat" "lisp" "nyxt")))
+(require 'erc-colorize)
+(require 'erc-image)
 
-(use-package erc
-  :custom
-  (erc-autojoin-channels-alist . ((list ".*\.libera.chat" "lisp" "nyxt"))))
-(use-package erc-colorize)
-(use-package erc-image)
-
-(use-package telega)
+(require 'telega)
 
 ;;==============================================================================
 ;; HELM AND FRIENDS
@@ -305,94 +315,93 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   (define-key eshell-mode-map (kbd "M-l")
     'helm-eshell-history))
 
-(use-package helm
-  :diminish helm-mode
-  :init
-  (progn
-    (require 'helm-config)
-    (if (version< "26.0.50" emacs-version)
-        (eval-when-compile (require 'helm-lib)))
-    (when (executable-find "curl")
-      (setq helm-google-suggest-use-curl-p t)))
-  :config
-  (helm-mode)
-  :custom
-  (helm-lisp-fuzzy-completion t)
-  (helm-scroll-amount 4)
-  (helm-ff-search-library-in-sexp t)
-  (helm-split-window-in-side-p t)
-  (helm-echo-input-in-header-line t)
-  (helm-ff-file-name-history-use-recentf t)
-  (helm-move-to-line-cycle-in-source t)
-  (helm-buffer-skip-remote-checking t)
-  (helm-mode-fuzzy-match t)
-  (helm-buffers-fuzzy-matching t)
-  (helm-org-headings-fontify t)
-  (helm-M-x-fuzzy-match t)
-  (helm-imenu-fuzzy-match t)
-  (helm-lisp-fuzzy-completion t)
-  (helm-buffer-skip-remote-checking t)
-  (helm-locate-fuzzy-match t)
-  (helm-display-header-line nil)
-  :hook ((helm-minibuffer-set-up . ar/helm-hide-minibuffer-maybe)
-         (helm-goto-line-before . helm-save-current-pos-to-mark-ring)
-         (eshell-mode . ar/helm-eshell-enable-history))
-  :bind (("C-x c" . nil)
-         ("C-c h" . helm-command-prefix)
-         ("M-x" . helm-M-x)
-         ("M-y" . helm-show-kill-ring)
-         ("C-x b" . helm-buffers-list)
-         ("C-x C-f" . helm-find-files)
-         ("C-x C-d" . helm-browse-project)
-         ("C-c r" . helm-recentf)
-         :map helm-command-map
-         ("C-h SPC" . helm-all-mark-rings)
-         ("C-c h o" . helm-occur)
-         ("C-c h w" . helm-wikipedia-suggest)
-         ("C-c h g" . helm-google-suggest)
-         ("C-c h x" . helm-register)
-         ([remap list-buffers] . helm-buffers-list)
-         :map minibuffer-local-map
-         ("M-n" . helm-minibuffer-history)
-         ("M-p" . helm-minibuffer-history)
-         :map helm-map
-         ("<tab>" . helm-execute-persistent-action) ; rebind tab to do persistent action
-         ("C-i" . helm-execute-persistent-action)   ; make TAB works in terminal
-         ("C-z" . helm-select-action)))             ; list actions using C-z
+(require 'helm-config)
+(if (version< "26.0.50" emacs-version)
+    (eval-when-compile (require 'helm-lib)))
+(when (executable-find "curl")
+  (setq helm-google-suggest-use-curl-p t))
+(require 'helm)
+(helm-mode)
+(setq helm-lisp-fuzzy-completion t
+      helm-scroll-amount 4
+      helm-ff-search-library-in-sexp t
+      helm-split-window-in-side-p t
+      helm-echo-input-in-header-line t
+      helm-ff-file-name-history-use-recentf t
+      helm-move-to-line-cycle-in-source t
+      helm-buffer-skip-remote-checking t
+      helm-mode-fuzzy-match t
+      helm-buffers-fuzzy-matching t
+      helm-org-headings-fontify t
+      helm-M-x-fuzzy-match t
+      helm-imenu-fuzzy-match t
+      helm-lisp-fuzzy-completion t
+      helm-buffer-skip-remote-checking t
+      helm-locate-fuzzy-match t
+      helm-display-header-line nil)
+(add-hook 'helm-minibuffer-set-up-hook 'ar/helm-hide-minibuffer-maybe)
+(add-hook 'helm-goto-line-before-hook 'helm-save-current-pos-to-mark-ring)
+(add-hook 'eshell-mode-hook 'ar/helm-eshell-enable-history)
 
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-global-mode))
+(cl-loop for (key . command)
+         in '(("C-x c" . nil)
+              ("C-c h" . helm-command-prefix)
+              ("M-x" . helm-M-x)
+              ("M-y" . helm-show-kill-ring)
+              ("C-x b" . helm-buffers-list)
+              ("C-x C-f" . helm-find-files)
+              ("C-x C-d" . helm-browse-project)
+              ("C-c r" . helm-recentf))
+         do (define-key global-map (kbd key) command))
+(cl-loop for (key . command)
+         in '(("C-h SPC" . helm-all-mark-rings)
+              ("C-c h o" . helm-occur)
+              ("C-c h w" . helm-wikipedia-suggest)
+              ("C-c h g" . helm-google-suggest)
+              ("C-c h x" . helm-register))
+         do (define-key helm-command-map (kbd key) command))
+(define-key helm-command-map [remap list-buffers] 'helm-buffers-list)
+(define-key minibuffer-local-map (kbd "M-n") 'helm-minibuffer-history)
+(define-key minibuffer-local-map (kbd "M-p") 'helm-minibuffer-history)
+;; rebind tab to do persistent action
+(define-key helm-map "<tab>" 'helm-execute-persistent-action)
+;; make TAB works in terminal
+(define-key helm-map "C-i" 'helm-execute-persistent-action)
+;; list actions using C-z
+(define-key helm-map "C-z" 'helm-select-action)
 
-(use-package helm-projectile
-  :requires (helm projectile)
-  :config (helm-projectile-on)
-  :custom
-  (projectile-completion-system 'helm)
-  (projectile-indexing-method 'alien))
+(require 'projectile)
+(projectile-global-mode)
 
-(use-package helm-ag
-  :custom
-  (helm-ag-base-command "rg --no-heading")
-  (helm-ag-fuzzy-match t)
-  (helm-ag-success-exit-status '(0 2))
-  (helm-ag-insert-at-point 'symbol)
-  :bind
-  ("C-M-s" . helm-do-ag-project-root))
+(require 'helm-projectile)
+(helm-projectile-on)
+(setq projectile-completion-system 'helm
+      projectile-indexing-method 'alien)
 
-(use-package helm-swoop
-  :requires (helm)
-  :bind (("C-c h o" . helm-swoop)
-         ("C-c h s" . helm-multi-swoop-all)
-         :map isearch-mode-map
-         ("M-i" . helm-swoop-from-isearch) ; When doing isearch, hand the word over to helm-swoop
-         :map helm-swoop-map
-         ("M-i" . helm-multi-swoop-all-from-helm-swoop)) ; From helm-swoop to helm-multi-swoop-all
-  :custom
-  (helm-multi-swoop-edit-save t) ; Save buffer when helm-multi-swoop-edit complete
-  (helm-swoop-split-with-multiple-windows t) ; If this value is t, split window inside the current window
-  (helm-swoop-split-direction 'split-window-vertically) ; Split direcion. 'split-window-vertically or 'split-window-horizontally
-  (helm-swoop-speed-or-color t)) ; If nil, you can slightly boost invoke speed in exchange for text color(use-package helm-swoop
+(require 'helm-ag)
+(setq helm-ag-base-command "rg --no-heading"
+      helm-ag-fuzzy-match t
+      helm-ag-success-exit-status '(0 2)
+      helm-ag-insert-at-point 'symbol)
+(define-key global-map (kbd "C-M-s") 'helm-do-ag-project-root)
+
+(require 'helm-swoop)
+(define-key global-map (kbd "C-c h o") 'helm-swoop)
+(define-key global-map (kbd "C-c h s") 'helm-multi-swoop-all)
+;; When doing isearch, hand the word over to helm-swoop
+(define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+;; From helm-swoop to helm-multi-swoop-all
+(define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
+(setq
+ ;; Save buffer when helm-multi-swoop-edit complete
+ helm-multi-swoop-edit-save t
+ ;; If this value is t, split window inside the current window
+ helm-swoop-split-with-multiple-windows t
+ ;; Split direcion. 'split-window-vertically or
+ ;; 'split-window-horizontally
+ helm-swoop-split-direction 'split-window-vertically
+ ;; If nil, you can boost invoke speed in exchange for text color
+ helm-swoop-speed-or-color t)
 
 ;;==============================================================================
 ;; ORG
