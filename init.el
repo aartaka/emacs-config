@@ -52,11 +52,8 @@
 (require 'all-the-icons)
 (require 'miniedit)
 
-(require 'helm-company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0.01)
-(define-key company-mode-map "C-:" 'helm-company)
-(define-key company-active-map "C-:" 'helm-company)
 (require 'auto-complete)
 
 (require 'wordnut)
@@ -181,7 +178,6 @@
 (require 'emms)
 (emms-all)
 (emms-default-players)
-(require 'helm-emms)
 
 ;;; Not exactly related to pdf-tools, but let it be there
 (defun unpdf ()
@@ -203,15 +199,11 @@
 
 
 (require' transient)
-
-(require 'magit
-  :after transient
-  :bind (("C-x g" . magit-status)
-         ("C-x M-g" . magit-dispatch))
-  :config (setf vc-handled-backends nil)
-  (add-to-list 'magit-tag-version-regexp-alist
+(require 'magit)
+(setf vc-handled-backends nil)
+(add-to-list 'magit-tag-version-regexp-alist
                '("^[-._+ ]?-pre-release-\\.?$" . -4)
-               t 'equal))
+               t 'equal)
 (define-key global-map (kbd "C-x g") 'magit-status)
 (define-key global-map (kbd "C-x M-g") 'magit-dispatch)
 
@@ -290,9 +282,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
         ("Mail-Followup-to" . "notifications")
         ("Reply-to" . "notifications")))
 
-(require 'erc
-  :custom
-  ())
+(require 'erc)
 (setq erc-autojoin-channels-alist '((list ".*\.libera.chat" "lisp" "nyxt")))
 (require 'erc-colorize)
 (require 'erc-image)
@@ -315,13 +305,21 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   (define-key eshell-mode-map (kbd "M-l")
     'helm-eshell-history))
 
-(require 'helm-config)
 (if (version< "26.0.50" emacs-version)
     (eval-when-compile (require 'helm-lib)))
 (when (executable-find "curl")
   (setq helm-google-suggest-use-curl-p t))
 (require 'helm)
-(helm-mode)
+(require 'helm-autoloads)
+(global-set-key (kbd "M-x") #'helm-M-x)
+(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+(global-set-key (kbd "C-x C-f") #'helm-find-files)
+;; Rebind tab to do persistent action.
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+;; Make TAB works in terminal.
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+;; List actions using C-z.
+(define-key helm-map (kbd "C-z")  'helm-select-action)
 (setq helm-lisp-fuzzy-completion t
       helm-scroll-amount 4
       helm-ff-search-library-in-sexp t
@@ -342,6 +340,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (add-hook 'helm-minibuffer-set-up-hook 'ar/helm-hide-minibuffer-maybe)
 (add-hook 'helm-goto-line-before-hook 'helm-save-current-pos-to-mark-ring)
 (add-hook 'eshell-mode-hook 'ar/helm-eshell-enable-history)
+(helm-mode 1)
 
 (cl-loop for (key . command)
          in '(("C-x c" . nil)
@@ -354,7 +353,8 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
               ("C-c r" . helm-recentf))
          do (define-key global-map (kbd key) command))
 (cl-loop for (key . command)
-         in '(("C-h SPC" . helm-all-mark-rings)
+         in '(("<tab>" . nil)
+	      ("C-h SPC" . helm-all-mark-rings)
               ("C-c h o" . helm-occur)
               ("C-c h w" . helm-wikipedia-suggest)
               ("C-c h g" . helm-google-suggest)
@@ -363,10 +363,8 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (define-key helm-command-map [remap list-buffers] 'helm-buffers-list)
 (define-key minibuffer-local-map (kbd "M-n") 'helm-minibuffer-history)
 (define-key minibuffer-local-map (kbd "M-p") 'helm-minibuffer-history)
-;; rebind tab to do persistent action
-(define-key helm-map "<tab>" 'helm-execute-persistent-action)
 ;; make TAB works in terminal
-(define-key helm-map "C-i" 'helm-execute-persistent-action)
+(define-key helm-map "C-i" 'helm-)
 ;; list actions using C-z
 (define-key helm-map "C-z" 'helm-select-action)
 
@@ -402,6 +400,12 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
  helm-swoop-split-direction 'split-window-vertically
  ;; If nil, you can boost invoke speed in exchange for text color
  helm-swoop-speed-or-color t)
+
+(require 'helm-company)
+(define-key company-mode-map "C-:" 'helm-company)
+(define-key company-active-map "C-:" 'helm-company)
+
+(require 'helm-emms)
 
 ;;==============================================================================
 ;; ORG
