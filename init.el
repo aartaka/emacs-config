@@ -789,42 +789,6 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   (brainfuck-mode . hs-minor-mode)
   (brainfuck-mode . bf-setup))
 
-;;==============================================================================
-;; PYTHON CUSTOMIZATIONS
-;;==============================================================================
-
-(use-package elpy
-  :custom
-  (elpy-get-info-from-shell t)
-  (elpy-rpc-python-command "python3")
-  (python-shell-interpreter "python3")
-  (python-shell-prompt-detect-failure-warning nil)
-  :config
-  (progn (elpy-enable)
-         (add-to-list 'python-shell-completion-native-disabled-interpreters
-                      "jupyter"))
-  :hook (python-mode . elpy-mode))
-
-(advice-add
- 'elpy-doc :around
- (lambda (orig &rest args)
-   (condition-case nil
-       (apply orig args)
-     (error
-      (elpy-doc--show
-       (python-shell-send-string-no-output
-        (concat "help(" (thing-at-point 'filename) ")")))))))
-
-(defun run-django-python ()
-  "Run a python shell tailor-made for Django development."
-  (interactive)
-  (run-python
-   (concat
-    "guix shell -m " (concat "\"" (projectile-project-root) "manifest.scm\"")
-    " -- python3 "
-    (concat "\"" (projectile-project-root) "manage.py\"")
-    " shell -i python")))
-
 (use-package ein
   :config (require 'ein-notebook)
   :hook (ein:notebook-python-mode . ar/switch-company-to-ac))
@@ -845,11 +809,6 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
          (elpy-mode . flycheck-mode)))
 
 (use-package helm-flycheck)
-
-(use-package py-autopep8
-  :requires (elpy ein)
-  :hook ((elpy-mode . py-autopep8-enable-on-save)
-         (ein:notebook-python-mode . py-autopep8-enable-on-save)))
 
 ;;=============================================================================
 ;; WEB-DEVELOPMENT CUSTOMIZATIONS
