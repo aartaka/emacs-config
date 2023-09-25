@@ -54,6 +54,7 @@
 
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0.01)
+(add-to-list 'rm-blacklist " company")
 (require 'auto-complete)
 
 (require 'wordnut)
@@ -67,6 +68,7 @@
 (require 'yasnippet-classic-snippets)
 (define-key global-map (kbd "C-c y") 'helm-yas-complete)
 (setq helm-yas-space-match-any-greedy t)
+(add-to-list 'rm-blacklist " yas")
 
 (eval-when-compile
   (pinentry-start))
@@ -160,8 +162,11 @@
 
 (require 'column-enforce-mode)
 (global-column-enforce-mode)
+(add-to-list 'rm-blacklist " 80col")
+(add-to-list 'rm-blacklist " 100col")
 
 (require 'eldoc)
+(add-to-list 'rm-blacklist " ElDoc")
 
 (require 'flyspell)
 (cl-loop for (hook . function)
@@ -341,6 +346,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (add-hook 'helm-goto-line-before-hook 'helm-save-current-pos-to-mark-ring)
 (add-hook 'eshell-mode-hook 'ar/helm-eshell-enable-history)
 (helm-mode 1)
+(add-to-list 'rm-blacklist " Helm")
 
 (cl-loop for (key . command)
          in '(("C-x c" . nil)
