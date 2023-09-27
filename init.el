@@ -43,6 +43,8 @@
   (auto-package-update-delete-old-versions t)
   (auto-package-update-hide-results t))
 
+(require 'rich-minority)
+
 ;;==============================================================================
 ;; OTHER ESSENTIAL CONFIGURATIONS AND HELPERS
 ;;==============================================================================
