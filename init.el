@@ -372,9 +372,9 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (define-key minibuffer-local-map (kbd "M-n") 'helm-minibuffer-history)
 (define-key minibuffer-local-map (kbd "M-p") 'helm-minibuffer-history)
 ;; make TAB works in terminal
-(define-key helm-map "C-i" 'helm-)
+(define-key helm-map (kbd "C-i") 'helm-)
 ;; list actions using C-z
-(define-key helm-map "C-z" 'helm-select-action)
+(define-key helm-map (kbd "C-z") 'helm-select-action)
 
 (require 'projectile)
 (projectile-global-mode)
@@ -410,8 +410,8 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
  helm-swoop-speed-or-color t)
 
 (require 'helm-company)
-(define-key company-mode-map "C-:" 'helm-company)
-(define-key company-active-map "C-:" 'helm-company)
+(define-key company-mode-map (kbd "C-:") 'helm-company)
+(define-key company-active-map (kbd "C-:") 'helm-company)
 
 (require 'helm-emms)
 
