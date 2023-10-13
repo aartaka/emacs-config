@@ -104,41 +104,42 @@
     (set-frame-font "IBM Plex Mono-17" t t)
   (set-frame-font "17" t t))
 
-(setq
- ;; Use TCP sockets.
- server-use-tcp t
- ;; TCP port.
- server-port 8500
- ;; Integrate system clipboard into Emacs.
- save-interprogram-paste-before-kill t
- ;; This beeping sound annoys me so much...
- visible-bell t
- backup-by-copying t
- ;; For backups to not clutter everything.
- backup-directory-alist '(("." . "~/.saves/"))
- ;; Delete old file backups silently.
- delete-old-versions t
- ;; Display dirs first in dired.
- ls-lisp-dirs-first t
- ;; Turn off ECB tips.
- ecb-tip-of-the-day nil
- ;; Split windows over horisontal line
- split-height-threshold 0
- ;; No splash screen.
- inhibit-startup-screen t
- ;; Startup on eshell.
- initial-buffer-choice #'eshell
- x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)
- prefer-coding-system 'utf-8
- ;; Don't print per-word messages.
- flyspell-issue-message-flag nil
- ;; Fix weird backspace.
- normal-erase-is-backspace t
- browse-url-browser-function #'ar/browse-url-nyxt
- ;; Use space to indent by default.
- indent-tabs-mode nil
- ;; Set tab representation width to 4 spaces.
- tab-width 4)
+(dolist (binding
+         `(;; Use TCP sockets.
+           (server-use-tcp t)
+           ;; TCP port.
+           (server-port 8500)
+           ;; Integrate system clipboard into Emacs.
+           (save-interprogram-paste-before-kill t)
+           ;; This beeping sound annoys me so much...
+           (visible-bell t)
+           (backup-by-copying t)
+           ;; For backups to not clutter everything.
+           (backup-directory-alist (("." . "~/.saves/")))
+           ;; Delete old file backups silently.
+           (delete-old-versions t)
+           ;; Display dirs first in dired.
+           (ls-lisp-dirs-first t)
+           ;; Turn off ECB tips.
+           (ecb-tip-of-the-day nil)
+           ;; Split windows over horisontal line
+           (split-height-threshold 0)
+           ;; No splash screen.
+           (inhibit-startup-screen t)
+           ;; Startup on eshell.
+           (initial-buffer-choice ,#'eshell)
+           (x-select-request-type (UTF8_STRING COMPOUND_TEXT TEXT STRING))
+           (prefer-coding-system 'utf-8)
+           ;; Don't print per-word messages.
+           (flyspell-issue-message-flag nil)
+           ;; Fix weird backspace.
+           (normal-erase-is-backspace t)
+           (browse-url-browser-function ,#'ar/browse-url-nyxt)
+           ;; Use space to indent by default.
+           (indent-tabs-mode nil)
+           ;; Set tab representation width to 4 spaces.
+           (tab-width 4)))
+  (set-default (car binding) (cadr binding)))
 
 (cl-loop for (key . function)
          in '(("C-x C-d" . dired)
@@ -177,7 +178,7 @@
               (prog-mode-hook . flyspell-prog-mode))
          do (add-hook hook function))
 ;; EmacsWiki said it helps.
-(setq ispell-list-command "--list")
+(setf ispell-list-command "--list")
 
 ;; Need to install pdf-tools for this to work
 (pdf-loader-install)
@@ -249,7 +250,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (require 'bbdb)
 (bbdb-initialize 'mu4e 'message)
     (bbdb-mua-auto-update-init 'mu4e 'message)
-(setq bbdb-mua-auto-update-p t
+(setf bbdb-mua-auto-update-p t
       ;; I don't want BBDB to pop up anytime I read emails.
       bbdb-mua-pop-up nil
       ;; Found somewhere on the Internet and altered to work with the
@@ -327,7 +328,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
 ;; List actions using C-z.
 (define-key helm-map (kbd "C-z")  'helm-select-action)
-(setq helm-lisp-fuzzy-completion t
+(setf helm-lisp-fuzzy-completion t
       helm-scroll-amount 4
       helm-ff-search-library-in-sexp t
       helm-split-window-in-side-p t
@@ -381,11 +382,11 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 
 (require 'helm-projectile)
 (helm-projectile-on)
-(setq projectile-completion-system 'helm
+(setf projectile-completion-system 'helm
       projectile-indexing-method 'alien)
 
 (require 'helm-ag)
-(setq helm-ag-base-command "rg --no-heading"
+(setf helm-ag-base-command "rg --no-heading"
       helm-ag-fuzzy-match t
       helm-ag-success-exit-status '(0 2)
       helm-ag-insert-at-point 'symbol)
@@ -398,7 +399,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
 ;; From helm-swoop to helm-multi-swoop-all
 (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
-(setq
+(setf
  ;; Save buffer when helm-multi-swoop-edit complete
  helm-multi-swoop-edit-save t
  ;; If this value is t, split window inside the current window
@@ -550,13 +551,13 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (use-package org-ref
   :init
   (progn
-   (setq reftex-default-bibliography '("~/Documents/bibtex/bibliography.bib")
-         org-ref-bibliography-notes "~/Documents/bibtex/notes.org"
-         org-ref-default-bibliography reftex-default-bibliography
-         org-ref-pdf-directory "~/Documents/bibtex/bibtex-pdfs/"
-         bibtex-completion-bibliography '("~/Documents/bibtex/bibliography.bib")
-         bibtex-completion-library-path "~/Documents/bibtex/bibtex-pdfs"
-         bibtex-completion-notes-path "~/Documents/bibtex/helm-bibtex-notes"))
+    (setf reftex-default-bibliography '("~/Documents/bibtex/bibliography.bib")
+          org-ref-bibliography-notes "~/Documents/bibtex/notes.org"
+          org-ref-default-bibliography reftex-default-bibliography
+          org-ref-pdf-directory "~/Documents/bibtex/bibtex-pdfs/"
+          bibtex-completion-bibliography '("~/Documents/bibtex/bibliography.bib")
+          bibtex-completion-library-path "~/Documents/bibtex/bibtex-pdfs"
+          bibtex-completion-notes-path "~/Documents/bibtex/helm-bibtex-notes"))
   :config
   (progn
     (require 'org-ref-pdf)
@@ -615,7 +616,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
       (interactive (list (common-lisp-hyperspec--read-format-character)))
       (let ((browse-url-browser-function 'eww-browse-url))
         (hyperspec-lookup-format character)))
-    (setq sly-lisp-implementations
+    (setf sly-lisp-implementations
           `((sbcl ("sbcl" "--dynamic-space-size" "5000") :coding-system utf-8-unix)
             (sbcl-plain ("sbcl") :coding-system utf-8-unix)
             (sbcl-nyxt
@@ -806,7 +807,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   :requires (elpy ein)
   :init (require 's)
   :config
-  (setq flycheck-disabled-checkers
+  (setf flycheck-disabled-checkers
         (append flycheck-disabled-checkers
                 '(javascript-jshint json-jsonlist)))
   (flycheck-add-mode 'javascript-eslint 'web-mode)
@@ -874,7 +875,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 ;;   :custom (stimmung-themes-dark-highlight-color "indian red"
 ;;                                                 "To make highlight red-ish."))
 
-(setq custom-file "~/.config/emacs/custom.el")
+(setf custom-file "~/.config/emacs/custom.el")
 (load custom-file)
 
 (put 'narrow-to-region 'disabled nil)
