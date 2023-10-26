@@ -102,6 +102,9 @@
     (set-frame-font "IBM Plex Mono-17" t t)
   (set-frame-font "17" t t))
 
+(setq-default indent-tabs-mode nil)
+(setq tab-width 4) ; or any other preferred value
+
 (dolist (binding
          `(;; Use TCP sockets.
            (server-use-tcp t)
@@ -132,11 +135,7 @@
            (flyspell-issue-message-flag nil)
            ;; Fix weird backspace.
            (normal-erase-is-backspace t)
-           (browse-url-browser-function ,#'ar/browse-url-nyxt)
-           ;; Use space to indent by default.
-           (indent-tabs-mode nil)
-           ;; Set tab representation width to 4 spaces.
-           (tab-width 4)))
+           (browse-url-browser-function ,#'ar/browse-url-nyxt)))
   (set-default (car binding) (cadr binding)))
 
 (cl-loop for (key . function)
