@@ -227,6 +227,7 @@
 This function is taken from:
 http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
 https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
+  (interactive)
   (let* ((account
           (completing-read (format "Compose with account: (%s) "
                                    (mapconcat #'(lambda (var) (car var))
@@ -296,6 +297,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 ;;==============================================================================
 
 (defun ar/helm-hide-minibuffer-maybe ()
+  (interactive)
   (when (with-helm-buffer helm-echo-input-in-header-line)
     (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
       (overlay-put ov 'window (selected-window))
@@ -304,8 +306,9 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
       (setq-local cursor-type nil))))
 
 (defun ar/helm-eshell-enable-history ()
+  (interactive)
   (define-key eshell-mode-map (kbd "M-l")
-    'helm-eshell-history))
+              'helm-eshell-history))
 
 (if (version< "26.0.50" emacs-version)
     (eval-when-compile (require 'helm-lib)))
