@@ -741,6 +741,10 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   (lisp-mode . hs-minor-mode)
   (geiser-mode . hs-minor-mode))
 
+(defun ar/disable-tabs ()
+  (interactive)
+  (buffer-local-set-state indent-tabs-mode nil))
+
 (use-package cc-mode
   :config (setf (cdr (assoc 'other c-default-style)) "linux")
   :custom
@@ -754,7 +758,9 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
          ("<tab>" . company-indent-or-complete-common)
          :map c++-mode-map
          ("<tab>" . company-indent-or-complete-common))
-  :hook (c-mode-common . hs-minor-mode))
+  :hook
+  (c-mode-common . hs-minor-mode)
+  (c-mode-common . ar/disable-tabs))
 
 (use-package nhexl-mode
   :custom
