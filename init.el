@@ -196,9 +196,8 @@
        t)
       (switch-to-buffer buffer))))
 
-(use-package nov
-  :mode ("\\.epub\\'" . nov-mode))
-
+(require 'nov)
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
 (require' transient)
 (require 'magit)
@@ -213,8 +212,7 @@
   :bind ("RET" . newline-and-indent)
   :custom (clean-aindent-is-simple-indent t))
 
-(use-package keepass-mode)
-
+(require 'keepass-mode)
 ;;==============================================================================
 ;; SOCIAL
 ;;==============================================================================
@@ -506,268 +504,217 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   :hook ((org-mode . org-indent-mode)
          (org-mode . visual-line-mode)))
 
-(use-package babel
-  :config
-  (progn
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((C . t)
-       (css . t)
-       (ditaa . t)
-       (calc . t)
-       (emacs-lisp . t)
-       (dot . t)
-       (js . t)
-       (latex . t)
-       (lisp . t)
-       (org . t)
-       (python . t)
-       (scheme . t)
-       (sql . t)
-       (sqlite . t))))
-  :custom (org-babel-C-compiler
-           "clang" "Change C compiler to Clang—diagnostics are better"))
+(require 'babel)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((C . t)
+   (css . t)
+   (ditaa . t)
+   (calc . t)
+   (emacs-lisp . t)
+   (dot . t)
+   (js . t)
+   (latex . t)
+   (lisp . t)
+   (org . t)
+   (python . t)
+   (scheme . t)
+   (sql . t)
+   (sqlite . t)))
+(setf org-babel-C-compiler "clang")
 
-(use-package ox-gemini
-  :after org
-  :config (add-to-list 'org-export-backends 'gemini))
-(use-package ox-pandoc
-  :after org
-  :config (add-to-list 'org-export-backends 'pandoc))
-(use-package ox-gfm
-  :after org
-  :config (add-to-list 'org-export-backends 'gfm))
-(use-package ox-twbs
-  :after org
-  :config (add-to-list 'org-export-backends 'twbs))
-(use-package ox-tiddly
-  :after org
-  :config (add-to-list 'org-export-backends 'tiddly))
+(require 'ox-gemini)
+(add-to-list 'org-export-backends 'gemini)
+(require 'ox-pandoc)
+(add-to-list 'org-export-backends 'pandoc)
+(require 'ox-gfm)
+(add-to-list 'org-export-backends 'gfm)
+(require 'ox-twbs)
+(add-to-list 'org-export-backends 'twbs)
 
-(use-package org-ref
-  :init
-  (progn
-    (setf reftex-default-bibliography '("~/Documents/bibtex/bibliography.bib")
-          org-ref-bibliography-notes "~/Documents/bibtex/notes.org"
-          org-ref-default-bibliography reftex-default-bibliography
-          org-ref-pdf-directory "~/Documents/bibtex/bibtex-pdfs/"
-          bibtex-completion-bibliography '("~/Documents/bibtex/bibliography.bib")
-          bibtex-completion-library-path "~/Documents/bibtex/bibtex-pdfs"
-          bibtex-completion-notes-path "~/Documents/bibtex/helm-bibtex-notes"))
-  :config
-  (progn
-    (require 'org-ref-pdf)
-    (require 'org-ref-url-utils))
-  :bind ("C-c j" . org-ref-cite-insert-helm)
-  :custom
-  (tex-bibtex-command "biber")
-  (tex-run-command "pdftex")
-  (latex-run-command "pdflatex"))
+(require 'org-ref)
+(define-key org-mode-map "C-c j" 'org-ref-cite-insert-helm)
+(require 'org-ref-pdf)
+(require 'org-ref-url-utils)
+(setf reftex-default-bibliography '("~/Documents/bibtex/bibliography.bib")
+      org-ref-bibliography-notes "~/Documents/bibtex/notes.org"
+      org-ref-default-bibliography reftex-default-bibliography
+      org-ref-pdf-directory "~/Documents/bibtex/bibtex-pdfs/"
+      bibtex-completion-bibliography '("~/Documents/bibtex/bibliography.bib")
+      bibtex-completion-library-path "~/Documents/bibtex/bibtex-pdfs"
+      bibtex-completion-notes-path "~/Documents/bibtex/helm-bibtex-notes"
+      tex-bibtex-command "biber"
+      tex-run-command "pdftex"
+      latex-run-command "pdflatex")
 
-(use-package org-make-toc)
+(require 'org-make-toc)
 
-(use-package markdown-mode)
-(use-package gemini-mode)
-(use-package edit-indirect)
+(require 'markdown-mode)
+(require 'gemini-mode)
+(require 'edit-indirect)
 
-(use-package writegood-mode
-  :bind (("C-c C-g g" . writegood-grade-level)
-         ("C-c C-g e" . writegood-reading-ease))
-  :hook ((text-mode . writegood-mode)))
+(require 'writegood-mode)
+(add-hook 'text-mode-hook 'writegood-mode)
 
 ;;===============================================================================
 ;; LISP CUSTOMIZATIONS, WEEEEEEE!
 ;;===============================================================================
 
-(use-package sly
-  :init
-  (progn
-    (defun ar/set-lisp-indent ()
-      (interactive)
-      (set (make-local-variable lisp-indent-function)
-           'common-lisp-indent-function))
+(require 'sly)
 
-    (defun ar/set-lisp-columns ()
-      (interactive)
-      (set-variable 'column-enforce-column 100 t)))
-  :config
-  (progn
-    (require 'clhs)
-    (defun ar/hyperspec-lookup (symbol)
-      (interactive (list (common-lisp-hyperspec-read-symbol-name)))
-      (let ((browse-url-browser-function 'eww-browse-url))
-        (hyperspec-lookup symbol)))
+(defun ar/set-lisp-indent ()
+  (interactive)
+  (set (make-local-variable lisp-indent-function)
+       'common-lisp-indent-function))
 
-    (defun ar/hyperspec-lookup-reader-macro (macro)
-      (interactive
-       (list
-        (let ((completion-ignore-case t))
-          (completing-read "Look up reader-macro: "
-                           common-lisp-hyperspec--reader-macros nil t
-                           (common-lisp-hyperspec-reader-macro-at-point)))))
-      (let ((browse-url-browser-function 'eww-browse-url))
-        (hyperspec-lookup-reader-macro macro)))
+(defun ar/set-lisp-columns ()
+  (interactive)
+  (set-variable 'column-enforce-column 100 t))
 
-    (defun ar/hyperspec-lookup-format (character)
-      (interactive (list (common-lisp-hyperspec--read-format-character)))
-      (let ((browse-url-browser-function 'eww-browse-url))
-        (hyperspec-lookup-format character)))
-    (setf sly-lisp-implementations
-          `((sbcl ("sbcl" "--dynamic-space-size" "5000") :coding-system utf-8-unix)
-            (sbcl-plain ("sbcl") :coding-system utf-8-unix)
-            (sbcl-nyxt
-             (lambda ()
-               (nyxt-make-guix-sbcl-for-nyxt
-                "~/git/nyxt"
-                :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
-                          "keepassxc" "gedit" "xclip" "gcc-toolchain")
-                :no-grafts t)))
-            (sbcl-nyxt-force
-             (lambda ()
-               (nyxt-make-guix-sbcl-for-nyxt
-                "~/git/nyxt"
-                :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
-                          "keepassxc" "gedit" "xclip" "gcc-toolchain")
-                :no-grafts t
-                :force t)))
-            (ecl  ("ecl"))
-            (ccl  ("ccl"))
-            (gcl ("gcl"))
-            (abcl ("abcl"))
-            (clisp ("clisp"))
-            (clasp ("clasp")))))
-  :custom
-  (inferior-lisp-program "sbcl")
-  (sly-connection-update-interval 0.1)
-  :bind (("C-h -" . ar/hyperspec-lookup)
-         ("C-h #" . ar/hyperspec-lookup-reader-macro)
-         ("C-h ~" . ar/hyperspec-lookup-format)
-         ("C-c C-j" . sly-eval-print-last-expression))
-  :hook ((lisp-mode . ar/set-lisp-columns)
-         (lisp-mode . ar/set-lisp-indent)
-         (sly-editing . company-mode)
-         (sly-mode . golden-ratio-mode)))
-(use-package sly-asdf)
-(use-package sly-macrostep)
-(use-package sly-named-readtables)
-(use-package sly-repl-ansi-color)
-(use-package sly-quicklisp)
-(use-package helm-sly)
-(use-package helm-xref)
+(add-hook 'lisp-mode-hook 'ar/set-lisp-columns)
+(add-hook 'lisp-mode-hook 'ar/set-lisp-indent)
+(add-hook 'sly-editing-mode-hook 'company-mode)
 
-(use-package racket-mode)
-(use-package geiser
-  :after sly
-  :commands geiser-mode
-  :hook ((scheme-mode . geiser-mode)
-         (scheme-mode . golden-ratio-mode)))
+(require 'clhs)
 
-(use-package paredit
-  :diminish paredit-mode
-  :config
-  (defun no-space-between-@-open-paren (endp delimiter)
-    (not (and (eql ?\( delimiter)
-              (eql ?\@ (char-before (point))))))
-  :custom (paredit-space-for-delimiter-predicates
-           '(no-space-between-@-open-paren))
-  :commands paredit-mode
-  :hook ((sly-mode . paredit-mode)
-         (sly-editing . paredit-mode)
-         (emacs-lisp-mode . paredit-mode)
-         (eval-expression-minibuffer-setup . paredit-mode)
-         (lisp-mode . paredit-mode)
-         (lisp-interaction-mode . paredit-mode)
-         (scheme-mode . paredit-mode)
-         (geiser-mode . paredit-mode)
-         (arc-mode . paredit-mode)))
+(defun ar/hyperspec-lookup (symbol)
+  (interactive (list (common-lisp-hyperspec-read-symbol-name)))
+  (let ((browse-url-browser-function 'eww-browse-url))
+    (hyperspec-lookup symbol)))
 
-(use-package tagedit
-  :config (tagedit-add-paredit-like-keybindings)
-  :hook
-  (html-mode . tagedit-mode)
-  (web-mode . tagedit-mode))
+(defun ar/hyperspec-lookup-reader-macro (macro)
+  (interactive
+   (list
+    (let ((completion-ignore-case t))
+      (completing-read "Look up reader-macro: "
+                       common-lisp-hyperspec--reader-macros nil t
+                       (common-lisp-hyperspec-reader-macro-at-point)))))
+  (let ((browse-url-browser-function 'eww-browse-url))
+    (hyperspec-lookup-reader-macro macro)))
 
-(use-package paredit-everywhere
-  :diminish paredit-everywhere-mode
-  :hook (prog-mode . paredit-everywhere-mode))
+(defun ar/hyperspec-lookup-format (character)
+  (interactive (list (common-lisp-hyperspec--read-format-character)))
+  (let ((browse-url-browser-function 'eww-browse-url))
+    (hyperspec-lookup-format character)))
 
-(use-package clojure-mode
-  :interpreter
-  ("\\.edn$" . clojure-mode)
-  ("\\.boot$" . clojure-mode)
-  ("\\.cljs.*$" . clojure-mode)
-  :hook
-  (clojure-mode . paredit-mode)
-  (clojure-mode . subword-mode))
-(use-package clojure-mode-extra-font-locking)
+(setf sly-lisp-implementations
+      `((sbcl ("sbcl" "--dynamic-space-size" "5000") :coding-system utf-8-unix)
+        (sbcl-plain ("sbcl") :coding-system utf-8-unix)
+        (sbcl-nyxt
+         (lambda ()
+           (nyxt-make-guix-sbcl-for-nyxt
+            "~/git/nyxt"
+            :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
+                      "keepassxc" "gedit" "xclip" "gcc-toolchain")
+            :no-grafts t)))
+        (sbcl-nyxt-force
+         (lambda ()
+           (nyxt-make-guix-sbcl-for-nyxt
+            "~/git/nyxt"
+            :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
+                      "keepassxc" "gedit" "xclip" "gcc-toolchain")
+            :no-grafts t
+            :force t)))
+        (ecl  ("ecl"))
+        (ccl  ("ccl"))
+        (gcl ("gcl"))
+        (abcl ("abcl"))
+        (clisp ("clisp"))
+        (clasp ("clasp")))
+      inferior-lisp-program "sbcl"
+      sly-connection-update-interval 0.1)
+(define-key global-map (kbd "C-h -") 'ar/hyperspec-lookup)
+(define-key global-map (kbd "C-h #") 'ar/hyperspec-lookup-reader-macro)
+(define-key global-map (kbd "C-h ~") 'ar/hyperspec-lookup-format)
+(define-key sly-mode-map (kbd "C-c C-j") 'sly-eval-print-last-expression)
 
-(use-package parseclj)
-(use-package parseedn)
+(require 'sly-asdf)
+(require 'sly-macrostep)
+(require 'sly-named-readtables)
+(require 'sly-quicklisp)
+(require 'helm-sly)
+(require 'helm-xref)
 
-(use-package cider
-  :config
-  (defun cider-refresh ()
-    (interactive)
-    (cider-interactive-eval (format "(user/reset)")))
-  :custom
-  (cider-repl-pop-to-buffer-on-connect t)
-  (cider-show-error-buffer t)
-  (cider-auto-select-error-buffer t)
-  (cider-repl-history-file "~/.config/emacs/cider-history")
-  (cider-repl-wrap-history t)
-  :hook
-  (cider-mode . eldoc-mode)
-  (cider-repl-mode . paredit-mode)
-  :bind
-  (:map clojure-mode-map
-   ("C-M-r" . cider-refresh)))
+(require 'racket-mode)
+(require 'geiser)
+(add-hook 'scheme-mode-hook 'geiser-mode)
+
+(require 'clojure-mode)
+(require clojure-mode-extra-font-locking)
+(add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojure-mode))
+(add-hook 'clojure-mode-hook 'subword-mode)
+
+(require 'parseclj)
+(require 'parseedn)
+
+(require 'cider)
+(setf cider-repl-pop-to-buffer-on-connect t
+      cider-show-error-buffer t
+      cider-auto-select-error-buffer t
+      cider-repl-history-file "~/.config/emacs/cider-history"
+      cider-repl-wrap-history t)
+(add-hook 'cider-mode-hook 'eldoc-mode)
+(defun cider-refresh ()
+  (interactive)
+  (cider-interactive-eval (format "(user/reset)")))
+(define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
+
+(require 'paredit)
+(defun no-space-between-@-open-paren (endp delimiter)
+  (not (and (eql ?\( delimiter)
+            (eql ?\@ (char-before (point))))))
+(setf paredit-space-for-delimiter-predicates
+      '(no-space-between-@-open-paren))
+(dolist (hook (sly-mode-hook
+               sly-editing-mode-hook
+               emacs-lisp-mode-hook
+               lisp-mode-hook
+               lisp-interaction-mode-hook
+               scheme-mode-hook
+               geiser-mode-hook
+               arc-mode-hook
+               clojure-mode-hook
+               cider-repl-mode))
+  (add-hook hook 'paredit-mode))
+
+(require 'tagedit)
+(tagedit-add-paredit-like-keybindings)
+(add-hook 'html-mode-hook 'tagedit-mode)
+(add-hook 'web-mode-hook 'tagedit-mode)
 
 ;;==============================================================================
 ;; C/C++ CUSTOMISATIONS
 ;;==============================================================================
 
-(use-package hideshow
-  :diminish hs-minor-mode
-  :custom
-  (hs-special-modes-alist
-           (append '((csharp-mode "{" "}" "/[*/]" nil nil))
-                   hs-special-modes-alist)
-           "Hide C# blocks.")
-  (hs-isearch-open t "Set whether isearch opens folded blocks.")
-  (hs-hide-comments t "Hide the comments too when you do hs-hide-all.")
-  :bind ("C--" . hs-toggle-hiding)
-  :hook
-  (hs-minor-mode . hs-hide-all)
-  (lisp-mode . hs-minor-mode)
-  (geiser-mode . hs-minor-mode))
+(require 'hideshow)
+(setf hs-special-modes-alist
+      (append '((csharp-mode "{" "}" "/[*/]" nil nil))
+              hs-special-modes-alist)
+      hs-isearch-open t)
+(define-key hs-minor-mode-map (kbd "C--") 'hs-toggle-hiding)
+(add-hook 'prog-mode-hook 'hs-minor-mode)
+(add-hook 'hs-minor-mode 'hs-hide-all)
 
 (defun ar/disable-tabs ()
   (interactive)
   (buffer-local-set-state indent-tabs-mode nil))
 
-(use-package cc-mode
-  :config (setf (cdr (assoc 'other c-default-style)) "linux")
-  :custom
-  (c-basic-offset 8)
-  ;; use gdb-many-windows by default
-  (gdb-many-windows t)
-  ;; Non-nil means display source file containing the main routine at startup
-  (gdb-show-main t)
-  :bind (("<f5>" . ar/compile)
-         :map c-mode-map
-         ("<tab>" . company-indent-or-complete-common)
-         :map c++-mode-map
-         ("<tab>" . company-indent-or-complete-common))
-  :hook
-  (c-mode-common . hs-minor-mode)
-  (c-mode-common . ar/disable-tabs))
+(require 'cc-mode)
 
-(use-package nhexl-mode
-  :custom
-  (nhexl-display-unprintables t))
+(setf (cdr (assoc 'other c-default-style)) "linux"
+      c-basic-offset 8
+      gdb-many-windows t
+      gdb-show-main t)
+(define-key c-mode-map (key "<tab>") company-indent-or-complete-common)
+(define-key c++-mode-map (key "<tab>") company-indent-or-complete-common)
+(add-hook 'c-mode-common-hook 'ar/disable-tabs)
 
-(use-package go-mode)
-(use-package flymake-go)
+(require 'nhexl-mode)
+(setf nhexl-display-unprintables t)
+
+(requrie go-mode)
 
 (use-package brainfuck-mode
   :after hideshow
@@ -800,64 +747,56 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
   (brainfuck-mode . hs-minor-mode)
   (brainfuck-mode . bf-setup))
 
-(use-package ein
-  :config (require 'ein-notebook)
-  :hook (ein:notebook-python-mode . ar/switch-company-to-ac))
+;; :custom
+;; (elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;; :hook (elpy-mode . flycheck-mode)
+(require 'flycheck)
+(require 's)
+(setf setf flycheck-disabled-checkers
+      (append flycheck-disabled-checkers
+              '(javascript-jshint json-jsonlist)))
+(add-hook 'after-init-hook 'global-flycheck-mode)
+(flycheck-add-mode 'javascript-eslint 'web-mode)
 
-(use-package flycheck
-  :diminish flycheck-mode
-  :requires (elpy ein)
-  :init (require 's)
-  :config
-  (setf flycheck-disabled-checkers
-        (append flycheck-disabled-checkers
-                '(javascript-jshint json-jsonlist)))
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-  :custom
-  (elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  :hook ((after-init . global-flycheck-mode)
-         (ein:notebook-python-mode . flycheck-mode)
-         (elpy-mode . flycheck-mode)))
+(require 'helm-flycheck)
 
-(use-package helm-flycheck)
+(require 'ein)
+(require 'ein-notebook)
+(add-hook 'ein:notebook-python-mode-hook 'ar/switch-company-to-ac)
+(add-hook 'ein:notebook-python-mode-hook 'flycheck-mode)
 
 ;;=============================================================================
 ;; WEB-DEVELOPMENT CUSTOMIZATIONS
 ;;=============================================================================
 
-(use-package web-mode
-  :mode ("\\.jsx?$" . web-mode)
-  :custom
-  (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
-  (web-mode-markup-indent-offset 2))
-(use-package js2-mode
-  :hook (web-mode . js2-minor-mode))
-(use-package rjsx-mode)
-(use-package skewer-less
-  :init (defun ar/browse-this-file (file)
-          (interactive (list (buffer-file-name)))
-          (unless (and file (file-exists-p file))
-            (error "File does not exist: ‘%s’" file))
-          (unless (process-status "httpd")
-            (httpd-start))
-          (setf httpd-root (file-name-directory file))
-          (browse-url (format "http://127.0.0.1:%s/%s" httpd-port
-                              (file-name-nondirectory file))))
-  :requires js2-mode
-  :hook ((html-mode . skewer-html-mode)
-         (js2-mode . skewer-mode)
-         (css-mode . skewer-css-mode)
-         (html-mode . httpd-start)))
+(require 'use-package web-mode)
+(add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
+(setf web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))
+      web-mode-markup-indent-offset 2)
 
-(use-package add-node-modules-path
-  :hook (flycheck-mode . add-node-modules-path))
+(require 'js2-mode)
+(add-hook 'web-mode-hook 'js2-minor-mode)
+(require rjsx-mode)
+(require 'skewer-less)
+(defun ar/browse-this-file (file)
+  (interactive (list (buffer-file-name)))
+  (unless (and file (file-exists-p file))
+    (error "File does not exist: ‘%s’" file))
+  (unless (process-status "httpd")
+    (httpd-start))
+  (setf httpd-root (file-name-directory file))
+  (browse-url (format "http://127.0.0.1:%s/%s" httpd-port
+                      (file-name-nondirectory file))))
+(add-hook 'html-mode-hook 'skewer-html-mode)
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'css-mode 'skewer-css-mode)
+(add-hook 'html-mode 'httpd-start)
 
-(use-package rainbow-mode
-  :hook
-  (html-mode . rainbow-mode)
-  (web-mode . rainbow-mode)
-  (css-mode . rainbow-mode)
-  (lisp-mode . rainbow-mode))
+(require 'rainbow-mode)
+(add-hook 'html-mode-hook 'rainbow-mode)
+(add-hook 'web-mode-hook 'rainbow-mode)
+(add-hook 'css-mode-hook 'rainbow-mode)
+(add-hook 'lisp-mode-hook 'rainbow-mode)
 
 (use-package sqlup-mode
   :hook (sql-interactive-mode . sqlup-mode))
@@ -866,11 +805,10 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 ;; LOOK CUSTOMIZATIONS
 ;;==============================================================================
 
-(use-package smart-mode-line
-  :config (sml/setup)
-  :custom
-  (sml/theme 'respectful)
-  (sml/no-confirm-load-theme t))
+(require 'smart-mode-line)
+(setf sml/theme 'respectful
+      sml/no-confirm-load-theme t)
+(sml/setup)
 
 (add-to-list 'rm-blacklist " company")
 (add-to-list 'rm-blacklist " yas")
