@@ -533,7 +533,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (add-to-list 'org-export-backends 'twbs)
 
 (require 'org-ref)
-(define-key org-mode-map "C-c j" 'org-ref-cite-insert-helm)
+(define-key org-mode-map (kbd "C-c j") 'org-ref-cite-insert-helm)
 (require 'org-ref-pdf)
 (require 'org-ref-url-utils)
 (setf reftex-default-bibliography '("~/Documents/bibtex/bibliography.bib")
