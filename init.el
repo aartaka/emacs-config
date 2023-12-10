@@ -640,7 +640,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (add-hook 'scheme-mode-hook 'geiser-mode)
 
 (require 'clojure-mode)
-(require clojure-mode-extra-font-locking)
+(require 'clojure-mode-extra-font-locking)
 (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
 (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
 (add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojure-mode))
