@@ -667,16 +667,16 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
             (eql ?\@ (char-before (point))))))
 (setf paredit-space-for-delimiter-predicates
       '(no-space-between-@-open-paren))
-(dolist (hook (sly-mode-hook
-               sly-editing-mode-hook
-               emacs-lisp-mode-hook
-               lisp-mode-hook
-               lisp-interaction-mode-hook
-               scheme-mode-hook
-               geiser-mode-hook
-               arc-mode-hook
-               clojure-mode-hook
-               cider-repl-mode))
+(dolist (hook '(sly-mode-hook
+                sly-editing-mode-hook
+                emacs-lisp-mode-hook
+                lisp-mode-hook
+                lisp-interaction-mode-hook
+                scheme-mode-hook
+                geiser-mode-hook
+                arc-mode-hook
+                clojure-mode-hook
+                cider-repl-mode))
   (add-hook hook 'paredit-mode))
 
 (require 'tagedit)
@@ -707,14 +707,14 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
       c-basic-offset 8
       gdb-many-windows t
       gdb-show-main t)
-(define-key c-mode-map (key "<tab>") company-indent-or-complete-common)
-(define-key c++-mode-map (key "<tab>") company-indent-or-complete-common)
+(define-key c-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
+(define-key c++-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
 (add-hook 'c-mode-common-hook 'ar/disable-tabs)
 
 (require 'nhexl-mode)
 (setf nhexl-display-unprintables t)
 
-(requrie go-mode)
+(require 'go-mode)
 
 (use-package brainfuck-mode
   :after hideshow
@@ -740,9 +740,9 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
                      (new-indent (progn
                                    (indent-line-to depth)
                                    (point))))
-                (setf (point) (+ old-point (- new-indent old-indent))))))))
-  (add-to-list 'hs-special-modes-alist
-               '(brainfuck-mode "\\[" "\\]" ";" nil))
+                (setf (point) (+ old-point (- new-indent old-indent)))))))
+    (add-to-list 'hs-special-modes-alist
+                 '(brainfuck-mode "\\[" "\\]" ";" nil)))
   :hook
   (brainfuck-mode . hs-minor-mode)
   (brainfuck-mode . bf-setup))
@@ -752,7 +752,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 ;; :hook (elpy-mode . flycheck-mode)
 (require 'flycheck)
 (require 's)
-(setf setf flycheck-disabled-checkers
+(setf flycheck-disabled-checkers
       (append flycheck-disabled-checkers
               '(javascript-jshint json-jsonlist)))
 (add-hook 'after-init-hook 'global-flycheck-mode)
@@ -769,14 +769,14 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 ;; WEB-DEVELOPMENT CUSTOMIZATIONS
 ;;=============================================================================
 
-(require 'use-package web-mode)
+(require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
 (setf web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))
       web-mode-markup-indent-offset 2)
 
 (require 'js2-mode)
 (add-hook 'web-mode-hook 'js2-minor-mode)
-(require rjsx-mode)
+(require 'rjsx-mode)
 (require 'skewer-less)
 (defun ar/browse-this-file (file)
   (interactive (list (buffer-file-name)))
