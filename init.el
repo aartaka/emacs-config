@@ -11,8 +11,6 @@
 (load-file "~/.config/emacs/stimmung-themes/stimmung-themes-dark-theme.el")
 (load-theme 'stimmung-themes-dark t)
 
-(add-to-list 'load-path "~/git/nyxt/build-scripts/")
-(require 'nyxt-guix)
 (add-to-list 'load-path "~/git/moirai.el/")
 (let ((default-directory "~/.config/emacs/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
@@ -82,13 +80,13 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1))
-(defun ar/browse-url-nyxt (url &optional new-window)
+(defun ar/browse-url-surf (url &optional new-window)
   "See `browse-url-firefox' for reference"
   (interactive (browse-url-interactive-arg "URL: "))
   (setq url (browse-url-encode-url url))
   (let* ((process-environment (browse-url-process-environment)))
     (apply 'start-process
-           "Nyxt" nil "nyxt" (list url))))
+           "Surf" nil "surf" (list url))))
 (require 'em-term)
 
 ;; Misc customizationsn
@@ -135,7 +133,7 @@
            (flyspell-issue-message-flag nil)
            ;; Fix weird backspace.
            (normal-erase-is-backspace t)
-           (browse-url-browser-function ,#'ar/browse-url-nyxt)))
+           (browse-url-browser-function ,#'ar/browse-url-surf)))
   (set-default (car binding) (cadr binding)))
 
 (cl-loop for (key . function)
@@ -508,6 +506,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((C . t)
+   (go . t)
    (css . t)
    (ditaa . t)
    (calc . t)
