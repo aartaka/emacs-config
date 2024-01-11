@@ -286,6 +286,8 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (require 'erc-colorize)
 (require 'erc-image)
 
+(use-package ement)
+
 (require 'telega)
 
 ;;==============================================================================
