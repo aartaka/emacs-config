@@ -551,7 +551,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (require 'org-make-toc)
 
 (require 'markdown-mode)
-(require 'gemini-mode)
+;; (require 'gemini-mode)
 (require 'edit-indirect)
 
 (require 'writegood-mode)
