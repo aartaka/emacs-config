@@ -216,27 +216,6 @@
 ;;==============================================================================
 
 (require 'mu4e)
-(load "~/.config/emacs/lisp/mu4e-config.el")
-(require 'mu4e-config)
-(defun ar/mu4e-set-account ()
-  "Set the account for composing a message.
-This function is taken from:
-http://cachestocaches.com/2017/3/complete-guide-email-emacs-using-mu-and-/
-https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
-  (interactive)
-  (let* ((account
-          (completing-read (format "Compose with account: (%s) "
-                                   (mapconcat #'(lambda (var) (car var))
-                                              ar/mu4e-account-alist "/"))
-                           (mapcar #'(lambda (var) (car var)) ar/mu4e-account-alist)
-                           nil t nil nil (caar ar/mu4e-account-alist)))
-         (account-vars (cdr (assoc account ar/mu4e-account-alist))))
-    (if account-vars
-        (mapc #'(lambda (var)
-                  (set (car var) (cadr var)))
-              account-vars)
-      (error "No email account found"))))
-(add-hook 'mu4e-compose-pre-hook 'ar/mu4e-set-account)
 
 (require 'bbdb)
 (bbdb-initialize 'mu4e 'message)
@@ -287,8 +266,6 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 (require 'erc-image)
 
 (use-package ement)
-
-(require 'telega)
 
 ;;==============================================================================
 ;; HELM AND FRIENDS
@@ -535,7 +512,6 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 
 (require 'org-ref)
 (define-key org-mode-map (kbd "C-c j") 'org-ref-cite-insert-helm)
-(require 'org-ref-pdf)
 (require 'org-ref-url-utils)
 (setf reftex-default-bibliography '("~/Documents/bibtex/bibliography.bib")
       org-ref-bibliography-notes "~/Documents/bibtex/notes.org"
@@ -631,7 +607,7 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
 
 (require 'sly-asdf)
 (require 'sly-macrostep)
-(require 'sly-named-readtables)
+;; (require 'sly-named-readtables)
 (require 'sly-quicklisp)
 (require 'helm-sly)
 (require 'helm-xref)
@@ -680,10 +656,10 @@ https://www.djcbsoftware.nl/code/mu/mu4e/Multiple-accounts.html"
                 cider-repl-mode))
   (add-hook hook 'paredit-mode))
 
-(require 'tagedit)
-(tagedit-add-paredit-like-keybindings)
-(add-hook 'html-mode-hook 'tagedit-mode)
-(add-hook 'web-mode-hook 'tagedit-mode)
+;; (require 'tagedit)
+;; (tagedit-add-paredit-like-keybindings)
+;; (add-hook 'html-mode-hook 'tagedit-mode)
+;; (add-hook 'web-mode-hook 'tagedit-mode)
 
 ;;==============================================================================
 ;; C/C++ CUSTOMISATIONS
