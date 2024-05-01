@@ -615,6 +615,8 @@
 (require 'racket-mode)
 (require 'geiser)
 (add-hook 'scheme-mode-hook 'geiser-mode)
+(require 'geiser-guile)
+(setf geiser-guile-binary (list "guile" "-L" "/home/aartaka/.guix-profile/share/guile/site/3.0"))
 
 (require 'clojure-mode)
 (require 'clojure-mode-extra-font-locking)
