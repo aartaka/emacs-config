@@ -35,12 +35,6 @@
 (require 'diminish)
 (require 'bind-key)
 
-(use-package auto-package-update
-  :config (auto-package-update-maybe)
-  :custom
-  (auto-package-update-delete-old-versions t)
-  (auto-package-update-hide-results t))
-
 (require 'rich-minority)
 
 ;;==============================================================================
