@@ -204,7 +204,7 @@
   :bind ("RET" . newline-and-indent)
   :custom (clean-aindent-is-simple-indent t))
 
-(require 'keepass-mode)
+(use-package keepass-mode)
 ;;==============================================================================
 ;; SOCIAL
 ;;==============================================================================
@@ -256,8 +256,8 @@
 
 (require 'erc)
 (setq erc-autojoin-channels-alist '((list ".*\.libera.chat" "lisp" "nyxt")))
-(require 'erc-colorize)
-(require 'erc-image)
+(use-package erc-colorize)
+(use-package erc-image)
 
 (use-package ement)
 
@@ -475,7 +475,7 @@
   :hook ((org-mode . org-indent-mode)
          (org-mode . visual-line-mode)))
 
-(require 'babel)
+(use-package babel)
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((C . t)
@@ -750,7 +750,7 @@
 (require 'js2-mode)
 (add-hook 'web-mode-hook 'js2-minor-mode)
 (require 'rjsx-mode)
-(require 'skewer-less)
+(use-package skewer-less)
 (defun ar/browse-this-file (file)
   (interactive (list (buffer-file-name)))
   (unless (and file (file-exists-p file))
