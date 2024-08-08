@@ -211,9 +211,24 @@
 
 (require 'mu4e)
 
+(setq user-mail-address    "mail@aartaka.me"
+      user-full-name       "Artyom Bologov"
+      smtpmail-default-smtp-server "disroot.org"
+      smtpmail-smtp-server "disroot.org"
+      send-mail-function   'smtpmail-send-it
+      smtpmail-smtp-service 587
+      smtpmail-debug-info t
+      gnus-select-method '(nnimap "disroot.org"))
+
+(defun my-message-mode-setup ()
+  (setq fill-column 72)
+  (turn-on-auto-fill))
+
+(add-hook 'message-mode-hook 'my-message-mode-setup)
+
 (require 'bbdb)
 (bbdb-initialize 'mu4e 'message)
-    (bbdb-mua-auto-update-init 'mu4e 'message)
+(bbdb-mua-auto-update-init 'mu4e 'message)
 (setf bbdb-mua-auto-update-p t
       ;; I don't want BBDB to pop up anytime I read emails.
       bbdb-mua-pop-up nil
