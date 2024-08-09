@@ -220,6 +220,8 @@
       smtpmail-debug-info t
       gnus-select-method '(nnimap "disroot.org"))
 
+(setf message-default-mail-headers (concat message-default-mail-headers "Bcc: mail@aartaka.me\n"))
+
 (defun my-message-mode-setup ()
   (setq fill-column 72)
   (turn-on-auto-fill))
