@@ -221,6 +221,7 @@
       gnus-select-method '(nnimap "disroot.org"))
 
 (setf message-default-mail-headers (concat message-default-mail-headers "Bcc: mail@aartaka.me\n"))
+(setf message-signature "Artyom Bologov\nhttps://aartaka.me")
 
 (defun my-message-mode-setup ()
   (setq fill-column 72)
