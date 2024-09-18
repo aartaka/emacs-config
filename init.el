@@ -688,10 +688,6 @@
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'hs-minor-mode 'hs-hide-all)
 
-(defun ar/disable-tabs ()
-  (interactive)
-  (buffer-local-set-state indent-tabs-mode nil))
-
 (require 'cc-mode)
 
 (setf (cdr (assoc 'other c-default-style)) "linux"
@@ -700,7 +696,6 @@
       gdb-show-main t)
 (define-key c-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
 (define-key c++-mode-map (kbd "<tab>") 'company-indent-or-complete-common)
-(add-hook 'c-mode-common-hook 'ar/disable-tabs)
 
 (require 'nhexl-mode)
 (setf nhexl-display-unprintables t)
