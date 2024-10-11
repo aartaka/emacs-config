@@ -627,6 +627,7 @@
 (require 'racket-mode)
 (require 'geiser)
 (add-hook 'scheme-mode-hook 'geiser-mode)
+(setf geiser-log-verbose t)
 (require 'geiser-guile)
 (setf geiser-guile-binary (list "guile" "--debug" "-L" "/home/aartaka/.guix-profile/share/guile/site/3.0"))
 
