@@ -628,6 +628,7 @@
 (require 'geiser)
 (add-hook 'scheme-mode-hook 'geiser-mode)
 (setf geiser-log-verbose t)
+(setf geiser-log--max-buffer-size 10000000000)
 (require 'geiser-guile)
 (setf geiser-guile-binary (list "guile" "--debug" "-L" "/home/aartaka/.guix-profile/share/guile/site/3.0"))
 
