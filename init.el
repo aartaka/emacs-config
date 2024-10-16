@@ -209,7 +209,7 @@
 ;; SOCIAL
 ;;==============================================================================
 
-(require 'mu4e)
+;; (require 'mu4e)
 
 (setq user-mail-address    "mail@aartaka.me"
       user-full-name       "Artyom Bologov"
