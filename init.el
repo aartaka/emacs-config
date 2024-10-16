@@ -494,6 +494,7 @@
          (org-mode . visual-line-mode)))
 
 (use-package babel)
+(use-package ob-go)
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((C . t)
