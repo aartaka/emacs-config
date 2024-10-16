@@ -230,8 +230,8 @@
 (add-hook 'message-mode-hook 'my-message-mode-setup)
 
 (require 'bbdb)
-(bbdb-initialize 'mu4e 'message)
-(bbdb-mua-auto-update-init 'mu4e 'message)
+(bbdb-initialize 'mu4e 'message 'gnus)
+(bbdb-mua-auto-update-init 'mu4e 'message 'gnus)
 (setf bbdb-mua-auto-update-p t
       ;; I don't want BBDB to pop up anytime I read emails.
       bbdb-mua-pop-up nil
