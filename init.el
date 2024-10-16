@@ -191,7 +191,7 @@
 (require 'nov)
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
-(require' transient)
+(require 'transient)
 (require 'magit)
 (setf vc-handled-backends nil)
 (add-to-list 'magit-tag-version-regexp-alist
