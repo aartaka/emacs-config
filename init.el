@@ -74,13 +74,13 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1))
-(defun ar/browse-url-surf (url &optional new-window)
+(defun ar/browse-url-librewolf (url &optional new-window)
   "See `browse-url-firefox' for reference"
   (interactive (browse-url-interactive-arg "URL: "))
   (setq url (browse-url-encode-url url))
   (let* ((process-environment (browse-url-process-environment)))
     (apply 'start-process
-           "Surf" nil "surf" (list url))))
+           "Librewolf" nil "librewolf" (list url))))
 (require 'em-term)
 
 ;; Misc customizationsn
@@ -127,7 +127,7 @@
            (flyspell-issue-message-flag nil)
            ;; Fix weird backspace.
            (normal-erase-is-backspace t)
-           (browse-url-browser-function ,#'browse-url-firefox)))
+           (browse-url-browser-function ,#'ar/browse-url-librewolf)))
   (set-default (car binding) (cadr binding)))
 
 (cl-loop for (key . function)
