@@ -127,7 +127,7 @@
            (flyspell-issue-message-flag nil)
            ;; Fix weird backspace.
            (normal-erase-is-backspace t)
-           (browse-url-browser-function ,#'ar/browse-url-surf)))
+           (browse-url-browser-function ,#'browse-url-firefox)))
   (set-default (car binding) (cadr binding)))
 
 (cl-loop for (key . function)
