@@ -90,8 +90,8 @@
 
 (when window-system (ar/set-frame-setting))
 
-(if (member "Hack" (font-family-list))
-    (set-frame-font "Hack 17" t t)
+(if (member "IBM Plex Mono" (font-family-list))
+    (set-frame-font "IBM Plex Mono 17" t t)
   (set-frame-font "17" t t))
 
 (setq-default indent-tabs-mode nil)
