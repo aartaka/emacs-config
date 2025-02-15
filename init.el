@@ -205,6 +205,10 @@
   :custom (clean-aindent-is-simple-indent t))
 
 (use-package keepass-mode)
+
+(require 'sed-mode)
+(add-to-list 'auto-mode-alist '("\\.ed\\'" . sed-mode))
+
 ;;==============================================================================
 ;; SOCIAL
 ;;==============================================================================
@@ -654,6 +658,7 @@
   (interactive)
   (cider-interactive-eval (format "(user/reset)")))
 (define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
+(define-key clojure-mode-map (kbd "C-c C-r C-r") 'cider-eval-buffer)
 
 (require 'paredit)
 (defun no-space-between-@-open-paren (endp delimiter)
@@ -745,7 +750,7 @@
       (append flycheck-disabled-checkers
               '(javascript-jshint json-jsonlist)))
 (add-hook 'after-init-hook 'global-flycheck-mode)
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+;; (flycheck-add-mode 'javascript-eslint 'web-mode)
 
 (require 'helm-flycheck)
 
@@ -764,7 +769,7 @@
       web-mode-markup-indent-offset 2)
 
 (require 'js2-mode)
-(add-hook 'web-mode-hook 'js2-minor-mode)
+;; (add-hook 'web-mode-hook 'js2-minor-mode)
 (require 'rjsx-mode)
 (use-package skewer-less)
 (defun ar/browse-this-file (file)
@@ -786,6 +791,7 @@
 (add-hook 'web-mode-hook 'rainbow-mode)
 (add-hook 'css-mode-hook 'rainbow-mode)
 (add-hook 'lisp-mode-hook 'rainbow-mode)
+(add-hook 'clojure-mode-hook 'rainbow-mode)
 
 (use-package sqlup-mode
   :hook (sql-interactive-mode . sqlup-mode))
