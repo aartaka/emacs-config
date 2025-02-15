@@ -4,3 +4,6 @@
 [submodule "laconia-theme"]
 	path = laconia-theme
 	url = https://github.com/aartaka/laconia-theme
+[submodule "dark-atoll-theme"]
+	path = dark-atoll-theme
+	url = https://github.com/aartaka/dark-atoll-theme
