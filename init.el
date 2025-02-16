@@ -5,11 +5,16 @@
 (add-to-list 'load-path "~/.guix-extra-profiles/emacs-profile/emacs-profile/share/emacs/site-lisp/mu4e/")
 (add-to-list 'load-path "~/.guix-extra-profiles/emacs-profile/emacs-profile/share/emacs/site-lisp/")
 
-(add-to-list 'load-path "~/.config/emacs/stimmung-themes/")
-(require 'stimmung-themes)
-(setf stimmung-themes-dark-highlight-color "#330101")
-(load-file "~/.config/emacs/stimmung-themes/stimmung-themes-dark-theme.el")
-(load-theme 'stimmung-themes-dark t)
+;; (add-to-list 'load-path "~/.config/emacs/stimmung-themes/")
+;; (require 'stimmung-themes)
+;; (setf stimmung-themes-dark-highlight-color "#330101")
+;; (load-file "~/.config/emacs/stimmung-themes/stimmung-themes-dark-theme.el")
+;; (load-theme 'stimmung-themes-dark t)
+
+(add-to-list 'custom-theme-load-path "~/.config/emacs/dark-atoll-theme/")
+(load-file "~/.config/emacs/dark-atoll-theme/dark-atoll-theme.el")
+(require 'dark-atoll)
+(load-theme 'dark-atoll t)
 
 (add-to-list 'load-path "~/git/moirai.el/")
 (let ((default-directory "~/.config/emacs/lisp/"))
