@@ -701,6 +701,8 @@
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'hs-minor-mode 'hs-hide-all)
 
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
 (require 'cc-mode)
 
 (setf (cdr (assoc 'other c-default-style)) "linux"
