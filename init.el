@@ -657,7 +657,8 @@
       cider-show-error-buffer t
       cider-auto-select-error-buffer t
       cider-repl-history-file "~/.config/emacs/cider-history"
-      cider-repl-wrap-history t)
+      cider-repl-wrap-history t
+      cider-download-java-sources t)
 (add-hook 'cider-mode-hook 'eldoc-mode)
 (defun cider-refresh ()
   (interactive)
@@ -682,6 +683,9 @@
                 clojure-mode-hook
                 cider-repl-mode))
   (add-hook hook 'paredit-mode))
+
+(require 'lsp-mode)
+;; (add-hook 'clojure-mode-hook 'lsp-mode)
 
 ;; (require 'tagedit)
 ;; (tagedit-add-paredit-like-keybindings)
