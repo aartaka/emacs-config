@@ -799,6 +799,8 @@
 (add-hook 'css-mode 'skewer-css-mode)
 (add-hook 'html-mode 'httpd-start)
 
+(require 'yaml-mode)
+
 (require 'rainbow-mode)
 (add-hook 'html-mode-hook 'rainbow-mode)
 (add-hook 'web-mode-hook 'rainbow-mode)
