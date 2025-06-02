@@ -284,7 +284,7 @@
         ("Reply-to" . "notifications")))
 
 (require 'erc)
-(setq erc-autojoin-channels-alist '((list ".*\.libera.chat" "lisp" "nyxt")))
+(setq erc-autojoin-channels-alist '((list ".*\.libera.chat" "lisp")))
 (use-package erc-colorize)
 (use-package erc-image)
 
