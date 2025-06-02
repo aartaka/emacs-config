@@ -16,7 +16,7 @@
 (require 'dark-atoll)
 (load-theme 'dark-atoll t)
 
-;; (load-theme 'modus-vivendi t)
+;; (load-theme 'modus-operandi t)
 
 (add-to-list 'load-path "~/git/moirai.el/")
 (let ((default-directory "~/.config/emacs/lisp/"))
