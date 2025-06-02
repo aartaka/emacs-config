@@ -600,22 +600,7 @@
 
 (setf sly-lisp-implementations
       `((sbcl ("sbcl" "--dynamic-space-size" "5000") :coding-system utf-8-unix)
-        (sbcl-plain ("sbcl") :coding-system utf-8-unix)
-        (sbcl-nyxt
-         (lambda ()
-           (nyxt-make-guix-sbcl-for-nyxt
-            "~/git/nyxt"
-            :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
-                      "keepassxc" "gedit" "xclip" "gcc-toolchain")
-            :no-grafts t)))
-        (sbcl-nyxt-force
-         (lambda ()
-           (nyxt-make-guix-sbcl-for-nyxt
-            "~/git/nyxt"
-            :ad-hoc '("guix" "gnupg" "git" "xdg-utils" "pkg-config"
-                      "keepassxc" "gedit" "xclip" "gcc-toolchain")
-            :no-grafts t
-            :force t)))
+        (sbcl-clean ("sbcl" "--no-userinit") :coding-system utf-8-unix)
         (ecl  ("ecl"))
         (ccl  ("ccl"))
         (gcl ("gcl"))
