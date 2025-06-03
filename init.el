@@ -651,7 +651,6 @@
   (interactive)
   (cider-interactive-eval (format "(user/reset)")))
 (define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
-(define-key clojure-mode-map (kbd "C-c C-r C-r") 'cider-eval-buffer)
 
 (require 'paredit)
 (defun no-space-between-@-open-paren (endp delimiter)
