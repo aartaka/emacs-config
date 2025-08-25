@@ -432,6 +432,8 @@
             (lambda () (interactive) (insert-char #x201d)))
 (define-key global-map (kbd "C-' '")
             (lambda () (interactive) (insert-char #x2019)))
+(define-key global-map (kbd "C-' .")
+            (lambda () (interactive) (insert-char #x2026)))
 
 (defvar org-directory "~/org")
 (use-package org
