@@ -440,12 +440,16 @@
             (lambda () (interactive) (insert-char #x0161)))
 (define-key global-map (kbd "C-' c")
             (lambda () (interactive) (insert-char #x010D)))
+(define-key global-map (kbd "C-' e")
+            (lambda () (interactive) (insert-char #x011B)))
 (define-key global-map (kbd "C-' Z")
             (lambda () (interactive) (insert-char #x017D)))
 (define-key global-map (kbd "C-' S")
             (lambda () (interactive) (insert-char #x0160)))
 (define-key global-map (kbd "C-' C")
             (lambda () (interactive) (insert-char #x010C)))
+(define-key global-map (kbd "C-' E")
+            (lambda () (interactive) (insert-char #x011A)))
 
 (defvar org-directory "~/org")
 (use-package org
