@@ -206,8 +206,8 @@
                t 'equal)
 (define-key global-map (kbd "C-x g") 'magit-status)
 (define-key global-map (kbd "C-x M-g") 'magit-dispatch)
-(define-key magit-status-mode-map (kbd "C-n") 'magit-section-forward)
-(define-key magit-status-mode-map (kbd "C-p") 'magit-section-backward)
+;; (define-key magit-status-mode-map (kbd "C-n") 'magit-section-forward)
+;; (define-key magit-status-mode-map (kbd "C-p") 'magit-section-backward)
 
 (use-package clean-aindent-mode
   :bind ("RET" . newline-and-indent)
