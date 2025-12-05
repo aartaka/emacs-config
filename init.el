@@ -412,6 +412,8 @@ x-ms-reactions: disallow\n"))
             (lambda () (interactive) (insert-char #x010C)))
 (define-key global-map (kbd "C-' E")
             (lambda () (interactive) (insert-char #x011A)))
+(define-key global-map (kbd "C-' *")
+            (lambda () (interactive) (insert-char #x2022)))
 
 (defvar org-directory "~/org")
 (use-package org
