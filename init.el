@@ -376,33 +376,33 @@ x-ms-reactions: disallow\n"))
 ;; ORG
 ;;==============================================================================
 
-(define-key global-map (kbd "C-' <")
+(define-key global-map (kbd "C-' <") ;; Open pine quote
             (lambda () (interactive) (insert-char #xAB)))
-(define-key global-map (kbd "C-' >")
+(define-key global-map (kbd "C-' >") ;; Closing pine quote
             (lambda () (interactive) (insert-char #xBB)))
-(define-key global-map (kbd "C-' -")
+(define-key global-map (kbd "C-' -") ;; Em dash
             (lambda () (interactive) (insert-char #x2014)))
-(define-key global-map (kbd "C-' _")
+(define-key global-map (kbd "C-' _") ;; En dash
             (lambda () (interactive) (insert-char #x2013)))
-(define-key global-map (kbd "C-' {")
+(define-key global-map (kbd "C-' {") ;; Smart open single quote
             (lambda () (interactive) (insert-char #x2018)))
-(define-key global-map (kbd "C-' }")
+(define-key global-map (kbd "C-' }") ;; Smart closing single quote
             (lambda () (interactive) (insert-char #x2019)))
-(define-key global-map (kbd "C-' [")
+(define-key global-map (kbd "C-' [") ;; Smart open double quote
             (lambda () (interactive) (insert-char #x201c)))
-(define-key global-map (kbd "C-' ]")
+(define-key global-map (kbd "C-' ]") ;; Smart closing double quote
             (lambda () (interactive) (insert-char #x201d)))
-(define-key global-map (kbd "C-' '")
+(define-key global-map (kbd "C-' '") ;; Smart apostrophe
             (lambda () (interactive) (insert-char #x2019)))
-(define-key global-map (kbd "C-' .")
+(define-key global-map (kbd "C-' .") ;; Ellipsis
             (lambda () (interactive) (insert-char #x2026)))
-(define-key global-map (kbd "C-' z")
+(define-key global-map (kbd "C-' z") ;; Z with caron (zh)
             (lambda () (interactive) (insert-char #x017E)))
-(define-key global-map (kbd "C-' s")
+(define-key global-map (kbd "C-' s") ;; S with caron (sh)
             (lambda () (interactive) (insert-char #x0161)))
-(define-key global-map (kbd "C-' c")
+(define-key global-map (kbd "C-' c") ;; C with caron (ch)
             (lambda () (interactive) (insert-char #x010D)))
-(define-key global-map (kbd "C-' e")
+(define-key global-map (kbd "C-' e") ;; E with caron
             (lambda () (interactive) (insert-char #x011B)))
 (define-key global-map (kbd "C-' Z")
             (lambda () (interactive) (insert-char #x017D)))
@@ -412,8 +412,10 @@ x-ms-reactions: disallow\n"))
             (lambda () (interactive) (insert-char #x010C)))
 (define-key global-map (kbd "C-' E")
             (lambda () (interactive) (insert-char #x011A)))
-(define-key global-map (kbd "C-' *")
+(define-key global-map (kbd "C-' *") ;; Bullet
             (lambda () (interactive) (insert-char #x2022)))
+(define-key global-map (kbd "C-' l") ;; Lambda
+            (lambda () (interactive) (insert-char #x3bb)))
 
 (defvar org-directory "~/org")
 (use-package org
