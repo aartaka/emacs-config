@@ -1,0 +1,26 @@
+(require 'quail)
+(quail-define-package
+ "kaktovik-numerals" "Kaktovik" "𝋓" nil
+ "A transliteration scheme for Kaktovik numerals."
+ nil t t t t nil nil nil nil nil t)
+(quail-define-rules
+ ("0" ?𝋀)
+ ("1" ?𝋁)
+ ("2" ?𝋂)
+ ("3" ?𝋃)
+ ("4" ?𝋄)
+ ("5" ?𝋅)
+ ("6" ?𝋆)
+ ("7" ?𝋇)
+ ("8" ?𝋈)
+ ("9" ?𝋉)
+ ("p" ?𝋊)
+ ("q" ?𝋋)
+ ("w" ?𝋌)
+ ("e" ?𝋍)
+ ("r" ?𝋎)
+ ("t" ?𝋏)
+ ("y" ?𝋐)
+ ("u" ?𝋑)
+ ("i" ?𝋒)
+ ("o" ?𝋓))

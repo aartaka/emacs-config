@@ -22,8 +22,9 @@
 (let ((default-directory "~/.config/emacs/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; Add Armenian input method.
+;; Add Armenian and Kaktovik input method.
 (load "~/.config/emacs/armenian.el")
+(load "~/.config/emacs/kaktovik.el")
 
 ;; Emacspeak setup. Commented out because I don't use it often.
 (setq espeak-default-speech-rate 230)
