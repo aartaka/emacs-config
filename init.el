@@ -415,6 +415,8 @@ x-ms-reactions: disallow\n"))
             (lambda () (interactive) (insert-char #x011A)))
 (define-key global-map (kbd "C-' *") ;; Bullet
             (lambda () (interactive) (insert-char #x2022)))
+(define-key global-map (kbd "C-' (") ;; Interpunct
+            (lambda () (interactive) (insert-char #xb7)))
 (define-key global-map (kbd "C-' l") ;; Lambda
             (lambda () (interactive) (insert-char #x3bb)))
 
