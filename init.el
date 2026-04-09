@@ -69,6 +69,7 @@
     (with-current-buffer buf
       (call-process-shell-command (format "cat ~/.local/share/aed/isv.ed | ed %s -sq" word)
                                   nil buf t)
+      (read-only-mode)
       (pop-to-buffer buf))))
 (define-key global-map (kbd "C-c s") 'interslavic-lookup)
 
