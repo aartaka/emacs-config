@@ -63,6 +63,15 @@
 (require 'synosaurus)
 (define-key global-map (kbd "C-c t") 'synosaurus-lookup)
 
+(defun interslavic-lookup (word)
+  (interactive (list (completing-read "Word: " '() nil nil (current-word t t))))
+  (let ((buf (get-buffer-create "*Interslavic*")))
+    (with-current-buffer buf
+      (call-process-shell-command (format "cat ~/.local/share/aed/isv.ed | ed %s -sq" word)
+                                  nil buf t)
+      (pop-to-buffer buf))))
+(define-key global-map (kbd "C-c s") 'interslavic-lookup)
+
 (require 'yasnippet)
 (yas-global-mode)
 (require 'yasnippet-snippets)
