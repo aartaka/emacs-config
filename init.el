@@ -429,6 +429,18 @@ x-ms-reactions: disallow\n"))
 (define-key global-map (kbd "C-' l") ;; Lambda
             (lambda () (interactive) (insert-char #x3bb)))
 
+(defun escape-html ()
+  (interactive)
+  (let ((region-beg (use-region-beginning))
+        (region-end (use-region-end))
+        (region-noncontinuous (use-region-noncontiguous-p)))
+    (replace-regexp "<" "\&lt;"
+                    nil region-beg region-end nil
+                    region-noncontinuous)
+    (replace-regexp ">" "\&gt;"
+                    nil region-beg region-end nil
+                    region-noncontinuous)))
+
 (defvar org-directory "~/org")
 (use-package org
   :init
